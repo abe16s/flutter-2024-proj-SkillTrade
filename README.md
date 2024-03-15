@@ -21,12 +21,6 @@ The application shall enable users to do the following
 
 ## Authorization
 The application should allow users do what they are allowed to do or what is in their role. Below we will list the roles we have identified in the application. The administartor will serve a crucial role in managing roles i.e. assigning, removing, restricting them. 
-  <ul>
-    <li>Defining Roles</li>
-    <li>Assigning/Revoking roles to users</li>
-    <li>Allowing/Restricting users access to certain screens based on their permissions/roles</li>
-    <li>Removing Roles from the system</li>
-  </ul>
   
 ### Roles
   1. <b>Technicians</b>  - These are the skilled professionals who offer their services through the platform. They could be plumbers, electricians, HVAC technicians, carpenters, mechanics, or experts in various other trades. Their role involves creating profiles showcasing their skills, expertise, availability, and accepting service requests from customers. 
@@ -47,7 +41,7 @@ The application should allow users do what they are allowed to do or what is in 
   3. Read - their profile and others
      
 # Business Features
-## Booking Appointments
+## Feature 1 - Booking Appointments
 Appointment Scheduling: Customers can easily book appointments with technicians based on their availability.
 Flexible Scheduling: Options for same-day or future appointments to cater to immediate needs or plan ahead.
   ### Booking - CRUD
@@ -61,7 +55,7 @@ Flexible Scheduling: Options for same-day or future appointments to cater to imm
   1. Read - Booking
   2. Update - Booking( change status to declined, accepted, serviced, pending)
 
-## Review and Rating
+## Feature 2 - Review and Rating
 Upon receiving a service from a technician, a customer should be able to write a review and post it so that future users can make an informed decision in choosing a technician. The users should also be able to rate the technician on a given scale.
 
   ### Review and Rating - CRUD
