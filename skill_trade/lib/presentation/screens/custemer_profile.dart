@@ -16,31 +16,34 @@ class customerProfile extends StatelessWidget {
         appBarTheme: const AppBarTheme(color: Colors.deepPurple),
       ),
       home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("Customers Profile"),
-        ),
-        body: const Column(
-          children: <Widget>[
-            CircleAvatar(
-              radius: 50.0,
-              backgroundImage: AssetImage("assets/profile.jpg"),
-            ),
-            ListTile(
-              title: Center(
-                child: Text(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text("Customers Profile"),
+          ),
+          body: const Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                CircleAvatar(
+                  radius: 50.0,
+                  backgroundImage: AssetImage("assets/profile.jpg"),
+                ),
+                SizedBox(height: 10),
+                Text(
                   "Biniyam Assefa",
                   style: TextStyle(fontSize: 20),
                 ),
-              ),
-              subtitle: Center(
-                child: Text("biniyamassefa648@gmail.com",
-                    style: TextStyle(fontSize: 15)),
-              ),
+                Text(
+                  "biniyamassefa648@gmail.com",
+                  style: TextStyle(fontSize: 15),
+                ),
+                Text(
+                  "Tel: +2519-4018-5778",
+                  style: TextStyle(fontSize: 15),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }
