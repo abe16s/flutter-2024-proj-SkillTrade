@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/bookings.dart';
 import 'package:skill_trade/presentation/widgets/technician_card.dart';
 
 void main() {
@@ -9,11 +10,6 @@ void main() {
 
 class FindTechnician extends StatelessWidget {
   const FindTechnician({super.key});
-
-  void Function()? onTap {
-      print("ff");
-
-  }  
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +24,11 @@ class FindTechnician extends StatelessWidget {
               maxCrossAxisExtent: 320,
               children: List.generate(8, (index) {
                 return GestureDetector(
-                  child: TechnicianCard()
-                  onTap: () {print("hello")},
+                  child: TechnicianCard(),
+                  onTap: () {
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (BuildContext context) => MyBookings()));
+                  },
                 );
                 
               }),
