@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/widgets/services_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                     children: [ 
                     GestureDetector(
                     onTap: () { 
-              
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                     child: Container( 
                       padding: EdgeInsets.only(left: 20, right:20, top: 8,bottom: 8),
