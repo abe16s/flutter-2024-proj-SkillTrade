@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import "../widgets/info_label.dart";
+import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -32,6 +32,24 @@ class _MyBookingsState extends State<MyBookings> {
       });
     }
   }
+
+  double _rating = 0;
+  String _review = '';
+  List<Review> _reviews = []; // List to store previous reviews
+  TextEditingController _reviewController = TextEditingController();
+
+  void _submitReview() {
+    // Here you would typically send the review and rating data to your backend server
+    // for storage and processing.
+    _reviews.add(Review(rating: _rating, comment: _review, customer: "Abebe Kebede"));
+    setState(() {
+      _rating = 0;
+      _review = '';
+      _reviewController.clear();
+    });
+    // You can also update your UI or show a confirmation dialog here.
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -175,7 +193,7 @@ class _MyBookingsState extends State<MyBookings> {
                       SizedBox(width: 7,),
                       SizedBox(
                         width: 220,
-                        height: 40,
+                        height: 60,
                         child: TextField(
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -199,8 +217,116 @@ class _MyBookingsState extends State<MyBookings> {
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              child: Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+            ),
+
+            // Review //
+
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Previous reviews
+                  Text(
+                    'Reviews',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  _reviews.length > 0 ? Container(
+                    height: _reviews.length * 110,
+                    child: ListView.builder(
+                        itemCount: _reviews.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset("assets/profile.jpg", width: 40, height: 40,),
+                                  SizedBox(width: 5 ,),
+                                  Text(_reviews[index].customer, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),),
+                                ],
+                              ),
+                              ListTile(
+                                title: RatingStars(rating: _reviews[index].rating),
+                                subtitle: Text(_reviews[index].comment),
+                              ),
+                            ],
+                          );
+                        },
+                    ),
+                  ) : Text("No reviews yet!",),
+                  
+                  SizedBox(height: 20),
+                  Text(
+                    'Leave a Review',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10),
+                  // Star rating widget
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.star, color: _rating >= 1 ? Colors.orange : Colors.grey),
+                        onPressed: () => setState(() => _rating = 1),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.star, color: _rating >= 2 ? Colors.orange : Colors.grey),
+                        onPressed: () => setState(() => _rating = 2),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.star, color: _rating >= 3 ? Colors.orange : Colors.grey),
+                        onPressed: () => setState(() => _rating = 3),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.star, color: _rating >= 4 ? Colors.orange : Colors.grey),
+                        onPressed: () => setState(() => _rating = 4),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.star, color: _rating >= 5 ? Colors.orange : Colors.grey),
+                        onPressed: () => setState(() => _rating = 5),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  // Text input for review
+                  TextField(
+                    controller: _reviewController,
+                    onChanged: (value) => _review = value,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: 'Write your review here...',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  // Submit button
+                  ElevatedButton(
+                    onPressed: _submitReview,
+                    child: Text('Submit'),
+                  ),            
+                ],
+              ),
+            ),
           ],
         ),
       );
   }
+}
+
+
+class Review {
+  final double rating;
+  final String comment;
+  final String customer;
+  Review({required this.rating, required this.comment, required this.customer});
 }
