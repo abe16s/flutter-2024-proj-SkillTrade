@@ -9,6 +9,7 @@ class MyTextField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String)? onChanged;
   final bool toggleText;
+  final multiline;
 
   const MyTextField({
     Key? key,
@@ -17,6 +18,7 @@ class MyTextField extends StatefulWidget {
     this.suffixIcon,
     required this.controller,
     required this.toggleText,
+    this.multiline=false,
     this.obscureText = false,
     this.onChanged,
   }) : super(key: key);
@@ -60,6 +62,7 @@ class _MyTextFieldState extends State<MyTextField> {
         color: Colors.black87,
         fontSize: 16.0,
       ),
+      maxLines: widget.multiline ? null : 1, 
         
       decoration: InputDecoration(
         labelText: widget.labelText,

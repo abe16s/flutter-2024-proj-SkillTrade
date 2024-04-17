@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skill_trade/presentation/screens/custemer_profile.dart';
@@ -24,10 +25,23 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
-  TextEditingController _skillController = TextEditingController();
   TextEditingController _educationController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
+
+
+
+  List<String> _selectedTags = [];
+
+  List<String> _availableTags = [
+    'Electricity',
+    'HVAC',
+    'Satelite dish',
+    'Plumbing',
+    'Electronics',
+    'interior decoration',
+
+  ];
 
 
 
@@ -117,21 +131,78 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(height: 15,),
                 
                         if(_user_role == "technician")...[
-                          MyTextField(labelText: "Skill", prefixIcon: Icons.handyman_outlined, toggleText: false , controller: _skillController),
-                          SizedBox(height: 15,),
                           MyTextField(labelText: "Experience", prefixIcon: Icons.timelapse_sharp, toggleText: false , controller: _experienceController),
+                          
                           SizedBox(height: 15,),
                           MyTextField(labelText: "Education Level", prefixIcon: Icons.school, toggleText: false , controller: _educationController),
                           SizedBox(height: 15,),
                           MyTextField(labelText: "Available location", prefixIcon: Icons.location_city_outlined, toggleText: false , controller: _locationController),
                           SizedBox(height: 15,),
-                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, toggleText: false , controller: _bioController),
+                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, multiline:true,  toggleText: false , controller: _bioController),
                           SizedBox(height: 15,),
-                
+
+                          Container(
+                            decoration: BoxDecoration( 
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row( 
+                                    children: [ 
+                                      Icon(Icons.handyman_outlined, color: Colors.grey.shade600, size: 25,),
+                                      SizedBox(width: 8,),
+                                      Text("Skills", style:  TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16.0,
+                                    ),),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                              
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Wrap(
+                                        spacing: 5,
+                                        children: _availableTags
+                                            .map(
+                                              (tag) => Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: InputChip(
+                                                                                    
+                                                  label: Text(tag),
+                                                  
+                                                  selected: _selectedTags.contains(tag),
+                                                  onSelected: (bool selected) {
+                                                    setState(() {
+                                                      if (selected) {
+                                                        _selectedTags.add(tag);
+                                                      } else {
+                                                        _selectedTags.remove(tag);
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                               
+                              ],
+                            ),
+                          ),
                         ],
-                
-                        
-                        
+                        SizedBox(height: 15,),
+
                         MyButton(text: "signup", onPressed: (){ 
                           Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
                 
