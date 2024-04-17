@@ -37,7 +37,7 @@ class LoginPage extends StatelessWidget {
                       MyButton(text: "login", onPressed: (){ 
                         Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
 
-                      }),
+                      }, width: double.infinity),
                       SizedBox(height: 15,),
                       Row( 
                         mainAxisAlignment: MainAxisAlignment.center,

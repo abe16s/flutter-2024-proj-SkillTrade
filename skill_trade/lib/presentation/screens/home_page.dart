@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
+import 'package:skill_trade/presentation/screens/signup_page.dart';
+import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/services_card.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -43,33 +45,18 @@ class HomeScreen extends StatelessWidget {
                               Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [ 
-                    GestureDetector(
-                    onTap: () { 
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
-                    child: Container( 
-                      padding: EdgeInsets.only(left: 20, right:20, top: 8,bottom: 8),
-                      decoration: BoxDecoration( 
-                        color: const Color.fromARGB(226, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text("login", style:TextStyle(fontSize: 20, color: const Color.fromARGB(255, 158, 33, 180)))
-                    ),
-                  ), 
+                  MyButton(text: "login", onPressed: (){ 
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+                  }),
                   SizedBox(width: 15,),
-                GestureDetector(
-                    onTap: () { 
-              
-                    },
-                    child: Container( 
-                      padding: EdgeInsets.only(left: 20, right:20, top: 8,bottom: 8),
-                      decoration: BoxDecoration( 
-                        color: const Color.fromARGB(226, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(" signup", style:TextStyle(fontSize: 20,  color: const Color.fromARGB(255, 158, 33, 180))),
-                    ),
-                  )
+
+                  MyButton(text: "signup", onPressed: (){ 
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
+                  }),
+                
+
+
+
                   ],),
               
                       ],
