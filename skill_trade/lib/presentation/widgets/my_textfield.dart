@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MyTextField extends StatefulWidget {
   final String labelText;
   final IconData prefixIcon;
-  final IconData suffixIcon;
+  final IconData? suffixIcon;
   final bool obscureText;
   final TextEditingController controller;
   final Function(String)? onChanged;
@@ -14,7 +14,7 @@ class MyTextField extends StatefulWidget {
     Key? key,
     required this.labelText,
     required this.prefixIcon,
-    required this.suffixIcon,
+    this.suffixIcon,
     required this.controller,
     required this.toggleText,
     this.obscureText = false,
@@ -28,28 +28,16 @@ class MyTextField extends StatefulWidget {
 class _MyTextFieldState extends State<MyTextField> {
  
   bool _obscure = false;
+  IconButton? _suffixIcon;
   @override
   void initState() {
     _obscure = widget.obscureText;
   }
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: widget.controller,
-      obscureText: _obscure,
-      onChanged: widget.onChanged,
-      style: TextStyle(
-        color: Colors.black87,
-        fontSize: 16.0,
-      ),
-      decoration: InputDecoration(
-        labelText: widget.labelText,
-        prefixIcon: Icon(
-          widget.prefixIcon,
-          color: Colors.grey[600],
-          size: 25,
-        ),
-        suffixIcon: IconButton(
+    if (widget.suffixIcon != null){
+      _suffixIcon = IconButton(
           icon: Icon(widget.suffixIcon,
           color: Colors.grey[600],
           size: 25,),
@@ -62,7 +50,41 @@ class _MyTextFieldState extends State<MyTextField> {
             }
           },
 
+        );
+    }
+    return TextField(
+      controller: widget.controller,
+      obscureText: _obscure,
+      onChanged: widget.onChanged,
+      style: TextStyle(
+        color: Colors.black87,
+        fontSize: 16.0,
+      ),
+        
+      decoration: InputDecoration(
+        labelText: widget.labelText,
+        prefixIcon: Icon(
+          widget.prefixIcon,
+          color: Colors.grey[600],
+          size: 25,
         ),
+        
+            
+        suffixIcon: _suffixIcon,
+        // IconButton(
+        //   icon: Icon(widget.suffixIcon,
+        //   color: Colors.grey[600],
+        //   size: 25,),
+        //   onPressed: (){ 
+        //     if (widget.toggleText){
+        //       setState(() { 
+        //         _obscure = !_obscure;
+
+        //       });
+        //     }
+        //   },
+
+        // ),
         filled: true,
         fillColor: Colors.grey[200],
 
@@ -91,6 +113,5 @@ class _MyTextFieldState extends State<MyTextField> {
     );
   }
 }
-
 
 
