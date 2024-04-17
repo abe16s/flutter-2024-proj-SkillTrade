@@ -51,8 +51,8 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
       body: Center(
           child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: ListView(
+          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 16),
             Image.asset(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/bookings.dart';
 
 class TechnicianCard extends StatelessWidget {
   const TechnicianCard ({super.key});
@@ -17,7 +18,9 @@ class TechnicianCard extends StatelessWidget {
               subtitle: Text("Speciality: Electrician Dish Technician", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
             ),
             ElevatedButton(
-              onPressed: () {}, 
+              onPressed: () {
+                Navigator.pushNamed(context, "/booktech");
+              }, 
               child: Text("Get Technician", style: TextStyle(color: Colors.white, fontSize: 15),),
               style: ButtonStyle(
                 backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),

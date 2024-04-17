@@ -3,12 +3,6 @@ import 'package:flutter/widgets.dart';
 import "../widgets/info_label.dart";
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 
-void main() {
-  runApp(const MaterialApp(
-    home: MyBookings(),
-  ));
-}
-
 class MyBookings extends StatefulWidget {
   const MyBookings({super.key});
 
@@ -356,7 +350,10 @@ class _MyBookingsState extends State<MyBookings> {
                   // Submit button
                   ElevatedButton(
                     onPressed: _submitReview,
-                    child: Text('Submit'),
+                    child: Text('Submit', style: TextStyle(color: Colors.white),),
+                    style: ButtonStyle(
+                        backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
                   ),            
                 ],
               ),
