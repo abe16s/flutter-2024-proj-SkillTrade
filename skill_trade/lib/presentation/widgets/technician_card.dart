@@ -19,7 +19,7 @@ class TechnicianCard extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/booktech");
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MyBookings()));
               }, 
               child: Text("Get Technician", style: TextStyle(color: Colors.white, fontSize: 15),),
               style: ButtonStyle(

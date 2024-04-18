@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class MyTextField extends StatefulWidget {
   final String labelText;
   final IconData prefixIcon;
@@ -31,6 +30,7 @@ class _MyTextFieldState extends State<MyTextField> {
   IconButton? _suffixIcon;
   @override
   void initState() {
+    super.initState();
     _obscure = widget.obscureText;
   }
 

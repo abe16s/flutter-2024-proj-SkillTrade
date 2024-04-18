@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class InfoLabel extends StatelessWidget {
-  String label;
-  String data;
+  final String label;
+  final String data;
   InfoLabel({super.key, required this.label, required this.data});
 
   @override
