@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skill_trade/presentation/screens/custemer_profile.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
+import 'package:skill_trade/presentation/widgets/technician_application.dart';
 
 
 
@@ -24,10 +27,26 @@ class _SignupPageState extends State<SignupPage> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _experienceController = TextEditingController();
-  TextEditingController _skillController = TextEditingController();
   TextEditingController _educationController = TextEditingController();
   TextEditingController _locationController = TextEditingController();
   TextEditingController _bioController = TextEditingController();
+
+
+
+  List<String> _selectedTags = [];
+
+  List<String> _availableTags = [
+    'Electricity',
+    'HVAC',
+    'Satelite dish',
+    'Plumbing',
+    'Electronics',
+    'interior decoration',
+
+  ];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  bool _noSkillChosen = false;
 
 
 
@@ -106,7 +125,11 @@ class _SignupPageState extends State<SignupPage> {
                 
                           ],
                         ),
-                        SizedBox(height: 15,),
+                        Form( 
+                          key: _formKey,
+                          child: Column( 
+                            children: [ 
+                              SizedBox(height: 15,),
                         MyTextField(labelText: "Fullname", prefixIcon: Icons.person_2_outlined, toggleText: false , controller: _fullNameController),
                         SizedBox(height: 15,),
                         MyTextField(labelText: "email", prefixIcon: Icons.email, toggleText: false , controller: _emailController),
@@ -117,25 +140,124 @@ class _SignupPageState extends State<SignupPage> {
                         SizedBox(height: 15,),
                 
                         if(_user_role == "technician")...[
-                          MyTextField(labelText: "Skill", prefixIcon: Icons.handyman_outlined, toggleText: false , controller: _skillController),
-                          SizedBox(height: 15,),
                           MyTextField(labelText: "Experience", prefixIcon: Icons.timelapse_sharp, toggleText: false , controller: _experienceController),
+                          
                           SizedBox(height: 15,),
                           MyTextField(labelText: "Education Level", prefixIcon: Icons.school, toggleText: false , controller: _educationController),
                           SizedBox(height: 15,),
                           MyTextField(labelText: "Available location", prefixIcon: Icons.location_city_outlined, toggleText: false , controller: _locationController),
                           SizedBox(height: 15,),
-                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, toggleText: false , controller: _bioController),
+                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, multiline:true, requiredField: false, toggleText: false , controller: _bioController),
                           SizedBox(height: 15,),
-                
-                        ],
-                
-                        
-                        
-                        MyButton(text: "signup", onPressed: (){ 
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+
+                          Container(
+                            decoration: BoxDecoration( 
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(10),
+                              border: _noSkillChosen ? Border.all(color: Colors.red) : null,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row( 
+                                    children: [ 
+                                      Icon(Icons.handyman_outlined, color: Colors.grey.shade600, size: 25,),
+                                      SizedBox(width: 8,),
+                                      Text("Skills", style:  TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16.0,
+                                    ),),
+                                    if(_noSkillChosen)...[ 
+                                      SizedBox(width: 8,),
+                                      Text("You have to choose at least one skill.", 
+                                      style:  TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12.0,
+                                    ),),
+
+                                    ]
+
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                              
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Wrap(
+                                        spacing: 5,
+                                        children: _availableTags
+                                            .map(
+                                              (tag) => Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: InputChip(
+                                                                                    
+                                                  label: Text(tag),
+                                                  
+                                                  selected: _selectedTags.contains(tag),
+                                                  onSelected: (bool selected) {
+                                                    setState(() {
+                                                      if (selected) {
+                                                        _selectedTags.add(tag);
+                                                      } else {
+                                                        _selectedTags.remove(tag);
+                                                      }
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if(_noSkillChosen)...[ 
+
+                                ]
+                               
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 15,),
+                          MyButton(text: "Apply", onPressed: (){ 
+                            if(_formKey.currentState!.validate()){
+                              if (_selectedTags.length > 0){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TechnicianApplication()));
+
+                              } else{ 
+                                setState(() {
+                                  _noSkillChosen = true;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('You have to choose at least one skill.')),
+                                );
+                              }
+
+                            } 
                 
                         }, width: double.infinity),
+                        ],
+                        if(_user_role == "customer")...[
+                          SizedBox(height: 15,),
+                          MyButton(text: "signup", onPressed: (){ 
+                            if(_formKey.currentState!.validate()){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                            }
+                        }, width: double.infinity),
+                        ],
+
+                            ],
+                          )
+                        ),
+                        
+                        
+
+                        
                         SizedBox(height: 15,),
                         Row( 
                           mainAxisAlignment: MainAxisAlignment.center,

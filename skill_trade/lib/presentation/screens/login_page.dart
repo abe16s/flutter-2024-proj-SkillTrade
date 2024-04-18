@@ -8,6 +8,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,35 +24,40 @@ class LoginPage extends StatelessWidget {
                 margin: EdgeInsets.all(8),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),
-                  child: Column( 
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  
-                    children: [ 
-                      Text("Welcome to SkillTrade Hub!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 35,),
-                      MyTextField(labelText: "email", prefixIcon: Icons.person_2_outlined,suffixIcon: Icons.edit, toggleText: false , controller: _emailController),
-                      SizedBox(height: 15,),
-                      MyTextField(labelText: "password", prefixIcon: Icons.lock_open, suffixIcon: Icons.remove_red_eye_rounded, toggleText: true, controller: _passwordController, obscureText: true,),
-                      SizedBox(height: 15,),
-                      
-                      MyButton(text: "login", onPressed: (){ 
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
-
-                      }, width: double.infinity),
-                      SizedBox(height: 15,),
-                      Row( 
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [ 
-                          Text("Don't have an account?", style: TextStyle(fontSize: 20)),
-                          SizedBox(width: 8,),
-                          TextButton(
-                            onPressed:  (){ 
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupPage()));
-
-                          }, child: Text("Sign up", style: TextStyle(fontSize: 20, color: Colors.purple.shade300)))
-                        ],
-                      )
-                    ],
+                  child: Form(
+                    key: _formKey,
+                    child: Column( 
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    
+                      children: [ 
+                        Text("Welcome to SkillTrade Hub!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                        SizedBox(height: 35,),
+                        MyTextField(labelText: "email", prefixIcon: Icons.person_2_outlined,suffixIcon: Icons.edit, toggleText: false , controller: _emailController),
+                        SizedBox(height: 15,),
+                        MyTextField(labelText: "password", prefixIcon: Icons.lock_open, suffixIcon: Icons.remove_red_eye_rounded, toggleText: true, controller: _passwordController, obscureText: true,),
+                        SizedBox(height: 15,),
+                        
+                        MyButton(text: "login", onPressed: (){ 
+                          if(_formKey.currentState!.validate()){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                          }
+                        }, width: double.infinity),
+                        SizedBox(height: 15,),
+                        Row( 
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [ 
+                            Text("Don't have an account?", style: TextStyle(fontSize: 20)),
+                            SizedBox(width: 8,),
+                            TextButton(
+                              onPressed:  (){ 
+                                
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupPage()));
+                                
+                            }, child: Text("Sign up", style: TextStyle(fontSize: 20, color: Colors.purple.shade300)))
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               )

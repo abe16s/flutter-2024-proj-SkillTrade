@@ -8,6 +8,8 @@ class MyTextField extends StatefulWidget {
   final TextEditingController controller;
   final Function(String)? onChanged;
   final bool toggleText;
+  final bool multiline;
+  final bool requiredField;
 
   const MyTextField({
     Key? key,
@@ -16,8 +18,10 @@ class MyTextField extends StatefulWidget {
     this.suffixIcon,
     required this.controller,
     required this.toggleText,
+    this.multiline=false,
     this.obscureText = false,
     this.onChanged,
+    this.requiredField = true,
   }) : super(key: key);
 
   @override
@@ -52,14 +56,24 @@ class _MyTextFieldState extends State<MyTextField> {
 
         );
     }
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       obscureText: _obscure,
-      onChanged: widget.onChanged,
+      // onChanged: widget.onChanged,
       style: TextStyle(
         color: Colors.black87,
         fontSize: 16.0,
       ),
+    
+      maxLines: widget.multiline ? null : 1, 
+      validator: (String? value) {
+        if (value == null || value.isEmpty) {
+          if (widget.requiredField)
+          { return 'Please enter your ${widget.labelText}';}
+          return null;
+        }
+        return null;
+      },
         
       decoration: InputDecoration(
         labelText: widget.labelText,
@@ -71,20 +85,7 @@ class _MyTextFieldState extends State<MyTextField> {
         
             
         suffixIcon: _suffixIcon,
-        // IconButton(
-        //   icon: Icon(widget.suffixIcon,
-        //   color: Colors.grey[600],
-        //   size: 25,),
-        //   onPressed: (){ 
-        //     if (widget.toggleText){
-        //       setState(() { 
-        //         _obscure = !_obscure;
-
-        //       });
-        //     }
-        //   },
-
-        // ),
+        
         filled: true,
         fillColor: Colors.grey[200],
 
