@@ -29,7 +29,10 @@ class HomeScreen extends StatelessWidget {
                 child: Column( 
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [ 
-                    Icon(Icons.handyman_outlined, size: 75,),
+                    // Icon(Icons.handyman_outlined, size: 75,),
+                  Container( 
+                    height: 100, 
+                    child: Image.asset('assets/logo.jpg'),),
                   Text("SkillTrade Hub", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.yellow.shade900),
                   ),
                   Text("Welcome to the hub of skills!", style: TextStyle( 

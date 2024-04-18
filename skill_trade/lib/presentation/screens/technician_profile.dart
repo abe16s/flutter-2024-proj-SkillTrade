@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/booked_card.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/presentation/widgets/profile_button.dart';
 
@@ -52,7 +51,6 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
           child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 16),
             Image.asset(
@@ -61,22 +59,18 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
               height: 125,
             ),
             const SizedBox(height: 16),
-            const InfoLabel(label: "Full Name", data: "Betsegaw Mesele"),
-            const InfoLabel(label: "Skills", data: "Mechanical"),
-            const InfoLabel(label: "Phone", data: "0979996940"),
-            const InfoLabel(label: "Experience", data: "2Years"),
-            const InfoLabel(label: "Educational Lvel", data: "Bachelor"),
-            const InfoLabel(label: "Available Loction", data: "Addis Ababa"),
-            const InfoLabel(label: "Additional Bi", data: 'additional_bio'),
-            const InfoLabel(label: "Email", data: "betse@gmail.com"),
+            InfoLabel(label: "Full Name", data: "Betsegaw Mesele"),
+            InfoLabel(label: "Skills", data: "Mechanical"),
+            InfoLabel(label: "Phone", data: "0979996940"),
+            InfoLabel(label: "Experience", data: "2Years"),
+            InfoLabel(label: "Educational Lvel", data: "Bachelor"),
+            InfoLabel(label: "Available Loction", data: "Addis Ababa"),
+            InfoLabel(label: "Additional Bi", data: 'additional_bio'),
+            InfoLabel(label: "Email", data: "betse@gmail.com"),
             const SizedBox(height: 16),
             const ProfileButton(),
             const SizedBox(height: 16),
-            const Text(
-              "Booked To You...",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const TechnicianBookingScreen()
+            
           ],
         ),
       )),
