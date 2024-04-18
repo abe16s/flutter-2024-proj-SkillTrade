@@ -48,6 +48,16 @@ class _MyBookingsState extends State<MyBookings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Technician",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: ListView(
         children: [
           const TechnicianSmallProfile(),
@@ -87,6 +97,8 @@ class _MyBookingsState extends State<MyBookings> {
                           _selectedDate == null
                               ? 'No date selected'
                               : '${_selectedDate.toString().substring(0, 10)}',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w500),
                         ),
                         // SizedBox(height: 20),
                         TextButton(

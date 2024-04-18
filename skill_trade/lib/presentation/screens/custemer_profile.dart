@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, prefer_final_fields, use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
 import 'package:skill_trade/presentation/widgets/customer_profile.dart';
@@ -22,6 +22,34 @@ class customerProfile extends StatelessWidget {
             title: const Text("Customers Profile"),
           ),
           body: const CustomerSmallProfile()),
+    );
+  }
+}
+
+class Booking extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Card(
+      child: Column(
+        children: <Widget>[
+          Text(
+            "Biniyam Assefa",
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            "biniyamassefa648@gmail.com",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            "speciality: dish_seri",
+            style: TextStyle(fontSize: 15),
+          ),
+          Text(
+            "Tel: +2519-4018-5778",
+            style: TextStyle(fontSize: 15),
+          ),
+        ],
+      ),
     );
   }
 }

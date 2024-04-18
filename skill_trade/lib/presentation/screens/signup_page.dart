@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:skill_trade/presentation/screens/custemer_profile.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
+import 'package:skill_trade/presentation/widgets/technician_application.dart';
 
 
 
@@ -42,6 +44,9 @@ class _SignupPageState extends State<SignupPage> {
     'interior decoration',
 
   ];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
+  bool _noSkillChosen = false;
 
 
 
@@ -120,7 +125,11 @@ class _SignupPageState extends State<SignupPage> {
                 
                           ],
                         ),
-                        SizedBox(height: 15,),
+                        Form( 
+                          key: _formKey,
+                          child: Column( 
+                            children: [ 
+                              SizedBox(height: 15,),
                         MyTextField(labelText: "Fullname", prefixIcon: Icons.person_2_outlined, toggleText: false , controller: _fullNameController),
                         SizedBox(height: 15,),
                         MyTextField(labelText: "email", prefixIcon: Icons.email, toggleText: false , controller: _emailController),
@@ -138,13 +147,14 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(height: 15,),
                           MyTextField(labelText: "Available location", prefixIcon: Icons.location_city_outlined, toggleText: false , controller: _locationController),
                           SizedBox(height: 15,),
-                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, multiline:true,  toggleText: false , controller: _bioController),
+                          MyTextField(labelText: "Additional Bio", prefixIcon: Icons.edit, multiline:true, requiredField: false, toggleText: false , controller: _bioController),
                           SizedBox(height: 15,),
 
                           Container(
                             decoration: BoxDecoration( 
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(10),
+                              border: _noSkillChosen ? Border.all(color: Colors.red) : null,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,6 +170,16 @@ class _SignupPageState extends State<SignupPage> {
                                       color: Colors.black87,
                                       fontSize: 16.0,
                                     ),),
+                                    if(_noSkillChosen)...[ 
+                                      SizedBox(width: 8,),
+                                      Text("You have to choose at least one skill.", 
+                                      style:  TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12.0,
+                                    ),),
+
+                                    ]
+
                                     ],
                                   ),
                                 ),
@@ -196,17 +216,48 @@ class _SignupPageState extends State<SignupPage> {
                                     ),
                                   ],
                                 ),
+                                if(_noSkillChosen)...[ 
+
+                                ]
                                
                               ],
                             ),
                           ),
-                        ],
-                        SizedBox(height: 15,),
+                          SizedBox(height: 15,),
+                          MyButton(text: "Apply", onPressed: (){ 
+                            if(_formKey.currentState!.validate()){
+                              if (_selectedTags.length > 0){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TechnicianApplication()));
 
-                        MyButton(text: "signup", onPressed: (){ 
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                              } else{ 
+                                setState(() {
+                                  _noSkillChosen = true;
+                                });
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('You have to choose at least one skill.')),
+                                );
+                              }
+
+                            } 
                 
                         }, width: double.infinity),
+                        ],
+                        if(_user_role == "customer")...[
+                          SizedBox(height: 15,),
+                          MyButton(text: "signup", onPressed: (){ 
+                            if(_formKey.currentState!.validate()){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                            }
+                        }, width: double.infinity),
+                        ],
+
+                            ],
+                          )
+                        ),
+                        
+                        
+
+                        
                         SizedBox(height: 15,),
                         Row( 
                           mainAxisAlignment: MainAxisAlignment.center,
