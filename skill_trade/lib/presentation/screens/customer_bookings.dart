@@ -9,7 +9,7 @@ class CustomerBookings extends StatelessWidget {
     return ListView(
       children: [
         for (int i=0; i < 3; i++) 
-          CustomerBooking()
+          CustomerBooking(editAccess: true,)
       ],
     );
   }

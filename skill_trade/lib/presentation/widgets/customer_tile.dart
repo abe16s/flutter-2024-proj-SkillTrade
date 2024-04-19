@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/admin_customer.dart';
 
 class CustomerTile extends StatelessWidget {
   const CustomerTile ({super.key});
@@ -20,7 +21,12 @@ class CustomerTile extends StatelessWidget {
               Text("tel: 0936120470"),
             ],
           ),
-          trailing: TextButton(onPressed: () {}, child: Text("Review")),
+          trailing: TextButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AdminCustomer()));
+            }, 
+            child: Text("Review")
+          ),
         ),
       );
   }

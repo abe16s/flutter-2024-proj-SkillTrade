@@ -72,9 +72,14 @@ class _SignupPageState extends State<SignupPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                     
                       children: [ 
-                        Text("Welcome to SkillTrade Hub!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Welcome to SkillTrade Hub!", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),),
+                          ],
+                        ),
                         SizedBox(height: 15,),
-                        Text("SignUp", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
+                        Text("SignUp", style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),),
                         SizedBox(height: 35,),
                         Row( 
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -246,7 +251,7 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(height: 15,),
                           MyButton(text: "signup", onPressed: (){ 
                             if(_formKey.currentState!.validate()){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerProfileScreen()));
                             }
                         }, width: double.infinity),
                         ],

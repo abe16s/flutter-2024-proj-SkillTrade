@@ -3,6 +3,9 @@ import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 
 class CustomerBooking extends StatelessWidget {
+  final bool editAccess;
+  const CustomerBooking({super.key, required this.editAccess});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -54,13 +57,13 @@ class CustomerBooking extends StatelessWidget {
           EditableField(label: "Service Location", data: "6 kilo"),
           EditableField(label: "Status", data: "Pending"),
 
-          TextButton(
+          if (editAccess) TextButton(
             onPressed: () {}, 
             child: Text("Edit", style: TextStyle(color: Colors.white),),
             style: ButtonStyle(
               backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
             ),
-          )
+          ),
         ],
       ),
     );

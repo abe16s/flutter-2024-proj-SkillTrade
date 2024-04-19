@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/admin_technician.dart';
 
 class TechnicianTile extends StatelessWidget {
   const TechnicianTile ({super.key});
@@ -21,7 +22,11 @@ class TechnicianTile extends StatelessWidget {
               Text("Skills: Electrician"),
             ],
           ),
-          trailing: TextButton(onPressed: () {}, child: Text("Review")),
+          trailing: TextButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AdminTechnician()));
+            }, 
+          child: Text("Review")),
         ),
       );
   }

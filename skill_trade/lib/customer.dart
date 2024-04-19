@@ -27,7 +27,7 @@ class _CustomerPageState extends State<CustomerPage> {
   final List<Widget> _pages = [
     const FindTechnician(),
     const CustomerBookings(),
-    const customerProfile(),
+    const CustomerProfileScreen(),
   ];
   
   @override

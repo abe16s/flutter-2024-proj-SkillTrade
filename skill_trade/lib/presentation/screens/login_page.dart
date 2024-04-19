@@ -4,11 +4,28 @@ import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+
+
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); 
+  String _selectedRole = "Customer";
+
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedRole = 'Customer';
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +36,8 @@ class LoginPage extends StatelessWidget {
           child: Column( 
             children: [ 
               Card( 
-                
                 color: Colors.white,
-                margin: EdgeInsets.all(8),
+                margin: EdgeInsets.all(10),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),
                   child: Form(
@@ -36,10 +52,48 @@ class LoginPage extends StatelessWidget {
                         SizedBox(height: 15,),
                         MyTextField(labelText: "password", prefixIcon: Icons.lock_open, suffixIcon: Icons.remove_red_eye_rounded, toggleText: true, controller: _passwordController, obscureText: true,),
                         SizedBox(height: 15,),
+                        Row(
+                          // mainAxisAlignment: MainAxisAlignment.,
+                          children: [
+                            Radio<String>(
+                              value: 'Customer',
+                              groupValue: _selectedRole,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedRole = value!;
+                                });
+                              },
+                            ),
+                            Text('Customer'),
+                            // SizedBox(width: 15,),
+                            Radio<String>(
+                              value: 'Technician',
+                              groupValue: _selectedRole,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedRole = value!;
+                                });
+                              },
+                            ),
+                            Text('Technician'),
+                            // SizedBox(width: 15,),
+                            Radio<String>(
+                              value: 'Admin',
+                              groupValue: _selectedRole,
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedRole = value!;
+                                });
+                              },
+                            ),
+                            Text('Admin'),
+                          ],
+                        ),
+                        SizedBox(height: 10,),
                         
                         MyButton(text: "login", onPressed: (){ 
                           if(_formKey.currentState!.validate()){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => customerProfile()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerProfileScreen()));
                           }
                         }, width: double.infinity),
                         SizedBox(height: 15,),
