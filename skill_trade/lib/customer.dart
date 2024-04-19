@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/screens/custemer_profile.dart';
+import 'package:skill_trade/presentation/screens/customer_profile.dart';
+import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
@@ -25,7 +26,7 @@ class _CustomerPageState extends State<CustomerPage> {
 
   final List<Widget> _pages = [
     const FindTechnician(),
-    const customerProfile(),
+    const CustomerBookings(),
     const customerProfile(),
   ];
   
