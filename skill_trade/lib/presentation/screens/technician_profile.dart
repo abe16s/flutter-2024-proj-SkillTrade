@@ -29,7 +29,7 @@ class TechnicianProfile extends StatefulWidget {
 class _TechnicianProfileState extends State<TechnicianProfile> {
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -59,11 +59,8 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
           // InfoLabel(label: "Email", data: "betse@gmail.com"),
           // const SizedBox(height: 16),
           TechnicianSmallProfile(),
-          Center(child: const ProfileButton()),
-          const SizedBox(height: 16),
-    
-    
-          
+          Center(child: ProfileButton()),
+          SizedBox(height: 16),
         ],
       ),
     );

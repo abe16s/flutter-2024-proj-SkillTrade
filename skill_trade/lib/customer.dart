@@ -5,7 +5,7 @@ import 'package:skill_trade/presentation/screens/find_technicians.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
 void main() {
-  runApp(CustomerPage());
+  runApp(const CustomerPage());
 }
 
 class CustomerPage extends StatefulWidget {
@@ -29,7 +29,7 @@ class _CustomerPageState extends State<CustomerPage> {
     const CustomerBookings(),
     const CustomerProfileScreen(),
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -53,31 +53,24 @@ class _CustomerPageState extends State<CustomerPage> {
               },
             ),
           ),
-          title: Text("SkillTrade"),
+          title: const Text("SkillTrade"),
           centerTitle: true,
+        ),
+        drawer: const MyDrawer(),
+        body: _pages[_selectedIndex],
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: navigateBottomBar,
+          items: const [
+            BottomNavigationBarItem(
+                icon: Icon(Icons.build_outlined), label: "Find Technician"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.book_outlined), label: "My Bookings"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.person_2_outlined), label: "My Profile"),
+          ],
+        ),
       ),
-      drawer: MyDrawer(),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: navigateBottomBar,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.build_outlined),
-            label: "Find Technician"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_outlined),
-            label: "My Bookings"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
-            label: "My Profile"
-          ),
-        ],
-      ),
-      ),
-
     );
   }
 }
