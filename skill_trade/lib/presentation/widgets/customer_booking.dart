@@ -62,7 +62,6 @@ class CustomerBooking extends StatelessWidget {
             onPressed: () {}, 
             child: Text("Edit", style: TextStyle(color: Colors.white),),
             style: ButtonStyle(
-              // backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
               backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary)
             ),
           ),

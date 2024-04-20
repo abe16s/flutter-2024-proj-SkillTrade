@@ -78,10 +78,8 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "login",
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                              Navigator.pushNamed(
+                                  context,"/login");
                             }),
                         const SizedBox(
                           width: 15,
@@ -89,10 +87,8 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "signup",
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignupPage()));
+                              Navigator.pushNamed(
+                                  context, "/signup");
                             }),
                       ],
                     ),
@@ -142,7 +138,6 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
 
-              // const SizedBox( height: 20,),
               SizedBox(
                 height: 500,
                 child: ListView.builder(

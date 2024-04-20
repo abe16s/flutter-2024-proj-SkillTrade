@@ -116,11 +116,17 @@ class _LoginPageState extends State<LoginPage> {
                             text: "login",
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CustomerProfileScreen()));
+                                if (_selectedRole == "Customer"){ 
+                                  Navigator.pushNamed(
+                                    context, "/customer");
+                                } else if (_selectedRole == "Technician"){ 
+                                  Navigator.pushNamed(
+                                    context, "/technician");
+
+                                } else if(_selectedRole == "Admin"){ 
+                                  Navigator.pushNamed(
+                                    context, "/admin");
+                                }
                               }
                             },
                             width: double.infinity),
@@ -137,11 +143,8 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignupPage()));
+                                  Navigator.pushNamed(
+                                      context, "/signup");
                                 },
                                 child: Text("Sign up",
                                     style: TextStyle(

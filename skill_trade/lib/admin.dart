@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
+import 'package:skill_trade/presentation/screens/admin_technician.dart';
 import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
@@ -17,6 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter App',
       theme: lightMode,
+      initialRoute: "/",
+      routes: { 
+        "/admintech": (context) => AdminTechnician(),
+        "/admincustomer": (context) => AdminCustomer(),
+      },
       debugShowCheckedModeBanner: false,
       home: const AdminSite(),
     );

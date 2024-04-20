@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/presentation/screens/bookings.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
@@ -35,11 +36,10 @@ class _CustomerPageState extends State<CustomerPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Customer Page",
-      // initialRoute: "/findtech",
-      // routes: {
-      //   "/findtech": (context) => FindTechnician(),
-      //   "/booktech": (context) => MyBookings(),
-      // },
+      initialRoute: "/",
+      routes: {
+        "/booktech": (context) => MyBookings(),
+      },
       debugShowCheckedModeBanner: false,
       theme: lightMode,
       home: Scaffold(

@@ -220,7 +220,7 @@ class _SignupPageState extends State<SignupPage> {
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                      color: Colors.grey[200],
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(10),
                                       border: _noSkillChosen
                                           ? Border.all(color: Colors.red)
@@ -280,10 +280,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                 .all(4.0),
                                                         child: InputChip(
                                                           label: Text(tag),
-                                                          selected:
-                                                              _selectedTags
-                                                                  .contains(
-                                                                      tag),
+                                                          selected:_selectedTags.contains(tag),
                                                           onSelected:
                                                               (bool selected) {
                                                             setState(() {
@@ -291,9 +288,7 @@ class _SignupPageState extends State<SignupPage> {
                                                                 _selectedTags
                                                                     .add(tag);
                                                               } else {
-                                                                _selectedTags
-                                                                    .remove(
-                                                                        tag);
+                                                                _selectedTags.remove(tag);
                                                               }
                                                             });
                                                           },
@@ -317,11 +312,8 @@ class _SignupPageState extends State<SignupPage> {
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           if (_selectedTags.length > 0) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const TechnicianApplication()));
+                                            Navigator.pushNamed(
+                                                context,"/apply" );
                                           } else {
                                             setState(() {
                                               _noSkillChosen = true;
@@ -345,11 +337,9 @@ class _SignupPageState extends State<SignupPage> {
                                       text: "signup",
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const CustomerProfileScreen()));
+                                          Navigator.pushNamed(
+                                              context,"/customer");
+                                              
                                         }
                                       },
                                       width: double.infinity),
@@ -369,11 +359,8 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()));
+                                  Navigator.pushNamed(
+                                      context,"/login");
                                 },
                                 child: Text("Login",
                                     style: TextStyle(

@@ -13,8 +13,8 @@ class TechnicianTile extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10.0),
             child: Image.asset("assets/technician.png"),
           ),
-          title: Text("Abenezer Seifu", style: TextStyle(fontWeight: FontWeight.w500),),
-          subtitle: Column(
+          title: const Text("Abenezer Seifu", style: TextStyle(fontWeight: FontWeight.w500),),
+          subtitle: const Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -25,9 +25,10 @@ class TechnicianTile extends StatelessWidget {
           ),
           trailing: TextButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AdminTechnician()));
+              Navigator.pushNamed(context, "/admintech" );
+              
             }, 
-          child: Text("Review")),
+          child: const Text("Review")),
         ),
       );
   }

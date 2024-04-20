@@ -14,7 +14,7 @@ class CustomerTile extends StatelessWidget {
             child: Image.asset("assets/customer.png"),
           ),
           title: Text("Abenezer Seifu", style: TextStyle(fontWeight: FontWeight.w500),),
-          subtitle: Column(
+          subtitle:const Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -24,7 +24,7 @@ class CustomerTile extends StatelessWidget {
           ),
           trailing: TextButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => AdminCustomer()));
+              Navigator.pushNamed(context, "/admincustomer");
             }, 
             child: Text("Review")
           ),
