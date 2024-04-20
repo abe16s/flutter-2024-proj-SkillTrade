@@ -4,8 +4,6 @@ import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 
-
-
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -16,9 +14,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); 
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _selectedRole = "Customer";
-
 
   @override
   void initState() {
@@ -26,32 +23,52 @@ class _LoginPageState extends State<LoginPage> {
     _selectedRole = 'Customer';
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold( 
+    return Scaffold(
       backgroundColor: Colors.blueGrey.shade400,
-      body: Center( 
-        child: SingleChildScrollView( 
-          child: Column( 
-            children: [ 
-              Card( 
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Card(
                 color: Colors.white,
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),
                   child: Form(
                     key: _formKey,
-                    child: Column( 
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                    
-                      children: [ 
-                        Text("Welcome to SkillTrade Hub!", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
-                        SizedBox(height: 35,),
-                        MyTextField(labelText: "email", prefixIcon: Icons.person_2_outlined,suffixIcon: Icons.edit, toggleText: false , controller: _emailController),
-                        SizedBox(height: 15,),
-                        MyTextField(labelText: "password", prefixIcon: Icons.lock_open, suffixIcon: Icons.remove_red_eye_rounded, toggleText: true, controller: _passwordController, obscureText: true,),
-                        SizedBox(height: 15,),
+                      children: [
+                        const Text(
+                          "Welcome to SkillTrade Hub!",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 35,
+                        ),
+                        MyTextField(
+                            labelText: "email",
+                            prefixIcon: Icons.person_2_outlined,
+                            suffixIcon: Icons.edit,
+                            toggleText: false,
+                            controller: _emailController),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        MyTextField(
+                          labelText: "password",
+                          prefixIcon: Icons.lock_open,
+                          suffixIcon: Icons.remove_red_eye_rounded,
+                          toggleText: true,
+                          controller: _passwordController,
+                          obscureText: true,
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Row(
                           // mainAxisAlignment: MainAxisAlignment.,
                           children: [
@@ -64,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            Text('Customer'),
+                            const Text('Customer'),
                             // SizedBox(width: 15,),
                             Radio<String>(
                               value: 'Technician',
@@ -75,7 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            Text('Technician'),
+                            const Text('Technician'),
                             // SizedBox(width: 15,),
                             Radio<String>(
                               value: 'Admin',
@@ -86,28 +103,47 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            Text('Admin'),
+                            const Text('Admin'),
                           ],
                         ),
-                        SizedBox(height: 10,),
-                        
-                        MyButton(text: "login", onPressed: (){ 
-                          if(_formKey.currentState!.validate()){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerProfileScreen()));
-                          }
-                        }, width: double.infinity),
-                        SizedBox(height: 15,),
-                        Row( 
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        MyButton(
+                            text: "login",
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CustomerProfileScreen()));
+                              }
+                            },
+                            width: double.infinity),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [ 
-                            Text("Don't have an account?", style: TextStyle(fontSize: 20)),
-                            SizedBox(width: 8,),
+                          children: [
+                            const Text("Don't have an account?",
+                                style: TextStyle(fontSize: 20)),
+                            const SizedBox(
+                              width: 8,
+                            ),
                             TextButton(
-                              onPressed:  (){ 
-                                
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> SignupPage()));
-                                
-                            }, child: Text("Sign up", style: TextStyle(fontSize: 20, color: Colors.purple.shade300)))
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignupPage()));
+                                },
+                                child: Text("Sign up",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.purple.shade300)))
                           ],
                         )
                       ],
@@ -115,7 +151,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
               )
-
             ],
           ),
         ),
