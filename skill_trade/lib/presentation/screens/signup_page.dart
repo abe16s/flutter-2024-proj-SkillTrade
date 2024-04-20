@@ -45,8 +45,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.blueGrey.shade400,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
@@ -56,6 +55,9 @@ class _SignupPageState extends State<SignupPage> {
                 padding: const EdgeInsets.all(18.0),
                 child: Card(
                   color: Colors.white,
+
+                  shadowColor: Colors.black,
+                  elevation: 20,
                   margin: const EdgeInsets.all(8),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),

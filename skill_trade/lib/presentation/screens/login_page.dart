@@ -26,16 +26,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.blueGrey.shade400,
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Card(
                 // color: Colors.white,
-                color: Theme.of(context).colorScheme.inversePrimary,
+                color: Theme.of(context).colorScheme.background,
                 margin: const EdgeInsets.all(10),
+                elevation: 20,
+                shadowColor: Colors.black,
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(15, 70, 15, 70),
                   child: Form(

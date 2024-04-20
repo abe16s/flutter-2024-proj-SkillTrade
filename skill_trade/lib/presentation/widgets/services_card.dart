@@ -13,6 +13,7 @@ class ServicesCard extends StatelessWidget {
     Widget build(BuildContext context) {
       return Card(
         shadowColor: Colors.black38,
+        margin: EdgeInsets.only(left: 10, right: 10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -21,7 +22,7 @@ class ServicesCard extends StatelessWidget {
             children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
