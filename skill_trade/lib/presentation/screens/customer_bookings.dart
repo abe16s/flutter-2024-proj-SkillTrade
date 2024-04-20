@@ -8,8 +8,10 @@ class CustomerBookings extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        for (int i=0; i < 3; i++) 
-          CustomerBooking(editAccess: true,)
+        for (int i = 0; i < 3; i++)
+          const CustomerBooking(
+            editAccess: true,
+          )
       ],
     );
   }

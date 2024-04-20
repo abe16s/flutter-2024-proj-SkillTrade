@@ -7,6 +7,6 @@ class CustomerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return customerProfile();
+    return const customerProfile();
   }
 }
