@@ -4,11 +4,11 @@ import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 
 class AdminTechnician extends StatelessWidget {
   final Map<String, String> bookingData = {
-      'problemTitle': 'Leaking Pipe',
-      'problemDescription': 'The kitchen sink pipe is leaking.',
-      'location': 'Addis Ababa',
-      'name': 'John Doe',
-    };
+    'problemTitle': 'Leaking Pipe',
+    'problemDescription': 'The kitchen sink pipe is leaking.',
+    'location': 'Addis Ababa',
+    'name': 'John Doe',
+  };
 
   AdminTechnician({super.key});
 
@@ -16,12 +16,12 @@ class AdminTechnician extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Technician"),
+        title: const Text("Technician"),
         centerTitle: true,
       ),
       body: ListView(
         children: [
-          TechnicianSmallProfile(),
+          const TechnicianSmallProfile(),
           // SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -31,26 +31,44 @@ class AdminTechnician extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                child: Text("Suspend", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+                child: const Text(
+                  "Suspend",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
               ),
-              SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
               ElevatedButton(
                 onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.green),
                 ),
-                child: Text("Unsuspend", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
-              ),              
+                child: const Text(
+                  "Unsuspend",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 30,),
-          Padding(
-            padding: const EdgeInsets.only(left: 15.0),
-            child: Text("Booking History", style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),),
+          const SizedBox(
+            height: 30,
           ),
-          for (int i=0; i < 2; i++) 
-            TechnicianBookingCard(bookingData: this.bookingData, editAccess: false,)
-              
+          const Padding(
+            padding: EdgeInsets.only(left: 15.0),
+            child: Text(
+              "Booking History",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+            ),
+          ),
+          for (int i = 0; i < 2; i++)
+            TechnicianBookingCard(
+              bookingData: this.bookingData,
+              editAccess: false,
+            )
         ],
       ),
     );
