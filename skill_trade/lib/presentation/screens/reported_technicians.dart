@@ -17,11 +17,11 @@ class ReportedTechnicians extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ListView(
         children: [
-          Text(
+          const Text(
             "Reported Users",
             style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
           ),
           for (int i = 0; i < 5; i++)
