@@ -7,6 +7,7 @@ class TechnicianCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Theme.of(context).colorScheme.secondary,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: Column(
@@ -23,7 +24,8 @@ class TechnicianCard extends StatelessWidget {
               }, 
               child: Text("Get Technician", style: TextStyle(color: Colors.white, fontSize: 15),),
               style: ButtonStyle(
-                backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
+                // backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
+                backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),
               )
               ),
           ],

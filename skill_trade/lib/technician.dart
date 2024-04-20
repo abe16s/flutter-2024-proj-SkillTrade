@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skill_trade/presentation/screens/technician_profile.dart';
+import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/technician_booking_list.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
@@ -32,6 +33,7 @@ class _TechnicianPageState extends State<TechnicianPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Technician Page",
+      theme: lightMode,
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(

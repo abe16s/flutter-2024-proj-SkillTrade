@@ -11,6 +11,7 @@ class TechnicianBookingCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
         elevation: 4.0,
+        color: Theme.of(context).colorScheme.secondary,
         margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),

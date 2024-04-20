@@ -36,6 +36,7 @@ class TechnicianBookingList extends StatelessWidget {
     return Column(
       children: [
           Container(
+            color: Theme.of(context).colorScheme.background,
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.all(5),
             child: const Text(

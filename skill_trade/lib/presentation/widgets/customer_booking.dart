@@ -12,7 +12,8 @@ class CustomerBooking extends StatelessWidget {
       padding: EdgeInsets.all(20),
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        // color: Colors.grey[200],
+        color: Theme.of(context).colorScheme.secondary,
         borderRadius: BorderRadius.circular(20), // Adjust the radius as needed
       ),
       child: Column(
@@ -61,7 +62,8 @@ class CustomerBooking extends StatelessWidget {
             onPressed: () {}, 
             child: Text("Edit", style: TextStyle(color: Colors.white),),
             style: ButtonStyle(
-              backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
+              // backgroundColor:  MaterialStateProperty.all<Color>(Colors.blue),
+              backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary)
             ),
           ),
         ],

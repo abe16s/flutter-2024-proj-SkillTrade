@@ -7,6 +7,7 @@ class TechnicianTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+        color: Theme.of(context).colorScheme.secondary,
         child: ListTile(
           leading: Padding(
             padding: const EdgeInsets.only(right: 10.0),

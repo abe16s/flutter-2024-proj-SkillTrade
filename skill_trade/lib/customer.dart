@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
+import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
 void main() {
@@ -40,8 +41,11 @@ class _CustomerPageState extends State<CustomerPage> {
       //   "/booktech": (context) => MyBookings(),
       // },
       debugShowCheckedModeBanner: false,
+      theme: lightMode,
       home: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
+          
           leading: Builder(
             builder: (context) => IconButton(
               icon: const Padding(

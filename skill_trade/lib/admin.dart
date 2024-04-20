@@ -3,6 +3,7 @@ import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
+import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
 void main() {
@@ -15,9 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: lightMode,
       debugShowCheckedModeBanner: false,
       home: const AdminSite(),
     );
