@@ -54,7 +54,6 @@ export class BookingsController {
   @Post()
   @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
   createBooking(@Body(ValidationPipe) booking: CreateBookingDto) {
-    console.log('hello');
     return this.bookingsService.createBooking(booking);
   }
 
