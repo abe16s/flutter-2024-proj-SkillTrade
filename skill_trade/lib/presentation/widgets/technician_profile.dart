@@ -11,14 +11,6 @@ class TechnicianSmallProfile extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        const Text(
-          "Technician",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
-        ),
         const SizedBox(
           height: 20,
         ),
@@ -40,35 +32,35 @@ class TechnicianSmallProfile extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               InfoLabel(label: "Email", data: "mysteryabe456@gmail.com"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(label: "Phone", data: "0936120470"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(label: "Skills", data: "Electrican, Dish technician"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Experience",
                   data: "15 years in ELPA, 3 amet did mastat"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Education Level",
                   data: "Bsc. in Electrical Engineering"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(label: "Available Location", data: "Harar"),
-              const SizedBox(
+               SizedBox(
                 height: 3,
               ),
               InfoLabel(label: "Additional Bio", data: "Tiris yeneqelkubet"),

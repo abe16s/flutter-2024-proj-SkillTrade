@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/technician_apply.dart';
+import 'package:skill_trade/presentation/widgets/technician_tile.dart';
 
 class TechniciansList extends StatelessWidget {
   const TechniciansList({super.key});

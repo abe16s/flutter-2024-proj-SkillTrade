@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skill_trade/presentation/widgets/customer_tile.dart';
-import 'package:skill_trade/presentation/widgets/technician_apply.dart';
+import 'package:skill_trade/presentation/widgets/technician_tile.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -17,15 +17,12 @@ class ReportedTechnicians extends StatelessWidget {
       padding: const EdgeInsets.all(15.0),
       child: ListView(
         children: [
-          const SizedBox(
-            height: 30,
-          ),
-          Text(
+          const Text(
             "Reported Users",
             style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.red[400]),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           for (int i = 0; i < 5; i++)
             i % 2 == 0 ? const TechnicianTile() : const CustomerTile()

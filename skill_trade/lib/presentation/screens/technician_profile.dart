@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/booked_card.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/presentation/widgets/profile_button.dart';
+import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,59 +27,42 @@ class TechnicianProfile extends StatefulWidget {
 }
 
 class _TechnicianProfileState extends State<TechnicianProfile> {
-  final Map<String, String> userData = {
-    'full_name': "Betsegaw Mesele",
-    'Skills': "Mechanical",
-    'Phone': "0969481663",
-    'Experience': "2 years",
-    'educational_level': "bachelor",
-    'available_location': "Addis Ababa",
-    'additional_bio': "sldkjsldkf dlfskdjfs",
-    'Email': "betse@gmail.com"
-  };
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Technician Profile",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
+    return const Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // const SizedBox(height: 16),
+          // Center(
+          //   child: Image.asset(
+          //     "assets/technician.png",
+          //     width: 125,
+          //     height: 125,
+          //   ),
+          // ),
+          // const SizedBox(height: 16),
+          // InfoLabel(label: "Full Name", data: "Betsegaw Mesele"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Skills", data: "Mechanical"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Phone", data: "0979996940"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Experience", data: "2Years"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Educational Lvel", data: "Bachelor"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Available Loction", data: "Addis Ababa"),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Additional Bio", data: 'additional_bio'),
+          // SizedBox(height: 3,),
+          // InfoLabel(label: "Email", data: "betse@gmail.com"),
+          // const SizedBox(height: 16),
+          TechnicianSmallProfile(),
+          Center(child: ProfileButton()),
+          SizedBox(height: 16),
+        ],
       ),
-      body: Center(
-          child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(height: 16),
-            Image.asset(
-              "assets/technician.png",
-              width: 125,
-              height: 125,
-            ),
-            const SizedBox(height: 16),
-            const InfoLabel(label: "Full Name", data: "Betsegaw Mesele"),
-            const InfoLabel(label: "Skills", data: "Mechanical"),
-            const InfoLabel(label: "Phone", data: "0979996940"),
-            const InfoLabel(label: "Experience", data: "2Years"),
-            const InfoLabel(label: "Educational Lvel", data: "Bachelor"),
-            const InfoLabel(label: "Available Loction", data: "Addis Ababa"),
-            const InfoLabel(label: "Additional Bi", data: 'additional_bio'),
-            const InfoLabel(label: "Email", data: "betse@gmail.com"),
-            const SizedBox(height: 16),
-            const ProfileButton(),
-            const SizedBox(height: 16),
-            const Text(
-              "Booked To You...",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const TechnicianBookingScreen()
-          ],
-        ),
-      )),
     );
   }
 }

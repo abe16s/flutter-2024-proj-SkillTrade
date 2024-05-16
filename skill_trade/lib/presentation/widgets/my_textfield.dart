@@ -87,7 +87,7 @@ class _MyTextFieldState extends State<MyTextField> {
         suffixIcon: _suffixIcon,
         
         filled: true,
-        fillColor: Colors.grey[200],
+        fillColor: Colors.white,
 
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

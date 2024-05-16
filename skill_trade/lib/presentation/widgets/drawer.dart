@@ -21,16 +21,16 @@ class MyDrawer extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  leading: Icon(Icons.home, color: Colors.white,),
-                  title: Text("Home", style: TextStyle(color: Colors.white),),
+                  leading: Icon(Icons.info, color: Colors.white,),
+                  title: Text("About", style: TextStyle(color: Colors.white),),
                 ),
               ),
 
               const Padding(
                 padding: EdgeInsets.only(left: 25.0),
                 child: ListTile(
-                  leading: Icon(Icons.info, color: Colors.white,),
-                  title: Text("About", style: TextStyle(color: Colors.white),),
+                  leading: Icon(Icons.settings, color: Colors.white,),
+                  title: Text("Settings", style: TextStyle(color: Colors.white),),
                 ),
               ),
 

@@ -1,5 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/admin.dart';
+import 'package:skill_trade/customer.dart';
+import 'package:skill_trade/presentation/screens/admin_customer.dart';
+import 'package:skill_trade/presentation/screens/admin_technician.dart';
+import 'package:skill_trade/presentation/screens/bookings.dart';
 import 'package:skill_trade/presentation/screens/home_page.dart';
+import 'package:skill_trade/presentation/screens/login_page.dart';
+import 'package:skill_trade/presentation/screens/signup_page.dart';
+import 'package:skill_trade/presentation/screens/technician_application_success.dart';
+import 'package:skill_trade/presentation/themes.dart';
+import 'package:skill_trade/technician.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,25 +23,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: lightMode,
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/",
+      routes: { 
+        "/admintech": (context) => AdminTechnician(),
+        "/admincustomer": (context) => AdminCustomer(),
+        "/login" : (context) => LoginPage(),
+        "/signup" : (context) => SignupPage(),
+        "/customer":(context) => CustomerPage(),
+        "/technician":(context) => TechnicianPage(),
+        "/admin":(context) => AdminSite(),
+        "/apply":(context) => TechnicianApplicationSuccess(),
+        "/booktech": (context) => MyBookings(),
+      },
       home: const HomeScreen(),
     );
   }

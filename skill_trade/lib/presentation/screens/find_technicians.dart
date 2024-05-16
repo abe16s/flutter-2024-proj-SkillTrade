@@ -9,55 +9,58 @@ class FindTechnician extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              margin: const EdgeInsets.symmetric(horizontal: 25),
-              // decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
-              child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Text("Search", style: TextStyle(color: Colors.grey),),
-                  Expanded(
-                    child: SizedBox(
-                      child: TextField(
-                        decoration: InputDecoration(
+      padding: const EdgeInsets.all(15.0),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.symmetric(horizontal: 25),
+            // decoration: BoxDecoration(color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
+            child: const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Text("Search", style: TextStyle(color: Colors.grey),),
+                Expanded(
+                  child: SizedBox(
+                    child: TextField(
+                      decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25.0)),
                           ),
-                          prefixIcon: Icon(Icons.search, color: Colors.grey,),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Colors.grey,
+                          ),
                           hintText: "Search",
-                          contentPadding: EdgeInsets.symmetric(vertical: 14.0)
-                        ),
-                        
-                      ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 14.0)),
                     ),
                   ),
-                  
-                ],
-              ),
+                ),
+              ],
             ),
-            SizedBox(height: 20,),
-            Expanded(
-              child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns
-                      childAspectRatio: 0.55, // Aspect ratio (width / height)
-                      mainAxisSpacing: 6,
-                      crossAxisSpacing: 6,
-                    ), 
-                    itemBuilder: (BuildContext context, int index) { 
-                      return TechnicianCard();
-                    },
-                    itemCount: 8,
-                    
-                  // }),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Number of columns
+                childAspectRatio: 0.55, // Aspect ratio (width / height)
+                mainAxisSpacing: 6,
+                crossAxisSpacing: 6,
               ),
+              itemBuilder: (BuildContext context, int index) {
+                return const TechnicianCard();
+              },
+              itemCount: 8,
+
+              // }),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }

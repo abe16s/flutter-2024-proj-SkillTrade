@@ -201,7 +201,7 @@ class _MyBookingsState extends State<MyBookings> {
                     ),
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
+                          MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.primary),
                     ),
                   ),
                 )
@@ -330,7 +330,7 @@ class _MyBookingsState extends State<MyBookings> {
                   ),
                   style: ButtonStyle(
                     backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.blue),
+                        MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.primary),
                   ),
                 ),
               ],

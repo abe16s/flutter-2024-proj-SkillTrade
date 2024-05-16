@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:skill_trade/presentation/widgets/technician_apply.dart';
+import 'package:skill_trade/presentation/widgets/technician_tile.dart';
 
 void main() {
   runApp(const MaterialApp(
