@@ -24,7 +24,7 @@ export class ReviewRateController {
   ) {
     const user = request.user;
     if (id === (user as { sub: number }).sub) {
-      return this.reviewRate.findAllReviews(id);
+      return this.reviewRate.findAllTechnicianReviews(id);
     } else {
       throw new ForbiddenException('Access denied to Unauthorized user');
     }
