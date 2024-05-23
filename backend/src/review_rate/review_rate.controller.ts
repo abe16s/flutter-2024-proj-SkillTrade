@@ -36,7 +36,12 @@ export class ReviewRateController {
 
   @Post('technician/:id')
   @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
-  createReview(@Body(ValidationPipe) review: CreateReviewDto) {
-    return this.reviewRate.createReview(review);
+  createReview(
+    @Body(ValidationPipe) review: CreateReviewDto,
+    @Req() request: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const user = request.user;
+    return this.reviewRate.createReview(review, user, id);
   }
 }

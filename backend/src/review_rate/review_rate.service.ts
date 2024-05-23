@@ -33,31 +33,31 @@ export class ReviewRateService {
     return result;
   }
 
-  async createReview(dto: CreateReviewDto) {
-    const newBooking = await this.prisma.review.create({
+  async createReview(dto: CreateReviewDto, customer, techId) {
+    const newReview = await this.prisma.review.create({
       data: {
-        customerId: dto.customerId,
-        technicianId: dto.technicianId,
+        customerId: customer.sub,
+        technicianId: techId,
         review: dto.review,
         rate: dto.rate,
       },
     });
-    return newBooking;
+    return newReview;
   }
 
-  //   async updateBooking(id: number, updatedBooking: UpdateBookingDto) {
-  //     if ('serviceDate' in updatedBooking) {
-  //       updatedBooking.serviceDate = new Date(updatedBooking.serviceDate);
-  //     }
-  //     return await this.prisma.booking.update({
-  //       where: {
-  //         id: id,
-  //       },
-  //       data: updatedBooking,
-  //     });
+  // async updateReview(id: number, updatedBooking: UpdateBookingDto) {
+  //   if ('serviceDate' in updatedBooking) {
+  //     updatedBooking.serviceDate = new Date(updatedBooking.serviceDate);
   //   }
+  //   return await this.prisma.booking.update({
+  //     where: {
+  //       id: id,
+  //     },
+  //     data: updatedBooking,
+  //   });
+  // }
 
-  async deleteBooking(id: number) {
+  async deleteReview(id: number) {
     return await this.prisma.review.delete({
       where: {
         id: id,
