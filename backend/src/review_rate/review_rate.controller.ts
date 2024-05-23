@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -15,6 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { IsCustomerGuard } from 'src/auth/guards';
 import { Request } from 'express';
 import { CreateReviewDto } from './dto/Create-Review.dto';
+import { UpdateReviewDto } from './dto/update-Review.dto';
 
 @Controller('review-rate')
 export class ReviewRateController {
@@ -43,5 +46,20 @@ export class ReviewRateController {
   ) {
     const user = request.user;
     return this.reviewRate.createReview(review, user, id);
+  }
+
+  @Patch(':id')
+  @UseGuards(AuthGuard('jwt'))
+  updateReview(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) reviewUpdate: UpdateReviewDto,
+  ) {
+    return this.reviewRate.updateReview(id, reviewUpdate);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
+  deleteReview(@Param('id', ParseIntPipe) id: number) {
+    return this.reviewRate.deleteReview(id);
   }
 }

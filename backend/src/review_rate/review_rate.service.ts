@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateReviewDto } from './dto/Create-Review.dto';
+import { UpdateReviewDto } from './dto/update-Review.dto';
 
 @Injectable()
 export class ReviewRateService {
@@ -45,17 +46,14 @@ export class ReviewRateService {
     return newReview;
   }
 
-  // async updateReview(id: number, updatedBooking: UpdateBookingDto) {
-  //   if ('serviceDate' in updatedBooking) {
-  //     updatedBooking.serviceDate = new Date(updatedBooking.serviceDate);
-  //   }
-  //   return await this.prisma.booking.update({
-  //     where: {
-  //       id: id,
-  //     },
-  //     data: updatedBooking,
-  //   });
-  // }
+  async updateReview(id: number, updatedReview: UpdateReviewDto) {
+    return await this.prisma.review.update({
+      where: {
+        id: id,
+      },
+      data: updatedReview,
+    });
+  }
 
   async deleteReview(id: number) {
     return await this.prisma.review.delete({
