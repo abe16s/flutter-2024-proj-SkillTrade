@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/presentation/widgets/profile_button.dart';
 import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 
@@ -58,7 +57,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
           // SizedBox(height: 3,),
           // InfoLabel(label: "Email", data: "betse@gmail.com"),
           // const SizedBox(height: 16),
-          TechnicianSmallProfile(),
+          // TechnicianSmallProfile(),
           Center(child: ProfileButton()),
           SizedBox(height: 16),
         ],

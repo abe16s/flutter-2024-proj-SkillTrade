@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/screens/customer_profile.dart';
-import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 

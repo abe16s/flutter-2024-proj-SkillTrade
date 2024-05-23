@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/models/booking.dart';
+import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 
 class CustomerBooking extends StatelessWidget {
   final bool editAccess;
-  const CustomerBooking({super.key, required this.editAccess});
+  final Booking booking;
+  final Technician technician;
+  const CustomerBooking({super.key, required this.booking, required this.editAccess, required this.technician});
 
   @override
   Widget build(BuildContext context) {
@@ -25,38 +29,23 @@ class CustomerBooking extends StatelessWidget {
           ),
           SizedBox(height: 15,),
           Text(
-            "Biniyam Assefa",
+            technician.name,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
           SizedBox(height: 7,),
-          InfoLabel(label: "Email", data: "biniyamassefa648@gmail.com"),
+          InfoLabel(label: "Email", data: technician.email),
           SizedBox(height: 7,),
-          InfoLabel(label: "Speciality", data: "Dish Technican"),
+          InfoLabel(label: "Speciality", data: technician.skills),
           SizedBox(height: 7,),
-          InfoLabel(label: "Phone", data: "0940185778"),
-          // Text(
-          //   "biniyamassefa648@gmail.com",
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // Text(
-          //   "speciality: dish_seri",
-          //   style: TextStyle(fontSize: 15),
-          // ),
-          // Text(
-          //   "Tel: +2519-4018-5778",
-          //   style: TextStyle(fontSize: 15),
-          // ),
+          InfoLabel(label: "Phone", data: technician.phone),
           SizedBox(height: 20,),
-          // Text(
-          //   "Booking details",
-          //   style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-          // ),
-          EditableField(label: "Booked Date", data: "04/15/2024"),
-          EditableField(label: "Service Date", data: "04/26/2024"),
-          EditableField(label: "Service Needed", data: "Nile Sat"),
-          EditableField(label: "Problem Description", data: "Dish sahnu nifas abelashtot"),
-          EditableField(label: "Service Location", data: "6 kilo"),
-          EditableField(label: "Status", data: "Pending"),
+      
+          EditableField(label: "Booked Date", data: booking.bookedDate.toString().substring(0, 10)),
+          EditableField(label: "Service Date", data: booking.serviceDate.toString().substring(0, 10)),
+          EditableField(label: "Service Needed", data: booking.serviceNeeded),
+          EditableField(label: "Problem Description", data: booking.problemDescription),
+          EditableField(label: "Service Location", data: booking.serviceLocation),
+          EditableField(label: "Status", data: booking.status),
 
           if (editAccess) TextButton(
             onPressed: () {}, 

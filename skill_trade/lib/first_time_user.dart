@@ -44,7 +44,7 @@ class _FirstTimeUserPageState extends State<FirstTimeUserPage> {
         "/technician":(context) => TechnicianPage(),
         "/admin":(context) => AdminSite(),
         "/apply":(context) => TechnicianApplicationSuccess(),
-        "/booktech": (context) => MyBookings(),
+        // "/booktech": (context) => MyBookings(),
 
       },
       home: HomeScreen(),

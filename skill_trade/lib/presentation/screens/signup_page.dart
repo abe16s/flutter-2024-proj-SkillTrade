@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:skill_trade/presentation/screens/customer_profile.dart';
-import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
-import 'package:skill_trade/presentation/widgets/technician_application.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});

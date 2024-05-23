@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 
 class TechnicianSmallProfile extends StatelessWidget {
-  const TechnicianSmallProfile({super.key});
+  final Technician technician;
+  const TechnicianSmallProfile({super.key, required this.technician});
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +24,8 @@ class TechnicianSmallProfile extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        const Text(
-          "Abenezer Seifu",
+        Text(
+          technician.name,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -32,38 +34,38 @@ class TechnicianSmallProfile extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InfoLabel(label: "Email", data: "mysteryabe456@gmail.com"),
+              InfoLabel(label: "Email", data: technician.email),//"mysteryabe456@gmail.com"),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Phone", data: "0936120470"),
+              InfoLabel(label: "Phone", data: technician.phone),//"0936120470"),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Skills", data: "Electrican, Dish technician"),
+              InfoLabel(label: "Skills", data: technician.skills),//"Electrican, Dish technician"),
                SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Experience",
-                  data: "15 years in ELPA, 3 amet did mastat"),
+                  data: technician.experience),//"15 years in ELPA, 3 amet did mastat"),
                SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Education Level",
-                  data: "Bsc. in Electrical Engineering"),
+                  data: technician.education_level),//"Bsc. in Electrical Engineering"),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Available Location", data: "Harar"),
+              InfoLabel(label: "Available Location", data: technician.available_location),//"Harar"),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Additional Bio", data: "Tiris yeneqelkubet"),
+              InfoLabel(label: "Additional Bio", data: technician.additional_bio),//"Tiris yeneqelkubet"),
             ],
           ),
         )

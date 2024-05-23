@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:skill_trade/presentation/widgets/technician_booking_card.dart';
-import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 
 class AdminTechnician extends StatelessWidget {
   final Map<String, String> bookingData = {
@@ -21,7 +20,7 @@ class AdminTechnician extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const TechnicianSmallProfile(),
+          // const TechnicianSmallProfile(),
           // SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

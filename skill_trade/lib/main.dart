@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         "/technician":(context) => TechnicianPage(),
         "/admin":(context) => AdminSite(),
         "/apply":(context) => TechnicianApplicationSuccess(),
-        "/booktech": (context) => MyBookings(),
+        // "/booktech": (context) => MyBookings(),
       },
       home: const HomeScreen(),
     );

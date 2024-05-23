@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/screens/admin_customer.dart';
 
 class CustomerTile extends StatelessWidget {
   const CustomerTile ({super.key});
