@@ -1,6 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 
+enum Status {
+  DECLINED = 'declined',
+  ACCEPTED = 'accepted',
+  PENDING = 'pending',
+  SUSPENDED = 'suspended'
+}
 export class TechnicianDto {
   @IsString()
   @IsOptional()
@@ -21,6 +27,10 @@ export class TechnicianDto {
   @IsString()
   @IsOptional()
   password: string;
+
+  @IsEnum(Status, { message: 'Status is not valid' })
+  status: Status;
+
 
   @IsString()
   @IsOptional()

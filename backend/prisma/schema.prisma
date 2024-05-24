@@ -45,6 +45,7 @@ model Technician {
   reviews Review[]
   createdAt DateTime  @default(now())
   lastLogin DateTime?
+  status String @default("pending")
 }
 
 model Booking {
@@ -72,4 +73,13 @@ model Review {
   review String? @db.Text
   user               User       @relation(fields: [customerId], references: [id])
   technician         Technician @relation(fields: [technicianId], references: [id])
+}
+
+model Admin {
+  id Int @id @default(autoincrement())
+  fullName String
+  email    String  @unique
+  phone    String? @unique
+  role     String
+  password String
 }

@@ -15,6 +15,7 @@ import { TechnicianDto } from './dto/technician.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { IsTechnicianGuard } from 'src/auth/guards';
 import { Request } from 'express';
+import * as argon from 'argon2';
 
 @Controller('technician')
 export class TechnicianController {
@@ -25,7 +26,7 @@ export class TechnicianController {
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    const user = request.user;
+    // const user = request.user;
     // if (id === (user as { sub: number }).sub) {
     return this.technicianService.findTechnicianProfile(id);
     // } else {
@@ -41,12 +42,16 @@ export class TechnicianController {
 
   @Patch(':id')
   @UseGuards(AuthGuard('jwt'), IsTechnicianGuard)
-  updateTechnicianProfile(
+  async updateTechnicianProfile(
     @Param('id', ParseIntPipe) id: number,
     @Req() request: Request,
     @Body(ValidationPipe) profileUpdate: TechnicianDto,
   ) {
     const user = request.user;
+    if ('password' in profileUpdate) {
+      const hash = await argon.hash(profileUpdate.password);
+      profileUpdate.password = hash;
+    }
     if (id === (user as { sub: number }).sub) {
       return this.technicianService.updateTechnicianProfile(id, profileUpdate);
     } else {
