@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/screens/technician_profile.dart';
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/technician_booking_list.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
+import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
+import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
 
 void main() {
   runApp(TechnicianPage());
@@ -35,7 +39,19 @@ class _TechnicianPageState extends State<TechnicianPage> {
       title: "Technician Page",
       theme: lightMode,
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider<CustomerBloc>(
+            create: (BuildContext context) => CustomerBloc(),
+          ),
+          BlocProvider<BookingsBloc>(
+            create: (BuildContext context) => BookingsBloc(),
+          ),
+          BlocProvider<IndividualTechnicianBloc>(
+            create: (BuildContext context) => IndividualTechnicianBloc(),
+          ),
+        ],
+        child: Scaffold(
         appBar: AppBar(
           leading: Builder(
             builder: (context) => IconButton(
@@ -69,7 +85,7 @@ class _TechnicianPageState extends State<TechnicianPage> {
         ],
       ),
       ),
-
+      )
     );
   }
 }

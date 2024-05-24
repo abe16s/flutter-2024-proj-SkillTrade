@@ -30,7 +30,6 @@ class CustomerBookings extends StatelessWidget {
                       return CustomerBooking(
                         technician: state.technician,
                         booking: bookings[index],
-                        editAccess: true,
                       );
                     } else if (state is IndividualTechnicianLoading) {
                       return const Center(child: CircularProgressIndicator());

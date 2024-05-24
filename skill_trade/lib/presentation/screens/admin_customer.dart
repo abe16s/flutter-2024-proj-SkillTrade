@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/customer_booking.dart';
 import 'package:skill_trade/presentation/widgets/customer_profile.dart';
 
 class AdminCustomer extends StatelessWidget {

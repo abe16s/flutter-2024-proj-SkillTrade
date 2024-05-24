@@ -20,6 +20,10 @@ class TechniciansBloc extends Bloc<TechniciansEvent, TechniciansState> {
         final technicians = data.map((json) {
           json["email"] = "";
           json["phone"] = "";
+          json["experience"] = "";
+          json["educationLevel"] = "";
+          json["additionalBio"] = "";
+          json["availableLocation"] = "";
           return Technician.fromJson(json);
         }).toList();
         emit(TechniciansLoaded(technicians));

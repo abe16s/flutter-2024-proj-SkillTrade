@@ -27,10 +27,10 @@ class Technician{
         email: json['email'],
         phone: json['phone'],
         skills: json["skills"],
-        experience: "",//json['experience'],
-        education_level: "",//json['education_level'],
-        additional_bio: "",//json['additional_bio'], 
-        available_location: "",//json['available_location'],
+        experience: json['experience'],
+        education_level: json['educationLevel'],
+        additional_bio: json['additionalBio'], 
+        available_location: json['availableLocation'],
       );
 
 }

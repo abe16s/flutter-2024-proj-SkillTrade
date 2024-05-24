@@ -8,6 +8,7 @@ import 'package:skill_trade/state_managment/individual_technician/individual_tec
 class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, IndividualTechnicianState> {
   IndividualTechnicianBloc() : super(IndividualTechnicianLoading()) {
     on<LoadIndividualTechnician>(_onLoadIndividualTechnician);
+    on<UpdateTechnicianProfile>(_onUpdateTechnicianProfile);
   }
 
   Future<void> _onLoadIndividualTechnician(LoadIndividualTechnician event, Emitter<IndividualTechnicianState> emit) async {
@@ -22,6 +23,29 @@ class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, Individua
         emit(IndividualTechnicianLoaded(technician: technician));
       } else {
         emit(IndividualTechnicianError('Error fetching technician'));
+      }
+    } catch (error) {
+      emit(IndividualTechnicianError(error.toString()));
+    }
+  }
+
+  Future<void> _onUpdateTechnicianProfile(UpdateTechnicianProfile event, Emitter<IndividualTechnicianState> emit) async {
+    final headers = {
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6Im15c3RlcnlhYmU0NTZAZ21haWwuY29tIiwicm9sZSI6InRlY2huaWNpYW4iLCJpYXQiOjE3MTY1MzYwMjQsImV4cCI6MTc0ODA5MzYyNH0.jfRNrCXIGHzKPgdV16ymAU7s_2FQMfQBcuboaDvAx00",
+      "Content-Type": "application/json"
+    };
+
+    try {
+      final response = await http.patch(Uri.parse('http://localhost:9000/technician/${event.technicianId}'), 
+          headers: headers,
+          body: json.encode(event.updates)
+          );
+      if (response.statusCode == 200) {
+        print("Technician profile updated successfully");
+        add(LoadIndividualTechnician(technicianId: event.technicianId));
+      } else {
+        print(response.statusCode);
+        emit(IndividualTechnicianError('Error updating technician'));
       }
     } catch (error) {
       emit(IndividualTechnicianError(error.toString()));

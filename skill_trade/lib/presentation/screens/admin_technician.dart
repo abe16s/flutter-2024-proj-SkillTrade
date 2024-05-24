@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/technician_booking_card.dart';
 
 class AdminTechnician extends StatelessWidget {
   final Map<String, String> bookingData = {
@@ -63,11 +62,11 @@ class AdminTechnician extends StatelessWidget {
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
-          for (int i = 0; i < 2; i++)
-            TechnicianBookingCard(
-              bookingData: this.bookingData,
-              editAccess: false,
-            )
+          // for (int i = 0; i < 2; i++)
+          //   TechnicianBookingCard(
+          //     bookingData: this.bookingData,
+          //     editAccess: false,
+          //   )
         ],
       ),
     );
