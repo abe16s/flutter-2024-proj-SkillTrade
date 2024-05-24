@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/models/customer.dart';
 import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
@@ -380,9 +381,23 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                       text: "signup",
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
-                                          
-                                          Navigator.pushNamed(
+
+                                          final Customer customer = Customer(
+                                              fullName: _fullNameController.value.text, 
+                                              email: _emailController.value.text,
+                                              phone: _phoneController.value.text,
+                                              password: _passwordController.value.text,
+                                              
+                                              );
+                                            ref.read(authProvider.notifier).signup(
+                                               customer
+                                              );
+                                            if(signupState.isLoggedIn){
+                                              Navigator.pushNamed(
                                               context,"/customer");
+                                            }
+                                          
+                                          
                                               
                                         }
                                       },

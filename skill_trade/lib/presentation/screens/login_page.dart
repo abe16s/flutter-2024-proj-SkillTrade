@@ -132,8 +132,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   _emailController.text,
                                   _passwordController.text,
                                 );
-                                
-                                if (_selectedRole == "customer"){ 
+                                if (authState.isLoggedIn){
+                                if (authState.role == "customer"){ 
                                   Navigator.pushNamed(
                                     context, "/customer");
                                 } else if (_selectedRole == "technician"){ 
@@ -143,7 +143,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 } else if(_selectedRole == "admin"){ 
                                   Navigator.pushNamed(
                                     context, "/admin");
-                                }
+                                }}
                               }
                             },
                             width: double.infinity),
