@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/riverpod/technician_provider.dart';
 
-class MyDrawer extends StatelessWidget {
+class MyDrawer extends ConsumerWidget {
   const MyDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final authState = ref.watch(authProvider.notifier);
     return Drawer(
         backgroundColor: Colors.grey[900],
         child: Column(
@@ -52,14 +55,22 @@ class MyDrawer extends StatelessWidget {
             ],
             ),
 
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(left: 25.0, bottom: 25.0),
               child: ListTile(
                 leading: Icon(Icons.logout, color: Colors.white,),
-                title: Text("Logout", style: TextStyle(color: Colors.white),),
+                title: TextButton(
+                  onPressed: (){
+                    // ref.read(authProvider.notifier).logout();
+                    authState.logout();
+                    Navigator.pushNamed(
+                            context, "/");
+                  }, 
+                  child: Text("Logout", style: TextStyle(color: Colors.white),)),
               ),
             ),
-
+// authState.logout();
+                    // ref.read(authProvider.notifier).logout();
           ],
         ),
       );

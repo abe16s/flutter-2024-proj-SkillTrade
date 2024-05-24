@@ -2,20 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_application.dart';
+import 'package:skill_trade/riverpod/technician_provider.dart';
 
-class SignupPage extends StatefulWidget {
+class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
   String _user_role = "customer";
   Color _borderColor1 = Colors.blue;
   Color _borderColor2 = Colors.black;
@@ -42,14 +45,22 @@ class _SignupPageState extends State<SignupPage> {
 
   bool _noSkillChosen = false;
 
+  void initState(){ 
+    super.initState();
+    ref.read(authProvider.notifier);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final signupState = ref.watch(authProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
-          child: Column(
+          child: signupState.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -140,6 +151,11 @@ class _SignupPageState extends State<SignupPage> {
                               ],
                             )
                           ],
+                        ),
+                        if (signupState.errorMessage != null)
+                        Text(
+                          signupState.errorMessage!,
+                          style: TextStyle(color: Colors.red),
                         ),
                         Form(
                             key: _formKey,
@@ -312,8 +328,25 @@ class _SignupPageState extends State<SignupPage> {
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
                                           if (_selectedTags.length > 0) {
-                                            Navigator.pushNamed(
-                                                context,"/apply" );
+                                            final Technician technician = Technician(
+                                              name: _fullNameController.value.text, 
+                                              speciality: _selectedTags.join(", "),
+                                              email: _emailController.value.text,
+                                              phone: _phoneController.value.text,
+                                              availableLocation:_locationController.value.text,
+                                              password: _passwordController.value.text,
+                                              additionalBio: _bioController.value.text,
+                                              
+                                              );
+                                            ref.read(authProvider.notifier).signup(
+                                               technician
+                                              );
+
+                                              
+                                           
+                                            // Navigator.pushNamed(
+                                            //     context,"/apply" );
+
                                           } else {
                                             setState(() {
                                               _noSkillChosen = true;
@@ -325,9 +358,19 @@ class _SignupPageState extends State<SignupPage> {
                                                       'You have to choose at least one skill.')),
                                             );
                                           }
+
                                         }
                                       },
                                       width: double.infinity),
+                                      if (signupState.successMessage != null) ...[
+                                        SizedBox(height: 20),
+                                        Text(
+                                          signupState.successMessage!,
+                                          style: TextStyle(
+                                            color: signupState.successMessage != null ? Colors.green : Colors.red,
+                                          ),
+                                        ),
+                                      ],
                                 ],
                                 if (_user_role == "customer") ...[
                                   const SizedBox(
@@ -337,6 +380,7 @@ class _SignupPageState extends State<SignupPage> {
                                       text: "signup",
                                       onPressed: () {
                                         if (_formKey.currentState!.validate()) {
+                                          
                                           Navigator.pushNamed(
                                               context,"/customer");
                                               

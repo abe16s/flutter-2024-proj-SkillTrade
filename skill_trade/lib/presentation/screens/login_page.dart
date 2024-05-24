@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
+import 'package:skill_trade/riverpod/technician_provider.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  ConsumerState<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -21,13 +23,17 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _selectedRole = 'Customer';
+    // ref.read(authProvider.notifier)._loadToken();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
+      body: authState.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -51,6 +57,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         const SizedBox(
                           height: 35,
+                        ),
+                        if (authState.errorMessage != null)
+                        Text(
+                          authState.errorMessage!,
+                          style: TextStyle(color: Colors.red),
                         ),
                         MyTextField(
                             labelText: "email",
@@ -76,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                           // mainAxisAlignment: MainAxisAlignment.,
                           children: [
                             Radio<String>(
-                              value: 'Customer',
+                              value: 'customer',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -87,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text('Customer'),
                             // SizedBox(width: 15,),
                             Radio<String>(
-                              value: 'Technician',
+                              value: 'technician',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -98,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text('Technician'),
                             // SizedBox(width: 15,),
                             Radio<String>(
-                              value: 'Admin',
+                              value: 'admin',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -116,14 +127,20 @@ class _LoginPageState extends State<LoginPage> {
                             text: "login",
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                if (_selectedRole == "Customer"){ 
+                                ref.read(authProvider.notifier).signin(
+                                  _selectedRole,
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
+                                
+                                if (_selectedRole == "customer"){ 
                                   Navigator.pushNamed(
                                     context, "/customer");
-                                } else if (_selectedRole == "Technician"){ 
+                                } else if (_selectedRole == "technician"){ 
                                   Navigator.pushNamed(
                                     context, "/technician");
 
-                                } else if(_selectedRole == "Admin"){ 
+                                } else if(_selectedRole == "admin"){ 
                                   Navigator.pushNamed(
                                     context, "/admin");
                                 }

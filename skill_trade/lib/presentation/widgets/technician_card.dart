@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/screens/bookings.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/models/technician.dart';
+// import 'package:skill_trade/presentation/screens/bookings.dart';
 
 class TechnicianCard extends StatelessWidget {
-  const TechnicianCard ({super.key});
+  // final String name, speciality;
+  final Technician technician;
+  const TechnicianCard ({super.key, required this.technician});
 
   @override
   Widget build(BuildContext context) {
+  
+
     return Card(
       color: Theme.of(context).colorScheme.secondary,
       child: Padding(
@@ -14,9 +20,9 @@ class TechnicianCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset("assets/technician.png", width: 60, height: 60,),
-            const ListTile(
-              title: Text("Abenezer Seifu", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
-              subtitle: Text("Speciality: Electrician Dish Technician", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
+            ListTile(
+              title: Text(technician.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
+              subtitle: Text("Speciality: ${technician.speciality}", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
             ),
             ElevatedButton(
               onPressed: () {

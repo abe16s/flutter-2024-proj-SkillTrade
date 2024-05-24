@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/presentation/screens/bookings.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/customer_bookings.dart';
@@ -7,7 +8,9 @@ import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
 void main() {
-  runApp(const CustomerPage());
+  runApp(const ProviderScope(
+    child: const CustomerPage(),
+  ));
 }
 
 class CustomerPage extends StatefulWidget {

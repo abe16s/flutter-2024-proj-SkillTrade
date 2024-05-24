@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/admin.dart';
 import 'package:skill_trade/customer.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
@@ -9,10 +10,13 @@ import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/screens/technician_application_success.dart';
 import 'package:skill_trade/presentation/themes.dart';
+import 'package:skill_trade/riverpod/technician_provider.dart';
 import 'package:skill_trade/technician.dart';
 
 void main() {
-  runApp(const MyApp());
+   runApp(const ProviderScope(
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -37,9 +41,27 @@ class MyApp extends StatelessWidget {
         "/apply":(context) => TechnicianApplicationSuccess(),
         "/booktech": (context) => MyBookings(),
       },
-      home: const HomeScreen(),
+      home: Consumer(
+        builder: (context, ref, child){
+          final authState = ref.watch(authProvider);
+          
+          
+          if (authState.isLoggedIn) {
+            print("this is auth state ${authState.role}");
+            if (authState.role == "customer")
+              return CustomerPage();
+            return TechnicianPage();
+          } else {
+            return HomeScreen();
+          }
+        },
+      ),
+      
     );
   }
+}
+
+class LoginScreen {
 }
 
 class MyHomePage extends StatefulWidget {
