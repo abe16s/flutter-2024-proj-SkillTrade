@@ -11,7 +11,7 @@ import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_application.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
-
+import 'package:skill_trade/riverpod/auth_provider.dart';
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
 
@@ -48,18 +48,19 @@ class _SignupPageState extends ConsumerState<SignupPage> {
 
   void initState(){ 
     super.initState();
-    ref.read(authProvider.notifier);
+    // ref.read(authProvider.notifier);
   }
 
   @override
   Widget build(BuildContext context) {
-    final signupState = ref.watch(authProvider);
+    final authState = ref.watch(authProvider);
+    final authNotifier = ref.read(authProvider.notifier);
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.only(top: 20, bottom: 20),
-          child: signupState.isLoading
+          child: authState.isLoading
           ? Center(child: CircularProgressIndicator())
           : Column(
             children: [
@@ -153,9 +154,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                             )
                           ],
                         ),
-                        if (signupState.errorMessage != null)
+                        if (authState.errorMessage != null)
                         Text(
-                          signupState.errorMessage!,
+                          authState.errorMessage!,
                           style: TextStyle(color: Colors.red),
                         ),
                         Form(
@@ -326,27 +327,50 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                   ),
                                   MyButton(
                                       text: "Apply",
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
                                           if (_selectedTags.length > 0) {
                                             final Technician technician = Technician(
+                                              id: 0,
                                               name: _fullNameController.value.text, 
                                               speciality: _selectedTags.join(", "),
                                               email: _emailController.value.text,
                                               phone: _phoneController.value.text,
+                                              experience: _experienceController.value.text,
                                               availableLocation:_locationController.value.text,
                                               password: _passwordController.value.text,
                                               additionalBio: _bioController.value.text,
                                               
                                               );
-                                            ref.read(authProvider.notifier).signup(
+                                            await authNotifier.signup(
                                                technician
                                               );
 
-                                              
-                                           
-                                            // Navigator.pushNamed(
-                                            //     context,"/apply" );
+
+                                           final auth = ref.watch(authProvider);
+                                            print("this is authState.success ${auth.success} ");
+                                            if (auth.success) {
+                                             ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text( 'Sign up successful'),
+                                                ),
+                                              );
+                                              // You can navigate to any page after successful signup
+                                              // Navigator.of(context).pushNamed('/customer');
+                                            } else {
+                                              // If signup failed, show error message
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(auth.errorMessage ?? 'Sign up failed'),
+                                                ),
+                                              );
+                                            }
+                                            print("auth is auth ${auth.isAuthenticated}");
+                                            if (auth.isAuthenticated) {
+                                              Navigator.of(context).pushNamed('/technician');
+                                            }
+                                            
+                                        
 
                                           } else {
                                             setState(() {
@@ -363,15 +387,15 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                         }
                                       },
                                       width: double.infinity),
-                                      if (signupState.successMessage != null) ...[
-                                        SizedBox(height: 20),
-                                        Text(
-                                          signupState.successMessage!,
-                                          style: TextStyle(
-                                            color: signupState.successMessage != null ? Colors.green : Colors.red,
-                                          ),
-                                        ),
-                                      ],
+                                      // if (authState.successMessage != null) ...[
+                                      //   SizedBox(height: 20),
+                                      //   Text(
+                                      //     authState.successMessage!,
+                                      //     style: TextStyle(
+                                      //       color: authState.successMessage != null ? Colors.green : Colors.red,
+                                      //     ),
+                                      //   ),
+                                      // ],
                                 ],
                                 if (_user_role == "customer") ...[
                                   const SizedBox(
@@ -379,7 +403,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                   ),
                                   MyButton(
                                       text: "signup",
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
 
                                           final Customer customer = Customer(
@@ -389,15 +413,32 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                               password: _passwordController.value.text,
                                               
                                               );
-                                            ref.read(authProvider.notifier).signup(
-                                               customer
+
+                                              if (!authState.success)
+                                                  await authNotifier.signup(customer);
+                                             final auth = ref.watch(authProvider);
+                                            print("this is authState.success ${auth.success} ");
+                                            if (auth.success) {
+                                             ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text( 'Sign up successful'),
+                                                ),
                                               );
-                                            if(signupState.isLoggedIn){
-                                              Navigator.pushNamed(
-                                              context,"/customer");
+                                              // You can navigate to any page after successful signup
+                                              // Navigator.of(context).pushNamed('/customer');
+                                            } else {
+                                              // If signup failed, show error message
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Text(auth.errorMessage ?? 'Sign up failed'),
+                                                ),
+                                              );
                                             }
-                                          
-                                          
+                                            print("auth is auth ${auth.isAuthenticated}");
+                                            if (auth.isAuthenticated) {
+                                              Navigator.of(context).pushNamed('/customer');
+                                            }
+                                         
                                               
                                         }
                                       },

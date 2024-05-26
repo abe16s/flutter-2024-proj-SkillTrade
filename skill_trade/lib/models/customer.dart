@@ -22,4 +22,18 @@ class Customer{
         phone: json['phone'],
         password: json['password']
       );
+
+  toJson(){ 
+    return ( 
+      { 
+      "fullName": fullName,
+      "email": email,
+      "password": password,
+      "phone": phone,
+      "role": role,
+
+      }
+    );
+  }
+
 }

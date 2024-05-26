@@ -3,32 +3,12 @@ import 'package:http/http.dart' as http;
 import 'package:skill_trade/models/technician.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 
 
-final endpoint = "10.6.194.136";
+final endpoint = "192.168.43.151";
 
 
-
-class SecureStorageService {
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-
-  Future<void> write(String key, value) async {
-    await _secureStorage.write(key: key, value: value);
-  }
-
-  Future<String?> read(key) async {
-    return await _secureStorage.read(key: key);
-  }
-
-  Future<void> delete(key) async {
-    await _secureStorage.delete(key: key);
-  }
-}
-
-
-final secureStorageProvider = Provider<SecureStorageService>((ref) {
-  return SecureStorageService();
-});
 
 
 final technicianProvider = FutureProvider<List<Technician>>( (ref) async {
@@ -61,102 +41,147 @@ final technicianProvider = FutureProvider<List<Technician>>( (ref) async {
 
 
 
-class AuthState {
-  final bool isLoading;
-  final String? token;
-  final String? role;
-  final String? errorMessage;
-  final String? successMessage;
+final technicianByIdProvider = FutureProvider.family<Technician, int>((ref, int technicianId) async {
+  final secureStorageService = ref.read(secureStorageProvider);
 
-  AuthState({this.isLoading = false, this.role, this.successMessage,  this.token, this.errorMessage});
-  bool get isLoggedIn => token != null;
+
+  final token = await secureStorageService.read("token");
+  print("tech fetch");
+  
+  final response = await http.get(
+    Uri.parse("http://$endpoint:9000/technician/$technicianId"),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final dynamic data = jsonDecode(response.body);
+    data['id'] = technicianId;
+    print("tech by id modified $data");
+
+    final technician =  Technician.fromFullJson(data);
+    print("formed technician $technician ${data["skills"]}  ${data['id']}");
+    return technician;
+    } else {
+    print(response.statusCode);
+    throw Exception("Failed to load technician.");
+  }
+});
+
+
+
+final technicianProfileProvider = FutureProvider<Technician>((ref) async {
+
+    final _secureStorageService = ref.read(secureStorageProvider);
+    final token = await _secureStorageService.read("token");
+    final role = await _secureStorageService.read('role');
+    final id = await _secureStorageService.read('userId');
+    
+    if (id == null){
+      throw Exception("No technician");
+    }
+
+
+    final response = await http.get(
+      Uri.parse('http://$endpoint:9000/technician/$id'),
+      headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        }
+    
+    );
+
+    if (response.statusCode == 200) {
+
+      final dynamic data = jsonDecode(response.body);
+      data['id'] = int.parse(id);
+      print("tech by id modified $data");
+
+      return Technician.fromFullJson(data);
+    } else {
+      throw Exception('Failed to load bookings');
+    }
+  });
+
+
+
+
+// State for Technician Update
+class TechnicianState {
+  final bool isLoading;
+  final bool success;
+  final String? errorMessage;
+
+  TechnicianState({
+    this.isLoading = false,
+    this.success = false,
+    this.errorMessage,
+  });
+
+  TechnicianState copyWith({
+    bool? isLoading,
+    bool? success,
+    String? errorMessage,
+  }) {
+    return TechnicianState(
+      isLoading: isLoading ?? this.isLoading,
+      success: success ?? this.success,
+      errorMessage: errorMessage ?? this.errorMessage,
+    );
+  }
 }
 
-class AuthNotifier extends StateNotifier<AuthState> {
+// Notifier for Technician Update
+class TechnicianNotifier extends StateNotifier<TechnicianState> {
   final SecureStorageService _secureStorageService;
 
-  AuthNotifier(this._secureStorageService) : super(AuthState()) {
-    _loadToken();
-  }
-
   
+  TechnicianNotifier(this._secureStorageService) : super(TechnicianState());
 
-  // final _storage = FlutterSecureStorage();
+  Future<void> updateTechnician(technician) async {
+    state = state.copyWith(isLoading: true);
 
-  Future<void> signup(user) async {
-    state = AuthState(isLoading: true);
-    final response = await http.post(
-      Uri.parse('http://$endpoint:9000/trader/signup'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(user.toJson()),
-    );
-    print(response.body);
-
-    if (response.statusCode == 201) {
-      print("yay");
-      state = AuthState(successMessage: "You have successfully signed up!");
-    } else {
-      print("Nay");
-      state = AuthState(errorMessage: "Signup has failed.");
-    }
-  }
-
-  Future<void> signin(String role, String email, String password) async {
-    state = AuthState(isLoading: true);
-    print("signing in");
-    print("sign in inputs $role, $email, $password");
-    try {
-      final response = await http.post(
-        Uri.parse('http://$endpoint:9000/trader/signin'),
-        headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          "role": role,
-          "email": email,
-          "password": password,
-        }),
-      );
-      print("response ${response.body} $response");
-
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body);
-        final token = data['access_token'];
-
-        // Save token securely
-        await _secureStorageService.write("token", token);
-        await _secureStorageService.write('role', data['role']);
-        await _secureStorageService.write('userId', data['userId'].toString());
-        state = AuthState(isLoading: false, token: token, role: role);
-
-        // final storedToken = await _storage.read(key: 'token');
-        // print('Stored Token: $storedToken');
-      } else {
-        state = AuthState(isLoading: false, errorMessage: 'Signin failed');
-      }
-    } catch (e) {
-      state = AuthState(isLoading: false, errorMessage: e.toString());
-    }
-  }
-
-  Future<void> _loadToken() async {
     final token = await _secureStorageService.read("token");
-    final role = await _secureStorageService.read("role");
-    state = AuthState(token: token, role: role);
-  }
-  
+    final role = await _secureStorageService.read('role');
+    final id = await _secureStorageService.read('userId');
 
-  Future<void> logout() async {
-    await _secureStorageService.delete("token");
-    state = AuthState(token: null);
+
+    final response = await http.patch(
+      Uri.parse('http://$endpoint:9000/technician/$id'),
+      headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(technician)
+    
+    );
+    
+    print("patch result $response {$response.statuscode}");
+
+    
+
+    if (response.statusCode == 200) {
+      state = state.copyWith(isLoading: false, success: true);
+    } else {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Failed to update technician.',
+      );
+    }
   }
 }
 
-// final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-//   return AuthNotifier();
-// });
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
+
+final technicianProfileUpdateProvider = StateNotifierProvider<TechnicianNotifier, TechnicianState>((ref) {
   final secureStorageService = ref.read(secureStorageProvider);
-  return AuthNotifier(secureStorageService);
+  return TechnicianNotifier(secureStorageService);
+
 });
 
 

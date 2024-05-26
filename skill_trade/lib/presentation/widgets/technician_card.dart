@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/models/technician.dart';
-// import 'package:skill_trade/presentation/screens/bookings.dart';
+import 'package:skill_trade/presentation/screens/bookings.dart';
 
 class TechnicianCard extends StatelessWidget {
-  // final String name, speciality;
   final Technician technician;
   const TechnicianCard ({super.key, required this.technician});
 
   @override
   Widget build(BuildContext context) {
-  
-
     return Card(
       color: Theme.of(context).colorScheme.secondary,
       child: Padding(
@@ -26,7 +22,10 @@ class TechnicianCard extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/booktech");
+                Navigator.push(context, 
+                
+                MaterialPageRoute(builder: ((context) => MyBookings(technician: this.technician,))));
+                
               }, 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),

@@ -5,6 +5,7 @@ import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
+import 'package:skill_trade/riverpod/auth_provider.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -125,15 +126,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         ),
                         MyButton(
                             text: "login",
-                            onPressed: () {
+                            onPressed: ()async {
                               if (_formKey.currentState!.validate()) {
-                                ref.read(authProvider.notifier).signin(
-                                  _selectedRole,
-                                  _emailController.text,
-                                  _passwordController.text,
-                                );
-                                if (authState.isLoggedIn){
-                                if (authState.role == "customer"){ 
+                                  await ref.read(authProvider.notifier).signin(_selectedRole, _emailController.text, _passwordController.text);
+                                  final auth = ref.watch(authProvider);
+                                print("auth.isAuthenticated in login  ${auth.isAuthenticated}");
+                                if (auth.isAuthenticated){
+                                if (auth.role == "customer"){ 
                                   Navigator.pushNamed(
                                     context, "/customer");
                                 } else if (_selectedRole == "technician"){ 
@@ -143,7 +142,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                 } else if(_selectedRole == "admin"){ 
                                   Navigator.pushNamed(
                                     context, "/admin");
-                                }}
+                                }
+                                }
                               }
                             },
                             width: double.infinity),

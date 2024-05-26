@@ -12,6 +12,7 @@ import 'package:skill_trade/presentation/screens/technician_application_success.
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
 import 'package:skill_trade/technician.dart';
+import 'package:skill_trade/riverpod/auth_provider.dart';
 
 void main() {
    runApp(const ProviderScope(
@@ -39,17 +40,22 @@ class MyApp extends StatelessWidget {
         "/technician":(context) => TechnicianPage(),
         "/admin":(context) => AdminSite(),
         "/apply":(context) => TechnicianApplicationSuccess(),
-        "/booktech": (context) => MyBookings(),
       },
       home: Consumer(
         builder: (context, ref, child){
+          ref.read(authProvider.notifier);
           final authState = ref.watch(authProvider);
+
+          print("main says token ${authState.token} auth ${authState.isAuthenticated}");
           
           
-          if (authState.isLoggedIn) {
-            print("this is auth state ${authState.role}");
+          if (authState.isAuthenticated) {
+            // print("this is auth state ${authState
+            // .role}");
+            // if (authState.role == "customer")
             if (authState.role == "customer")
               return CustomerPage();
+            // if(authState.role == "technician")
             return TechnicianPage();
           } else {
             return HomeScreen();

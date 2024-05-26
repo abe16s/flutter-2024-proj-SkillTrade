@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_trade/presentation/widgets/customer_booking.dart';
 import 'package:skill_trade/presentation/widgets/customer_profile.dart';
 
 class AdminCustomer extends StatelessWidget {
@@ -59,10 +58,10 @@ class AdminCustomer extends StatelessWidget {
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
             ),
           ),
-          for (int i = 0; i < 2; i++)
-            const CustomerBooking(
-              editAccess: false,
-            )
+          // for (int i = 0; i < 2; i++)
+            // const CustomerBooking(
+            //   editAccess: false,
+            // )
         ],
       ),
     );

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/presentation/screens/home_page.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
+import 'package:skill_trade/riverpod/auth_provider.dart';
 
 class MyDrawer extends ConsumerWidget {
   const MyDrawer({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    final authState = ref.watch(authProvider.notifier);
+    final authState = ref.watch(authProvider);
     return Drawer(
         backgroundColor: Colors.grey[900],
         child: Column(
@@ -62,9 +64,10 @@ class MyDrawer extends ConsumerWidget {
                 title: TextButton(
                   onPressed: (){
                     // ref.read(authProvider.notifier).logout();
-                    authState.logout();
+                    ref.read(authProvider.notifier).logout();
                     Navigator.pushNamed(
                             context, "/");
+                    // Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(),));
                   }, 
                   child: Text("Logout", style: TextStyle(color: Colors.white),)),
               ),

@@ -32,4 +32,18 @@ class Booking {
     serviceLocation: json["serviceLocation"], 
     status: json["status"],
   );
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'customerId': customerId,
+      'technicianId': technicianId,
+      'bookedDate': bookedDate.toIso8601String(),
+      'serviceDate': serviceDate.toIso8601String(),
+      'serviceNeeded': serviceNeeded,
+      "problemDescription": problemDescription,
+      "serviceLocation": serviceLocation,
+      'status': status,
+    };
+  }
 }
