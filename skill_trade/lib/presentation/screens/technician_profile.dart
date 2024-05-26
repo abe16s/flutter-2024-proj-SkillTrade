@@ -5,6 +5,7 @@ import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_event.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_state.dart';
+import 'package:skill_trade/storage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,7 +36,11 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<IndividualTechnicianBloc>(context).add(LoadIndividualTechnician(technicianId: 1));
+    LoadTechnician();
+  }
+
+  Future<void> LoadTechnician() async {
+    BlocProvider.of<IndividualTechnicianBloc>(context).add(LoadIndividualTechnician(technicianId: int.tryParse((await SecureStorage.instance.read("id"))!)));
   }
 
   @override
@@ -130,9 +135,9 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
       'phone': _controllers['phone']?.text,
       'skills': _controllers['skills']?.text,
       'experience': _controllers['experience']?.text,
-      'education_level': _controllers['education_level']?.text,
-      'available_location': _controllers['available_location']?.text,
-      'additional_bio': _controllers['additional_bio']?.text,
+      'educationLevel': _controllers['education_level']?.text,
+      'availableLocation': _controllers['available_location']?.text,
+      'additionalBio': _controllers['additional_bio']?.text,
     };
 
     BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: technicianId, updates: updatedData));

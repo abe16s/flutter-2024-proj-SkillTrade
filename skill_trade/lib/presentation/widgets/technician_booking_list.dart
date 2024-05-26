@@ -15,7 +15,7 @@ class TechnicianBookingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<BookingsBloc>(context).add(LoadCustomerBookings());
+    BlocProvider.of<BookingsBloc>(context).add(LoadTechnicianBookings());
     return BlocBuilder<BookingsBloc, BookingsState>(
         builder: (context, state) {
           if (state is BookingsLoading){
@@ -39,7 +39,7 @@ class TechnicianBookingList extends StatelessWidget {
                       itemCount: state.bookings.length,
                       
                       itemBuilder: (context, index){ 
-                        BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: bookings[index].customerId));
+                        BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: bookings[index].customerId.toString()));
                         return  BlocBuilder<CustomerBloc, CustomerState>(
                           builder: (context, state) {
                             if (state is CustomerLoaded) {

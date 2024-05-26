@@ -9,9 +9,9 @@ import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
 import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
 
-void main() {
-  runApp(const CustomerPage());
-}
+// void main() {
+//   runApp(const CustomerPage());
+// }
 
 class CustomerPage extends StatefulWidget {
   const CustomerPage({super.key});

@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_event.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_state.dart';
+import 'package:skill_trade/storage.dart';
 
 class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, IndividualTechnicianState> {
   IndividualTechnicianBloc() : super(IndividualTechnicianLoading()) {
@@ -11,11 +12,23 @@ class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, Individua
     on<UpdateTechnicianProfile>(_onUpdateTechnicianProfile);
   }
 
-  Future<void> _onLoadIndividualTechnician(LoadIndividualTechnician event, Emitter<IndividualTechnicianState> emit) async {
-    final headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6ImFiZW5lemVyc2VpZnUxMjNAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzEzNDY1NjQzLCJleHAiOjE3NDUwMjMyNDN9.lg-0KRLpcLGqE4jRV7wRQBRhI3IHh67v-fDH8bm8Cm8"};
+  String? endpoint;
+  String? token;
+  String? id;
+
+
+  Future<void> loadStorage() async {
+    endpoint = await SecureStorage.instance.read("endpoint");
+    token = await SecureStorage.instance.read("token");
+    id = await SecureStorage.instance.read("id");
+  }
+
+  Future<void> _onLoadIndividualTechnician(LoadIndividualTechnician event, Emitter<IndividualTechnicianState> emit) async {    
+    await loadStorage();
+    final headers = {"Authorization": "Bearer $token"};
     try {
       final response = await http
-          .get(Uri.parse('http://localhost:9000/technician/${event.technicianId}'), headers: headers);
+          .get(Uri.parse('http://$endpoint:9000/technician/${event.technicianId}'), headers: headers);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         data['id'] = event.technicianId;
@@ -30,13 +43,14 @@ class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, Individua
   }
 
   Future<void> _onUpdateTechnicianProfile(UpdateTechnicianProfile event, Emitter<IndividualTechnicianState> emit) async {
+    await loadStorage();
     final headers = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6Im15c3RlcnlhYmU0NTZAZ21haWwuY29tIiwicm9sZSI6InRlY2huaWNpYW4iLCJpYXQiOjE3MTY1MzYwMjQsImV4cCI6MTc0ODA5MzYyNH0.jfRNrCXIGHzKPgdV16ymAU7s_2FQMfQBcuboaDvAx00",
+      "Authorization": "Bearer $token",
       "Content-Type": "application/json"
     };
 
     try {
-      final response = await http.patch(Uri.parse('http://localhost:9000/technician/${event.technicianId}'), 
+      final response = await http.patch(Uri.parse('http://$endpoint:9000/technician/${event.technicianId}'), 
           headers: headers,
           body: json.encode(event.updates)
           );

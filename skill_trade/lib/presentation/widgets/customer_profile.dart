@@ -4,13 +4,19 @@ import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
 import 'package:skill_trade/state_managment/customer/customer_event.dart';
 import 'package:skill_trade/state_managment/customer/customer_state.dart';
+import 'package:skill_trade/storage.dart';
 
 class customerProfile extends StatelessWidget {
-  const customerProfile({super.key});
+  customerProfile({super.key});
+
+  Future<void> loadId(context) async {
+    String? id = await SecureStorage.instance.read("id");
+    BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: id!));
+  }
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: 1));
+    loadId(context);
     return Container(
       padding: const EdgeInsets.only(top: 60),
       child: Center(

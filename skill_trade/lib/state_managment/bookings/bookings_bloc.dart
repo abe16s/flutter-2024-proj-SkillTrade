@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:skill_trade/models/booking.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_state.dart';
+import 'package:skill_trade/storage.dart';
 
 class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   BookingsBloc() : super(BookingsLoading()) {
@@ -14,29 +15,44 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
     on<DeleteBooking>(_onDeleteBooking);
   }
 
+  String? endpoint;
+  String? token;
+  String? id;
+
+
+  Future<void> loadStorage() async {
+    endpoint = await SecureStorage.instance.read("endpoint");
+    token = await SecureStorage.instance.read("token");
+    id = await SecureStorage.instance.read("id");
+  }
+
   Future<void> _onLoadCustomerBookings(LoadCustomerBookings event, Emitter<BookingsState> emit) async {
-    final headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6ImFiZW5lemVyc2VpZnUxMjNAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzEzNDY1NjQzLCJleHAiOjE3NDUwMjMyNDN9.lg-0KRLpcLGqE4jRV7wRQBRhI3IHh67v-fDH8bm8Cm8"};
+    await loadStorage();
+    final headers = {"Authorization": "Bearer $token"};
     try {
       final response = await http
-          .get(Uri.parse('http://localhost:9000/bookings/customer/1'), headers: headers);
+          .get(Uri.parse('http://$endpoint:9000/bookings/customer/$id'), headers: headers);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final List<dynamic> bookingsJson = data["bookings"];
         final bookings = bookingsJson.map((json) => Booking.fromJson(json)).toList();
         emit(BookingsLoaded(bookings));
       } else {
+        print("fetch error");
         emit(BookingsError('Error fetching bookings'));
       }
     } catch (error) {
+      print("error");
       emit(BookingsError(error.toString()));
     }
   }
 
   Future<void> _onLoadTechnicianBookings(LoadTechnicianBookings event, Emitter<BookingsState> emit) async {
-    final headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6Im15c3RlcnlhYmU0NTZAZ21haWwuY29tIiwicm9sZSI6InRlY2huaWNpYW4iLCJpYXQiOjE3MTY1MzYwMjQsImV4cCI6MTc0ODA5MzYyNH0.jfRNrCXIGHzKPgdV16ymAU7s_2FQMfQBcuboaDvAx00"};
+    await loadStorage();
+    final headers = {"Authorization": "Bearer $token"};
     try {
       final response = await http
-          .get(Uri.parse('http://localhost:9000/bookings/technician/1'), headers: headers);
+          .get(Uri.parse('http://$endpoint:9000/bookings/technician/$id'), headers: headers);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = jsonDecode(response.body);
         final List<dynamic> bookingsJson = data["bookings"];
@@ -51,13 +67,14 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   }
 
   Future<void> _onPostBookings(PostBooking event, Emitter<BookingsState> emit) async {
+    await loadStorage();
     final headers = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6ImFiZW5lemVyc2VpZnUxMjNAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzEzNDY1NjQzLCJleHAiOjE3NDUwMjMyNDN9.lg-0KRLpcLGqE4jRV7wRQBRhI3IHh67v-fDH8bm8Cm8",
+      "Authorization": "Bearer $token",
       "Content-Type": "application/json",
     };
     try {
       final response = await http.post(
-          Uri.parse('http://localhost:9000/bookings'), 
+          Uri.parse('http://$endpoint:9000/bookings'), 
           headers: headers,
           body: json.encode({
             'customerId': event.customerId,
@@ -73,6 +90,17 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
         add(LoadCustomerBookings());
       } else {
         print("error");
+        print(response.statusCode);
+        print(token);
+        print('http://$endpoint:9000/bookings');
+        print({
+            'customerId': event.customerId,
+            'technicianId': event.technicianId,
+            'serviceNeeded': event.serviceNeeded,
+            "serviceLocation": event.serviceLocation,
+            "serviceDate": event.serviceDate,
+            "problemDescription": event.problemDescription,
+          });
         emit(BookingsError('Error posting bookings'));
       }
     } catch (error) {
@@ -81,14 +109,15 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   }
 
   Future<void> _onUpdateBooking(UpdateBooking event, Emitter<BookingsState> emit) async {
+    await loadStorage();
     final headers = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6Im15c3RlcnlhYmU0NTZAZ21haWwuY29tIiwicm9sZSI6InRlY2huaWNpYW4iLCJpYXQiOjE3MTY1MzYwMjQsImV4cCI6MTc0ODA5MzYyNH0.jfRNrCXIGHzKPgdV16ymAU7s_2FQMfQBcuboaDvAx00",
+      "Authorization": "Bearer $token",
       "Content-Type": "application/json",
     };
     
     try {
       final response = await http.patch(
-          Uri.parse('http://localhost:9000/bookings/${event.bookingId}'), 
+          Uri.parse('http://$endpoint:9000/bookings/${event.bookingId}'), 
           headers: headers,
           body: json.encode(event.updates),
         );
@@ -109,10 +138,11 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
   }
 
   Future<void> _onDeleteBooking(DeleteBooking event, Emitter<BookingsState> emit) async {
-    final headers = {"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImZ1bGxOYW1lIjoiQWJlbmV6ZXIgU2VpZnUiLCJlbWFpbCI6ImFiZW5lemVyc2VpZnUxMjNAZ21haWwuY29tIiwicm9sZSI6ImN1c3RvbWVyIiwiaWF0IjoxNzEzNDY1NjQzLCJleHAiOjE3NDUwMjMyNDN9.lg-0KRLpcLGqE4jRV7wRQBRhI3IHh67v-fDH8bm8Cm8"};
+    await loadStorage();
+    final headers = {"Authorization": "Bearer $token"};
     try {
       final response = await http
-          .delete(Uri.parse('http://localhost:9000/bookings/${event.bookingId}'), headers: headers);
+          .delete(Uri.parse('http://$endpoint:9000/bookings/${event.bookingId}'), headers: headers);
       
       if (response.statusCode == 200) {
         print("Deleted booking successfully");

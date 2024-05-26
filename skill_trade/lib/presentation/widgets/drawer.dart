@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
+import 'package:skill_trade/state_managment/auth/auth_event.dart';
+import 'package:skill_trade/storage.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -52,16 +56,29 @@ class MyDrawer extends StatelessWidget {
             ],
             ),
 
-            const Padding(
-              padding: EdgeInsets.only(left: 25.0, bottom: 25.0),
-              child: ListTile(
-                leading: Icon(Icons.logout, color: Colors.white,),
-                title: Text("Logout", style: TextStyle(color: Colors.white),),
+            Padding(
+              padding: EdgeInsets.only(left: 15.0, bottom: 25.0),
+              child: TextButton(
+                child: const ListTile(
+                  leading: Icon(Icons.logout, color: Colors.white,),
+                  title: Text("Logout", style: TextStyle(color: Colors.white),),
+                ),
+                onPressed: () async {
+                  await unlog(context);
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    "/",
+                    (Route<dynamic> route) => false,
+                  );
+                }
+                ),
               ),
-            ),
-
           ],
         ),
       );
+  }
+  
+  Future<void> unlog(context) async {
+    BlocProvider.of<AuthBloc>(context).add(UnlogEvent());
   }
 }

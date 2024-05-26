@@ -32,7 +32,7 @@ class _EditableFieldState extends State<EditableField> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: 350,
+                width: 220,
                 child: TextField(
                   controller: widget.controller,
                   enabled: isEditing, 

@@ -7,6 +7,7 @@ import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
+import 'package:skill_trade/storage.dart';
 
 class MyBookings extends StatefulWidget {
   final Technician technician;
@@ -53,8 +54,8 @@ class _MyBookingsState extends State<MyBookings> {
     });
   }
 
-  void submitBooking() {
-    BlocProvider.of<BookingsBloc>(context).add(PostBooking(problemDescription: problemDescriptionController.text, customerId: 1, technicianId: widget.technician.id, serviceNeeded: serviceNeededController.text, serviceDate: _selectedDate.toString().substring(0, 10), serviceLocation: serviceLocationController.text));
+  void submitBooking() async {
+    BlocProvider.of<BookingsBloc>(context).add(PostBooking(problemDescription: problemDescriptionController.text, customerId:  int.tryParse((await SecureStorage.instance.read("id"))!), technicianId: widget.technician.id, serviceNeeded: serviceNeededController.text, serviceDate: _selectedDate.toString().substring(0, 10), serviceLocation: serviceLocationController.text));
     serviceNeededController.clear();
     serviceLocationController.clear();
     problemDescriptionController.clear();

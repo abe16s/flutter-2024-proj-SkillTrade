@@ -13,7 +13,7 @@ class AdminCustomer extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const customerProfile(),
+          customerProfile(),
           const SizedBox(
             height: 30,
           ),

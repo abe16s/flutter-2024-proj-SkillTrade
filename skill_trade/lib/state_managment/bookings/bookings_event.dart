@@ -5,7 +5,7 @@ class LoadCustomerBookings extends BookingsEvent {}
 class LoadTechnicianBookings extends BookingsEvent {}
 
 class PostBooking extends BookingsEvent {
-  final int customerId;
+  final int? customerId;
   final int technicianId;
   final String serviceNeeded;
   final String serviceDate;
@@ -13,7 +13,7 @@ class PostBooking extends BookingsEvent {
   final String problemDescription;
 
   PostBooking({required this.problemDescription, required this.customerId, required this.technicianId, required this.serviceNeeded, required this.serviceDate, required this.serviceLocation});
-  List<Object> get props => [customerId, technicianId, serviceNeeded];
+  List<dynamic> get props => [customerId, technicianId, serviceNeeded];
 }
 
 class UpdateBooking extends BookingsEvent {

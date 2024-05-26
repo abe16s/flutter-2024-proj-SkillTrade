@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
+import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
+import 'package:skill_trade/state_managment/auth/auth_event.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,12 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _selectedRole = "Customer";
+  String _selectedRole = "customer";
 
   @override
   void initState() {
     super.initState();
-    _selectedRole = 'Customer';
+    _selectedRole = 'customer';
   }
 
   @override
@@ -74,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                           // mainAxisAlignment: MainAxisAlignment.,
                           children: [
                             Radio<String>(
-                              value: 'Customer',
+                              value: 'customer',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -85,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text('Customer'),
                             // SizedBox(width: 15,),
                             Radio<String>(
-                              value: 'Technician',
+                              value: 'technician',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -96,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text('Technician'),
                             // SizedBox(width: 15,),
                             Radio<String>(
-                              value: 'Admin',
+                              value: 'admin',
                               groupValue: _selectedRole,
                               onChanged: (value) {
                                 setState(() {
@@ -112,19 +115,25 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         MyButton(
                             text: "login",
-                            onPressed: () {
+                            onPressed: () async {
+                              await login();
                               if (_formKey.currentState!.validate()) {
-                                if (_selectedRole == "Customer"){ 
-                                  Navigator.pushNamed(
-                                    context, "/customer");
-                                } else if (_selectedRole == "Technician"){ 
-                                  Navigator.pushNamed(
-                                    context, "/technician");
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  "/",
+                                  (Route<dynamic> route) => false,
+                                );
+                              //   if (_selectedRole == "customer"){ 
+                              //     Navigator.pushNamed(
+                              //       context, "/customer");
+                              //   } else if (_selectedRole == "technician"){ 
+                              //     Navigator.pushNamed(
+                              //       context, "/technician");
 
-                                } else if(_selectedRole == "Admin"){ 
-                                  Navigator.pushNamed(
-                                    context, "/admin");
-                                }
+                              //   } else if(_selectedRole == "admin"){ 
+                              //     Navigator.pushNamed(
+                              //       context, "/admin");
+                              //   }
                               }
                             },
                             width: double.infinity),
@@ -160,5 +169,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+  
+  Future<void> login() async {
+    BlocProvider.of<AuthBloc>(context).add(LogInEvent(role: _selectedRole, email: _emailController.text, password: _passwordController.text));
   }
 }

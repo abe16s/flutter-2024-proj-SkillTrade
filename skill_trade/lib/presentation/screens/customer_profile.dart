@@ -11,7 +11,7 @@ class CustomerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<CustomerBloc>(
       create: (BuildContext context) => CustomerBloc(),
-      child: const customerProfile()
+      child: customerProfile()
       );
   }
 }
