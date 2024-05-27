@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  ForbiddenException,
   Get,
   Param,
   ParseIntPipe,
@@ -29,12 +28,7 @@ export class ReviewRateController {
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    const user = request.user;
-    // if (id === (user as { sub: number }).sub) {
-      return this.reviewRate.findAllTechnicianReviews(id);
-    // } else {
-      // throw new ForbiddenException('Access denied to Unauthorized user');
-    // }
+    return this.reviewRate.findAllTechnicianReviews(id);
   }
 
   @Post('technician/:id')
