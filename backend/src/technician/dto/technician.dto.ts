@@ -29,6 +29,7 @@ export class TechnicianDto {
   password: string;
 
   @IsEnum(Status, { message: 'Status is not valid' })
+  @IsOptional()
   status: Status;
 
 
