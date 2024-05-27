@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
 class AdminSite extends StatefulWidget {
   const AdminSite({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _AdminSiteState createState() => _AdminSiteState();
 }
 
@@ -72,7 +73,7 @@ class _AdminSiteState extends State<AdminSite> {
             ),
           ),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: _pages[_currentIndex], // Display the current page based on the current index
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
