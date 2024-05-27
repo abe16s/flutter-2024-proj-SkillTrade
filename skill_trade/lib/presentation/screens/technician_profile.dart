@@ -101,7 +101,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                             const SizedBox(height: 16),
                             Center(
                               child: ElevatedButton(
-                                onPressed: () => updateProfile(state.technician.id),
+                                onPressed: () => updateProfile(state.technician),
                                 child: const Text("Update Profile", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
                                 style: TextButton.styleFrom(
                                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -130,7 +130,7 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
     );
   }
 
-  void updateProfile(technicianId) {
+  void updateProfile(technician) {
     final updatedData = {
       'phone': _controllers['phone']?.text,
       'skills': _controllers['skills']?.text,
@@ -138,8 +138,9 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
       'educationLevel': _controllers['education_level']?.text,
       'availableLocation': _controllers['available_location']?.text,
       'additionalBio': _controllers['additional_bio']?.text,
+      "status": technician.status
     };
 
-    BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: technicianId, updates: updatedData));
+    BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: technician.id, updates: updatedData));
   }
 }
