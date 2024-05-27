@@ -65,6 +65,7 @@ export class AuthService {
 
   async signin(dto: any) {
     let user;
+    console.log(dto);
     if (dto.role === 'customer') {
       user = await this.prisma.user.findUnique({
         where: {
@@ -73,6 +74,12 @@ export class AuthService {
       });
     } else if (dto.role === 'technician') {
       user = await this.prisma.technician.findUnique({
+        where: {
+          email: dto.email,
+        },
+      });
+    } else if (dto.role === 'admin') {
+      user = await this.prisma.admin.findUnique({
         where: {
           email: dto.email,
         },

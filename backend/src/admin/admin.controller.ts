@@ -22,7 +22,7 @@ import { AdminDto } from './dto/admin.dto';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
   @Get(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), IsAdminGuard)
   findAdminProfile(
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
@@ -36,7 +36,7 @@ export class AdminController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(AuthGuard('jwt'), IsAdminGuard)
   async updateAdminProfile(
     @Param('id', ParseIntPipe) id: number,
     @Req() request: Request,
