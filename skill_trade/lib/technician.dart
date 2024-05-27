@@ -12,6 +12,22 @@ import 'package:skill_trade/state_managment/individual_technician/individual_tec
 //   runApp(TechnicianPage());
 // }
 
+class TechnicianPageLogic {
+  int selectedIndex = 0;
+
+  void navigateBottomBar(int index) {
+    selectedIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    final List<Widget> pages = [
+      const TechnicianBookingList(),
+      const TechnicianProfile(),
+    ];
+    return pages[selectedIndex];
+  }
+}
+
 class TechnicianPage extends StatefulWidget {
   const TechnicianPage({super.key});
 
@@ -20,19 +36,8 @@ class TechnicianPage extends StatefulWidget {
 }
 
 class _TechnicianPageState extends State<TechnicianPage> {
-  int _selectedIndex = 0;
+  final TechnicianPageLogic _logic = TechnicianPageLogic();
 
-  void navigateBottomBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _pages = [
-    const TechnicianBookingList(),
-    const TechnicianProfile()
-  ];
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,40 +57,43 @@ class _TechnicianPageState extends State<TechnicianPage> {
           ),
         ],
         child: Scaffold(
-        appBar: AppBar(
-          leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Padding(
-                padding: EdgeInsets.only(left: 12.0),
-                child: Icon(Icons.menu),
+          appBar: AppBar(
+            leading: Builder(
+              builder: (context) => IconButton(
+                icon: const Padding(
+                  padding: EdgeInsets.only(left: 12.0),
+                  child: Icon(Icons.menu),
+                ),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
               ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
             ),
+            title: const Text("SkillTrade"),
+            centerTitle: true,
           ),
-          title: Text("SkillTrade"),
-          centerTitle: true,
-      ),
-      drawer: MyDrawer(),
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: navigateBottomBar,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book_outlined),
-            label: "Bookings"
+          drawer: const MyDrawer(),
+          body: _logic.getCurrentPage(),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _logic.selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _logic.navigateBottomBar(index);
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.book_outlined),
+                label: "Bookings",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_2_outlined),
+                label: "My Profile",
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_2_outlined),
-            label: "My Profile"
-          ),
-        
-        ],
+        ),
       ),
-      ),
-      )
     );
   }
 }
