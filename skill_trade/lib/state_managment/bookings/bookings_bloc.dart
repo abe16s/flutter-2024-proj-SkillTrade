@@ -90,17 +90,6 @@ class BookingsBloc extends Bloc<BookingsEvent, BookingsState> {
         add(LoadCustomerBookings());
       } else {
         print("error");
-        print(response.statusCode);
-        print(token);
-        print('http://$endpoint:9000/bookings');
-        print({
-            'customerId': event.customerId,
-            'technicianId': event.technicianId,
-            'serviceNeeded': event.serviceNeeded,
-            "serviceLocation": event.serviceLocation,
-            "serviceDate": event.serviceDate,
-            "problemDescription": event.problemDescription,
-          });
         emit(BookingsError('Error posting bookings'));
       }
     } catch (error) {

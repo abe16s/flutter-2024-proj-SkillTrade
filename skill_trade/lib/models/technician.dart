@@ -8,6 +8,7 @@ class Technician{
   final String education_level; 
   final String available_location; 
   final String additional_bio; 
+  final String status; 
 
   Technician({
     required this.id, 
@@ -19,6 +20,7 @@ class Technician{
     required this.education_level, 
     required this.available_location, 
     required this.additional_bio,
+    required this.status,
   });
 
   factory Technician.fromJson(Map<String, dynamic> json) => Technician(
@@ -31,6 +33,7 @@ class Technician{
         education_level: json['educationLevel'],
         additional_bio: json['additionalBio'], 
         available_location: json['availableLocation'],
+        status: json['status'],
       );
 
 }

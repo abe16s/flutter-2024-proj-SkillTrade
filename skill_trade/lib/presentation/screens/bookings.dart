@@ -3,10 +3,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/models/review.dart';
 import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
+import 'package:skill_trade/state_managment/customer/customer_event.dart';
+import 'package:skill_trade/state_managment/customer/customer_state.dart';
+import 'package:skill_trade/state_managment/review/review_bloc.dart';
+import 'package:skill_trade/state_managment/review/review_event.dart';
+import 'package:skill_trade/state_managment/review/review_state.dart';
 import 'package:skill_trade/storage.dart';
 
 class MyBookings extends StatefulWidget {
@@ -35,9 +42,7 @@ class _MyBookingsState extends State<MyBookings> {
     }
   }
 
-  double _rating = 0;
-  String _review = '';
-  List<Review> _reviews = []; // List to store previous reviews
+  int _rating = 0;
   TextEditingController _reviewController = TextEditingController();
   TextEditingController serviceNeededController = TextEditingController();
   TextEditingController serviceLocationController = TextEditingController();
@@ -45,12 +50,10 @@ class _MyBookingsState extends State<MyBookings> {
 
 
   void _submitReview() {
-    _reviews.add(
-        Review(rating: _rating, comment: _review, customer: "Abebe Kebede"));
+    BlocProvider.of<ReviewsBloc>(context).add(PostReview(technicianId: widget.technician.id, review: _reviewController.text, rate: _rating));
+    _reviewController.clear();
     setState(() {
       _rating = 0;
-      _review = '';
-      _reviewController.clear();
     });
   }
 
@@ -63,9 +66,17 @@ class _MyBookingsState extends State<MyBookings> {
         _selectedDate = null;
     });
   }
+  
+  String? id;
+  Future<void> loadId(context) async {
+    String? id = await SecureStorage.instance.read("id");
+    BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: id!));
+  }
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<ReviewsBloc>(context).add(LoadTechnicianReviews(technicianId: widget.technician.id));
+    loadId(context);
     return Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -251,12 +262,15 @@ class _MyBookingsState extends State<MyBookings> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
-                    _reviews.length > 0
-                        ? Container(
-                            height: _reviews.length * 110,
+                    BlocBuilder<ReviewsBloc, ReviewsState>(
+                      builder: (context, state) {
+                        if (state is ReviewsLoaded) {
+                         return state.review.isNotEmpty ? Container(
+                            height: state.review.length * 150,
                             child: ListView.builder(
-                              itemCount: _reviews.length,
+                              itemCount: state.review.length,
                               itemBuilder: (context, index) {
+                                Review curReview = state.review[index];
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -273,7 +287,7 @@ class _MyBookingsState extends State<MyBookings> {
                                           width: 5,
                                         ),
                                         Text(
-                                          _reviews[index].customer,
+                                          state.review[index].customer,
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500),
@@ -282,18 +296,51 @@ class _MyBookingsState extends State<MyBookings> {
                                     ),
                                     ListTile(
                                       title: RatingStars(
-                                          rating: _reviews[index].rating),
-                                      subtitle: Text(_reviews[index].comment),
+                                          rating: state.review[index].rating),
+                                      subtitle: BlocBuilder<CustomerBloc, CustomerState>(
+                                          builder: (context, state) {
+                                            if (state is CustomerLoaded) {
+                                              if (state.customer.id == curReview.customerId) {
+                                                TextEditingController curController = TextEditingController();
+                                                curController.text = curReview.comment;
+                                                return Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    EditableField(data: curReview.comment, controller: curController, label: 'review,${curReview.id}',),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        BlocProvider.of<ReviewsBloc>(context).add(DeleteReview(reviewId: curReview.id));
+                                                      }, 
+                                                      icon: Icon(Icons.delete, color: Colors.red, ))
+                                                  ],
+                                                );
+                                              } else {
+                                                return Text(curReview.comment);
+                                              }
+                                            } else {
+                                              return Text(curReview.comment);
+                                            }
+                                          }
+                                      )
                                     ),
                                   ],
                                 );
                               },
                             ),
                           )
-                        : Text(
+                          :Text(
                             "No reviews yet!",
-                          ),
-        
+                          );
+                          } else if (state is ReviewsLoading) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else if (state is ReviewsError) {
+                            return Center(child: Text(state.error));
+                          } else {
+                            return Container();
+                          }
+                      }
+                    ),
                     SizedBox(height: 20),
                     Text(
                       'Leave a Review',
@@ -335,7 +382,6 @@ class _MyBookingsState extends State<MyBookings> {
                     // Text input for review
                     TextField(
                       controller: _reviewController,
-                      onChanged: (value) => _review = value,
                       maxLines: 5,
                       decoration: InputDecoration(
                         hintText: 'Write your review here...',

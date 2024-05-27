@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/screens/bookings.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
+import 'package:skill_trade/state_managment/review/review_bloc.dart';
 
 class TechnicianCard extends StatelessWidget {
   final Technician technician;
@@ -24,8 +26,12 @@ class TechnicianCard extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => BlocProvider(
-                      create: (BuildContext context) => BookingsBloc(),
+                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MultiBlocProvider(
+                      providers: [
+                        BlocProvider<ReviewsBloc>(create: (BuildContext context) => ReviewsBloc(),),
+                        BlocProvider<BookingsBloc>(create: (BuildContext context) => BookingsBloc(),),
+                        BlocProvider<CustomerBloc>(create: (BuildContext context) => CustomerBloc(),),
+                      ],
                       child: MyBookings(technician: this.technician,))));
               }, 
               style: ButtonStyle(

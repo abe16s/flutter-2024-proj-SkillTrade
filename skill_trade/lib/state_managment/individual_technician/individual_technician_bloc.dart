@@ -58,6 +58,9 @@ class IndividualTechnicianBloc extends Bloc<IndividualTechnicianEvent, Individua
         print("Technician profile updated successfully");
         add(LoadIndividualTechnician(technicianId: event.technicianId));
       } else {
+        print(token);
+        print(event.updates);
+        print("http://$endpoint:9000/technician/${event.technicianId}");
         print(response.statusCode);
         emit(IndividualTechnicianError('Error updating technician'));
       }
