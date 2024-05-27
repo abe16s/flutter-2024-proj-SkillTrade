@@ -30,11 +30,11 @@ export class ReviewRateController {
     @Param('id', ParseIntPipe) id: number,
   ) {
     const user = request.user;
-    if (id === (user as { sub: number }).sub) {
+    // if (id === (user as { sub: number }).sub) {
       return this.reviewRate.findAllTechnicianReviews(id);
-    } else {
-      throw new ForbiddenException('Access denied to Unauthorized user');
-    }
+    // } else {
+      // throw new ForbiddenException('Access denied to Unauthorized user');
+    // }
   }
 
   @Post('technician/:id')

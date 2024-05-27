@@ -36,7 +36,7 @@ export class AdminController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'), IsAdminGuard)
+  @UseGuards(AuthGuard('jwt'))
   async updateAdminProfile(
     @Param('id', ParseIntPipe) id: number,
     @Req() request: Request,

@@ -10,9 +10,16 @@ export class TechnicianService {
   async findAllTechnicianProfiles() {
     const result = await this.prisma.technician.findMany({
       select: {
+        id: true,
         fullName: true,
         skills: true,
-        id: true,
+        phone: true,
+        experience: true,
+        educationLevel: true,
+        availableLocation: true,
+        additionalBio: true,
+        email: true,
+        status: true,
       },
     });
     return result;
@@ -23,6 +30,7 @@ export class TechnicianService {
         id: technicianId,
       },
       select: {
+        id: true,
         fullName: true,
         skills: true,
         phone: true,
@@ -31,6 +39,7 @@ export class TechnicianService {
         availableLocation: true,
         additionalBio: true,
         email: true,
+        status: true,
       },
     });
     return result;
