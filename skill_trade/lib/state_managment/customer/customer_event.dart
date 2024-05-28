@@ -5,3 +5,5 @@ class LoadCustomer extends CustomerEvent {
 
   LoadCustomer({required this.customerId});
 }
+
+class LoadAllCustomers extends CustomerEvent {}

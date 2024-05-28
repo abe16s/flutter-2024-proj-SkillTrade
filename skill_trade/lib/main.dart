@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/admin.dart';
 import 'package:skill_trade/customer.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
-import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/admin_technician.dart';
 import 'package:skill_trade/presentation/screens/home_page.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
@@ -12,6 +11,10 @@ import 'package:skill_trade/presentation/screens/technician_application_success.
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
 import 'package:skill_trade/state_managment/auth/auth_state.dart';
+import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
+import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
+import 'package:skill_trade/state_managment/review/review_bloc.dart';
 import 'package:skill_trade/storage.dart';
 import 'package:skill_trade/technician.dart';
 
@@ -38,8 +41,28 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         initialRoute: "/",
         routes: {
-          "/admintech": (context) => AdminTechnician(),
-          "/admincustomer": (context) => AdminCustomer(),
+          "/admintech": (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<IndividualTechnicianBloc>(
+                create: (BuildContext context) => IndividualTechnicianBloc(),
+              ),
+              BlocProvider<BookingsBloc>(
+                create: (BuildContext context) => BookingsBloc(),
+              ),
+              BlocProvider<ReviewsBloc>(
+                create: (BuildContext context) => ReviewsBloc(),
+              ),
+            ],
+            child: AdminTechnician(),
+          ),
+          "/admincustomer": (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider<CustomerBloc>(
+                create: (BuildContext context) => CustomerBloc(),
+              ),
+            ],
+            child: AdminCustomer(),
+          ),
           "/login": (context) => const LoginPage(),
           "/signup": (context) => const SignupPage(),
           "/customer": (context) => CustomerPage(),
@@ -76,7 +99,7 @@ class GetFirstPage extends StatelessWidget {
       case "technician":
         return const TechnicianPage();
       case "admin":
-        return const AdminPage();
+        return const AdminSite();
       default:
         return const HomeScreen();
     }

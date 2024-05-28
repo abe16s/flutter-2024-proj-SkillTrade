@@ -10,6 +10,17 @@ class TechniciansLoaded extends TechniciansState {
   TechniciansLoaded(this.technicians);
 }
 
+class PendingTechniciansLoaded extends TechniciansState {
+  final List<Technician> technicians;
+
+  PendingTechniciansLoaded(this.technicians);
+}
+
+class SuspendedTechniciansLoaded extends TechniciansState {
+  final List<Technician> technicians;
+
+  SuspendedTechniciansLoaded(this.technicians);
+}
 
 class TechniciansError extends TechniciansState {
   final String error;

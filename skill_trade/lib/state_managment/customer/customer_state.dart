@@ -10,6 +10,12 @@ class CustomerLoaded extends CustomerState {
   CustomerLoaded({required this.customer});
 }
 
+class AllCustomersLoaded extends CustomerState {
+  final List<Customer> customers;
+
+  AllCustomersLoaded(this.customers);
+}
+
 
 class CustomerError extends CustomerState {
   final String error;

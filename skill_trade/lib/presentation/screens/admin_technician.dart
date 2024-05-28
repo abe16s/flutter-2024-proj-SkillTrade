@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:skill_trade/presentation/widgets/rating_stars.dart';
+import 'package:skill_trade/presentation/widgets/technician_profile.dart';
+import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
+import 'package:skill_trade/state_managment/individual_technician/individual_technician_event.dart';
+import 'package:skill_trade/state_managment/individual_technician/individual_technician_state.dart';
+import 'package:skill_trade/state_managment/review/review_bloc.dart';
+import 'package:skill_trade/state_managment/review/review_event.dart';
+import 'package:skill_trade/state_managment/review/review_state.dart';
 
 class AdminTechnician extends StatelessWidget {
   final Map<String, String> bookingData = {
@@ -12,6 +21,11 @@ class AdminTechnician extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      final technicianId = ModalRoute.of(context)!.settings.arguments as int;
+      BlocProvider.of<IndividualTechnicianBloc>(context).add(LoadIndividualTechnician(technicianId: technicianId));
+      BlocProvider.of<ReviewsBloc>(context).add(LoadTechnicianReviews(technicianId: technicianId));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text("Technician"),
@@ -19,49 +33,174 @@ class AdminTechnician extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          // const TechnicianSmallProfile(),
-          // SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                ),
-                child: const Text(
-                  "Suspend",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.green),
-                ),
-                child: const Text(
-                  "Unsuspend",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ],
+          BlocBuilder<IndividualTechnicianBloc, IndividualTechnicianState>(
+              builder: (context, state) {
+                if (state is IndividualTechnicianLoaded) {
+                  return Column(
+                    children: [
+                      TechnicianSmallProfile(technician: state.technician,),
+                      SizedBox(height: 30,),
+                      state.technician.status == "suspended" || state.technician.status == "accepted" ?
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: state.technician.id, updates: {"status": "suspended"}));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                            ),
+                            child: const Text(
+                              "Suspend",
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: state.technician.id, updates: {"status": "accepted"}));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.green),
+                            ),
+                            child: const Text(
+                              "Unsuspend",
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ):
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: state.technician.id, updates: {"status": "accepted"}));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                            ),
+                            child: const Text(
+                              "Accept application",
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: state.technician.id, updates: {"status": "declined"}));
+                            },
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all<Color>(Colors.red),
+                            ),
+                            child: const Text(
+                              "Decline application",
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                        ],
+                      ), 
+                    ],
+                  );
+                } else if (state is IndividualTechnicianLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is IndividualTechnicianError) {
+                  return Center(child: Text(state.error));
+                } else {
+                  return Container();
+                }
+              },
           ),
           const SizedBox(
             height: 30,
           ),
+
           const Padding(
             padding: EdgeInsets.only(left: 15.0),
             child: Text(
-              "Booking History",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+              'Reviews',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
+          const SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: BlocBuilder<ReviewsBloc, ReviewsState>(
+              builder: (context, state) {
+                if (state is ReviewsLoaded) {
+                  return state.review.isNotEmpty ? Container(
+                    height: state.review.length * 110,
+                    child: ListView.builder(
+                      itemCount: state.review.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset(
+                                  "assets/profile.jpg",
+                                  width: 40,
+                                  height: 40,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  state.review[index].customer,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            ListTile(
+                              title: RatingStars(
+                                  rating: state.review[index].rating),
+                              subtitle: Text(state.review[index].comment)
+                              )
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                  :const Text(
+                    "No reviews yet!",
+                  );
+                  } else if (state is ReviewsLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (state is ReviewsError) {
+                    return Center(child: Text(state.error));
+                  } else {
+                    return Container();
+                  }
+              }
+            ),
+          ),
+
+          const SizedBox(
+            height: 30,
+          ),
+          // const Padding(
+          //   padding: EdgeInsets.only(left: 15.0),
+          //   child: Text(
+          //     "Booking History",
+          //     style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+          //   ),
+          // ),
           // for (int i = 0; i < 2; i++)
           //   TechnicianBookingCard(
           //     bookingData: this.bookingData,

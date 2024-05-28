@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/models/customer.dart';
 
 class CustomerTile extends StatelessWidget {
-  const CustomerTile ({super.key});
+  final Customer customer;
+  const CustomerTile ({super.key, required this.customer});
 
   @override
   Widget build(BuildContext context) {
@@ -12,20 +14,20 @@ class CustomerTile extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10.0),
             child: Image.asset("assets/customer.png"),
           ),
-          title: Text("Abenezer Seifu", style: TextStyle(fontWeight: FontWeight.w500),),
-          subtitle:const Column(
+          title: Text(customer.fullName, style: TextStyle(fontWeight: FontWeight.w500),),
+          subtitle: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Email: mysteryabe456@gmail.com"),
-              Text("tel: 0936120470"),
+              Text("Email: ${customer.email}"),
+              Text("tel: ${customer.phone}"),
             ],
           ),
           trailing: TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, "/admincustomer");
+              Navigator.pushNamed(context, "/admincustomer", arguments: customer.id);
             }, 
-            child: Text("Review")
+            child: const Text("Review")
           ),
         ),
       );

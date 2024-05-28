@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
 import 'package:skill_trade/state_managment/auth/auth_event.dart';
-import 'package:skill_trade/storage.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});

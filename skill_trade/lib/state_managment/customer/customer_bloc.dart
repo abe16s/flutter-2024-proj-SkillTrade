@@ -9,6 +9,7 @@ import 'package:skill_trade/storage.dart';
 class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerBloc() : super(CustomerLoading()) {
     on<LoadCustomer>(_onLoadCustomer);
+    on<LoadAllCustomers>(_onLoadAllCustomers);
   }
 
   String? endpoint;
@@ -34,6 +35,24 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         emit(CustomerLoaded(customer: customer));
       } else {
         emit(CustomerError('Error fetching customer'));
+      }
+    } catch (error) {
+      emit(CustomerError(error.toString()));
+    }
+  }
+
+  Future<void> _onLoadAllCustomers(LoadAllCustomers event, Emitter<CustomerState> emit) async {
+    await loadStorage();
+    final headers = {"Authorization": "Bearer $token"};
+    try {
+      final response = await http
+          .get(Uri.parse('http://$endpoint:9000/customer'), headers: headers);
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        final customers = data.map((json) => Customer.fromJson(json)).toList();
+        emit(AllCustomersLoaded(customers));
+      } else {
+        emit(CustomerError('Error fetching customers'));
       }
     } catch (error) {
       emit(CustomerError(error.toString()));

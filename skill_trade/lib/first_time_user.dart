@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/admin.dart';
 import 'package:skill_trade/customer.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
-import 'package:skill_trade/presentation/screens/admin_technician.dart';
 import 'package:skill_trade/presentation/screens/home_page.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/screens/signup_page.dart';
@@ -37,7 +36,7 @@ class _FirstTimeUserPageState extends State<FirstTimeUserPage> {
         // "/customer":(context) => CustomerPage(),
         // "/technician":(context) => TechnicianPage(),
         // "/apply":(context) => TechnicianApplicationSuccess(),
-        "/admintech": (context) => AdminTechnician(),
+        // "/admintech": (context) => AdminTechnician(),
         "/admincustomer": (context) => AdminCustomer(),
         "/login" : (context) =>  MultiBlocProvider(
             providers: [

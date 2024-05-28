@@ -6,6 +6,7 @@ import 'package:skill_trade/presentation/screens/find_technicians.dart';
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
 import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
 
@@ -55,6 +56,9 @@ class _CustomerPageState extends State<CustomerPage> {
           ),
           BlocProvider<IndividualTechnicianBloc>(
             create: (BuildContext context) => IndividualTechnicianBloc(),
+          ),
+          BlocProvider<CustomerBloc>(
+            create: (BuildContext context) => CustomerBloc(),
           ),
         ],
         child: Scaffold(

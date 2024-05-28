@@ -37,35 +37,36 @@ class TechnicianSmallProfile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InfoLabel(label: "Email", data: technician.email),//"mysteryabe456@gmail.com"),
+              InfoLabel(label: "Email", data: technician.email),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Phone", data: technician.phone),//"0936120470"),
+              InfoLabel(label: "Phone", data: technician.phone),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Skills", data: technician.skills),//"Electrican, Dish technician"),
+              InfoLabel(label: "Skills", data: technician.skills),
                SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Experience",
-                  data: technician.experience),//"15 years in ELPA, 3 amet did mastat"),
+                  data: technician.experience),
                SizedBox(
                 height: 3,
               ),
               InfoLabel(
                   label: "Education Level",
-                  data: technician.education_level),//"Bsc. in Electrical Engineering"),
+                  data: technician.education_level),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Available Location", data: technician.available_location),//"Harar"),
+              InfoLabel(label: "Available Location", data: technician.available_location),
                SizedBox(
                 height: 3,
               ),
-              InfoLabel(label: "Additional Bio", data: technician.additional_bio),//"Tiris yeneqelkubet"),
+              InfoLabel(label: "Additional Bio", data: technician.additional_bio),
+              InfoLabel(label: "Status", data: technician.status),
             ],
           ),
         )

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
-import 'package:skill_trade/presentation/screens/admin_technician.dart';
 import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
+import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
+import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: lightMode,
       initialRoute: "/",
       routes: { 
-        "/admintech": (context) => AdminTechnician(),
+        // "/admintech": (context) => AdminTechnician(),
         "/admincustomer": (context) => AdminCustomer(),
       },
       debugShowCheckedModeBanner: false,
@@ -39,12 +41,39 @@ class AdminSite extends StatefulWidget {
 class _AdminSiteState extends State<AdminSite> {
   int _currentIndex = 0;
 
-  // Define the different pages to navigate to
   final List<Widget> _pages = [
-    const AdminPage(),
-    const ReportedTechnicians(),
-    const CustomersList(),
-    const TechniciansList()
+     MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const AdminPage()
+    ),
+     MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const ReportedTechnicians()
+    ),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<CustomerBloc>(
+            create: (BuildContext context) => CustomerBloc(),
+          ),
+        ],
+        child: const CustomersList()
+    ),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const TechniciansList()
+    )
   ];
 
   // Function to change the current index when an item is tapped
