@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:skill_trade/models/booking.dart';
+import 'package:skill_trade/models/review.dart';
 import 'package:skill_trade/models/technician.dart';
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -9,51 +10,51 @@ import 'package:skill_trade/riverpod/technician_provider.dart';
 
 
 final endpoint = "192.168.43.151";
-
-class BookingsState {
+// Assuming Review and SecureStorageService are defined elsewhere
+class ReviewsState {
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
-  final List<Booking> bookings;
+  final List<Review> reviews;
 
-  BookingsState({
+  ReviewsState({
     this.isLoading = false,
     this.isSuccess = false,
     this.errorMessage,
-    this.bookings = const [],
+    this.reviews = const [],
   });
 
-  BookingsState copyWith({
+  ReviewsState copyWith({
     bool? isLoading,
     bool? isSuccess,
     String? errorMessage,
-    List<Booking>? bookings,
+    List<Review>? reviews,
   }) {
-    return BookingsState(
+    return ReviewsState(
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: errorMessage ?? this.errorMessage,
-      bookings: bookings ?? this.bookings,
+      reviews: reviews ?? this.reviews,
     );
   }
 }
 
 
-// Assuming Booking and SecureStorageService are defined elsewhere
-class BookingsNotifier extends StateNotifier<BookingsState> {
+// Assuming Review and SecureStorageService are defined elsewhere
+class ReviewsNotifier extends StateNotifier<ReviewsState> {
   final SecureStorageService _secureStorageService;
+  int? _technicianId;
 
-  BookingsNotifier(this._secureStorageService) : super(BookingsState());
+  ReviewsNotifier(this._secureStorageService) : super(ReviewsState());
 
-  Future<void> fetchBookings() async {
+  Future<void> fetchReviews(int? technicianId) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
+    _technicianId = technicianId;
     try {
       final token = await _secureStorageService.read("token");
-      final role = await _secureStorageService.read('role');
-      final id = await _secureStorageService.read('userId');
 
       final response = await http.get(
-        Uri.parse('http://localhost:9000/bookings/$role/$id'),
+        Uri.parse('http://localhost:9000/review-rate/technician/$technicianId'),
         headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -61,88 +62,102 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
         },
       );
 
-      print("fetched bookings role $role id $id $response");
+      print("fetched reviews $response");
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        final List<dynamic> bookingsJson = data["bookings"];
-        print("fetched bookings successfully $bookingsJson");
 
-        final bookings = bookingsJson.map((json) => Booking.fromJson(json)).toList();
-        state = state.copyWith(isLoading: false, isSuccess: true, bookings: bookings);
+        final  List<dynamic> data = jsonDecode(response.body);
+
+        final reviews = data.map((json) {
+          Map<String, dynamic> cur = {
+            "rate": json["rate"],
+            "review": json["review"],
+            "user": json["user"]["fullName"],
+            "userId": json["user"]["id"],
+            "id": json["id"]
+          };
+          return Review.fromJson(cur);
+        }).toList();
+        print(reviews);
+
+        state = state.copyWith(isLoading: false, isSuccess: true, reviews: reviews);
       } else {
-        throw Exception('Failed to load bookings');
+        throw Exception('Failed to load reviews');
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
-  Future<void> updateBooking(Map<String, dynamic> booking, int id) async {
+  Future<void> updateReview(Map<String, dynamic> review, int id, ) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final token = await _secureStorageService.read("token");
-      print("hey booking $booking, $id");
+      print("updating review $review, $id");
       final response = await http.patch(
-        Uri.parse('http://localhost:9000/bookings/$id'),
+        Uri.parse('http://localhost:9000/review-rate/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(booking),
+        body: jsonEncode(review),
       );
-      print("hey, response ${response.statusCode}, $response");
+      print("update response ${response.statusCode}, $response");
 
       if (response.statusCode == 200) {
-        await fetchBookings();
+        await fetchReviews(_technicianId);
       } else {
-        throw Exception('Failed to update booking');
+        throw Exception('Failed to update review');
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
-  Future<void> createBooking(Map<String, dynamic> booking) async {
+  Future<void> createReview(technicianId, review, rate) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final token = await _secureStorageService.read("token");
       final id = await _secureStorageService.read('userId');
       if (id == null) {
-        throw Exception("no customer no booking");
+        throw Exception("no customer no review");
       }
 
-      booking["customerId"] = int.parse(id);
 
-      print("creating booking $booking");
+      print("creating review $review");
       final response = await http.post(
-        Uri.parse('http://localhost:9000/bookings'),
+        Uri.parse('http://localhost:9000/review-rate/technician/${technicianId}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: json.encode(booking),
+        body: json.encode({
+          "technicianId": technicianId,
+          "review": review,
+          "rate": rate,
+          "customerId": int.parse(id)
+        }),
       );
       print("create response ${response.statusCode}, $response, ${response.body}");
 
       if (response.statusCode == 201) {
-        await fetchBookings();
+        await fetchReviews(review.technicianId);
       } else {
-        throw Exception('Failed to create booking');
+        throw Exception('Failed to create review');
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
-  Future<void> deleteBooking(int id) async {
+  Future<void> deleteReview(int id, int technicianId) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final token = await _secureStorageService.read("token");
-      print("deleting booking $id");
+      print("deleting review $id");
       final response = await http.delete(
-        Uri.parse('http://localhost:9000/bookings/$id'),
+        Uri.parse('http://localhost:9000/review-rate/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -152,9 +167,9 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
       print("delete response ${response.statusCode}, $response");
 
       if (response.statusCode == 200) {
-        await fetchBookings();
+        await fetchReviews(technicianId);
       } else {
-        throw Exception('Failed to delete booking');
+        throw Exception('Failed to delete review');
       }
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
@@ -162,8 +177,8 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
   }
 }
 
-final bookingProvider = StateNotifierProvider<BookingsNotifier, BookingsState>((ref) {
-  final secureStorageService = ref.read(secureStorageProvider);
-  return BookingsNotifier(secureStorageService);
-});
 
+final reviewProvider = StateNotifierProvider<ReviewsNotifier, ReviewsState>((ref) {
+  final secureStorageService = ref.read(secureStorageProvider);
+  return ReviewsNotifier(secureStorageService);
+});

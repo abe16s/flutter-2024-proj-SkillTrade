@@ -40,7 +40,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = AuthState(isLoading: true);
     print("signing up ${user.toJson}");
     final response = await http.post(
-      Uri.parse('http://$endpoint:9000/trader/signup'),
+      Uri.parse('http://localhost:9000/trader/signup'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(user.toJson()),
     );
@@ -67,7 +67,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     print("sign in inputs $role, $email, $password");
     try {
       final response = await http.post(
-        Uri.parse('http://$endpoint:9000/trader/signin'),
+        Uri.parse('http://localhost:9000/trader/signin'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           "role": role,
@@ -113,9 +113,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 }
 
-// final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-//   return AuthNotifier();
-// });
 
 final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
   final secureStorageService = ref.read(secureStorageProvider);

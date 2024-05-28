@@ -33,6 +33,7 @@ class TechnicianProfile extends ConsumerStatefulWidget {
 
 class _TechnicianProfileState extends ConsumerState<TechnicianProfile> {
   final Map<String, TextEditingController> _controllers = {};
+  String? _technician_status ;
 
   @override
   void initState() {
@@ -56,7 +57,8 @@ class _TechnicianProfileState extends ConsumerState<TechnicianProfile> {
                   technicianState.errorMessage!,
                   style: TextStyle(color: Colors.red),
                 ),
-              if (technicianState.success) Text('Update Successful!'),
+              
+              // Text('Update Successful!'),
             technicianProfile.when(
               data: (profile) {
                 if (_controllers.isEmpty) {
@@ -67,6 +69,7 @@ class _TechnicianProfileState extends ConsumerState<TechnicianProfile> {
                     _controllers['available_location'] = TextEditingController(text: profile.availableLocation);
                     _controllers['additional_bio'] = TextEditingController(text: profile.additionalBio);
                   }
+                _technician_status = profile.status;
 
 
 
@@ -109,7 +112,16 @@ class _TechnicianProfileState extends ConsumerState<TechnicianProfile> {
                             const SizedBox(height: 16),
                             Center(
                               child: ElevatedButton(
-                                onPressed: () => updateProfile(),
+                                onPressed: () {
+                                  updateProfile();
+                                  if (technicianState.success) 
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text( 'Successfully updated!'),
+                                          ),
+                                        );
+    
+                                },
                                 child: const Text("Update Profile", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
                                 style: TextButton.styleFrom(
                                   backgroundColor: Theme.of(context).colorScheme.primary,
@@ -144,7 +156,9 @@ class _TechnicianProfileState extends ConsumerState<TechnicianProfile> {
       'educationLevel': _controllers['education_level']?.text,
       'availableLocation': _controllers['available_location']?.text,
       'additionalBio': _controllers['additional_bio']?.text,
+      'status': _technician_status,
     };
+    
     
     ref.read(technicianProfileUpdateProvider.notifier).updateTechnician(updatedData);
     

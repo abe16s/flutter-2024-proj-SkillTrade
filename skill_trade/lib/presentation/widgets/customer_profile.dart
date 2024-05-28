@@ -3,20 +3,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
 import 'package:skill_trade/riverpod/customer_provider.dart';
 
-class customerProfile extends ConsumerWidget {
+
+
+
+class customerProfile extends ConsumerStatefulWidget {
   const customerProfile({super.key});
 
   @override
-  Widget build(BuildContext context, ref) {
+  ConsumerState<customerProfile> createState() => _customerProfileState();
+}
 
-    final profile = ref.watch(customerProfileProvider);
-    // return 
+class _customerProfileState extends ConsumerState<customerProfile> {
+  void initState(){
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(customerNotifierProvider.notifier).fetchProfile();
+    });
+  }
+  @override
+  Widget build(BuildContext context) {
+    final profileState = ref.watch(customerNotifierProvider);
     return Container(
       padding: const EdgeInsets.only(top: 60),
-      child: Center(
-        child: profile.when(
-        data: (profile) {
-          return Column(
+      child: Center( 
+        child: profileState.isLoading ? CircularProgressIndicator() :
+        profileState.error != null ? Text('Error loading your profile!') :
+        Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 CircleAvatar(
@@ -24,17 +35,14 @@ class customerProfile extends ConsumerWidget {
                   backgroundImage: AssetImage("assets/profile.jpg"),
                 ),
                 SizedBox(height: 10),
-                InfoLabel(label: "Name", data: profile.fullName,),
-                InfoLabel(label: "Email", data: profile.email),
-                InfoLabel(label: "Phone", data: profile.phone),
+                InfoLabel(label: "Name", data: profileState.customer!.fullName,),
+                InfoLabel(label: "Email", data: profileState.customer!.email),
+                InfoLabel(label: "Phone", data: profileState.customer!.phone),
               ],
-            );},
-          
-        loading: () => Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Error loading bookings: $error')),
-        ),
-      ),
-        
+            )
+
+      )
+            
         
     );
   }

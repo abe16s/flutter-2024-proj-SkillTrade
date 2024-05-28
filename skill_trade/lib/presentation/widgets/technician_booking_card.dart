@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skill_trade/models/booking.dart';
 import 'package:skill_trade/models/customer.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
+import 'package:skill_trade/riverpod/booking_provider.dart';
 
-class TechnicianBookingCard extends StatelessWidget {
+class TechnicianBookingCard extends ConsumerWidget {
   final Booking booking;
   final bool editAccess;
   final Customer customer;
@@ -12,7 +14,9 @@ class TechnicianBookingCard extends StatelessWidget {
 
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final bookingState = ref.watch(bookingProvider);
+    final bookingNotifier = ref.read(bookingProvider.notifier);
     return Card(
         elevation: 4.0,
         color: Theme.of(context).colorScheme.secondary,
@@ -57,6 +61,7 @@ class TechnicianBookingCard extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
+                      bookingNotifier.updateBooking({"status": "accepted"}, booking.id);
                       // BlocProvider.of<BookingsBloc>(context).add(UpdateBooking(updates: {"status": "accepted"}, bookingId: booking.id, whoUpdated: "technician"));
                     },
                     child: const Text('Accept', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
@@ -66,6 +71,7 @@ class TechnicianBookingCard extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      bookingNotifier.updateBooking({"status": "declined"}, booking.id);
                       // BlocProvider.of<BookingsBloc>(context).add(UpdateBooking(updates: {"status": "declined"}, bookingId: booking.id, whoUpdated: "technician"));
                     },
                     child: const Text('Decline', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
@@ -75,6 +81,7 @@ class TechnicianBookingCard extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
+                      bookingNotifier.updateBooking({"status": "serviced"}, booking.id);
                       // BlocProvider.of<BookingsBloc>(context).add(UpdateBooking(updates: {"status": "serviced"}, bookingId: booking.id, whoUpdated: "technician"));
                     },
                     child: const Text('Serviced', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),

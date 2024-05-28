@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:skill_trade/models/customer.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/models/review.dart';
 import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 import 'package:skill_trade/riverpod/booking_provider.dart';
+import 'package:skill_trade/riverpod/customer_provider.dart';
+import 'package:skill_trade/riverpod/review_provider.dart';
+import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 // import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
 // import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
 
@@ -43,18 +48,33 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
   TextEditingController serviceNeededController = TextEditingController();
   TextEditingController serviceLocationController = TextEditingController();
   TextEditingController problemDescriptionController = TextEditingController();
+  var _customer;
+  
 
+  void _submitReview() async {
 
-  void _submitReview() {
-    _reviews.add(
-        Review(rating: _rating, comment: _review, customer: "Abebe Kebede"));
+    // _reviews.add(newReview);
+    ref.read(reviewProvider.notifier).createReview(widget.technician.id, _review, _rating );
+        
     setState(() {
       _rating = 0;
       _review = '';
       _reviewController.clear();
     });
+    
   }
 
+  void initState(){
+    
+    // ref.read(customerNotifierProvider.notifier).fetchProfile();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(customerNotifierProvider.notifier).fetchProfile();
+      ref.read(reviewProvider.notifier).fetchReviews(widget.technician.id);
+    });
+    
+    // _customer = customerState.customer;
+
+  }
   void submitBooking() {
     // BlocProvider.of<BookingsBloc>(context).add();
     final booking = {
@@ -77,6 +97,9 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
   @override
   Widget build(BuildContext context) {
     final bookingState = ref.watch(bookingProvider);
+    final reviewState = ref.watch(reviewProvider);
+    final customerState = ref.watch(customerNotifierProvider);
+
     return Scaffold(
           appBar: AppBar(
             title: const Text(
@@ -278,12 +301,19 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 10),
-                    _reviews.length > 0
-                        ? Container(
-                            height: _reviews.length * 110,
+                    if(reviewState.isLoading)
+                      Center(child: CircularProgressIndicator())
+                    else if(reviewState.isSuccess) ...[
+                      reviewState.reviews.length == 0 ?
+                          Text(
+                            "No reviews yet!",
+                          )
+                      : Container(
+                            height: reviewState.reviews.length * 110,
                             child: ListView.builder(
-                              itemCount: _reviews.length,
+                              itemCount: reviewState.reviews.length,
                               itemBuilder: (context, index) {
+                                final cur_review = reviewState.reviews[index];
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +330,7 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
                                           width: 5,
                                         ),
                                         Text(
-                                          _reviews[index].customer,
+                                          cur_review.customer,
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500),
@@ -309,17 +339,91 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
                                     ),
                                     ListTile(
                                       title: RatingStars(
-                                          rating: _reviews[index].rating),
-                                      subtitle: Text(_reviews[index].comment),
+                                          rating: cur_review.rating),
+                                      subtitle: Consumer( 
+                                        builder: (context, watch, child){
+                                          final customerState = ref.watch(customerNotifierProvider);
+
+                                            if (!customerState.isLoading) {
+
+                                              if (customerState.customer!.id == cur_review.customerId) {
+                                                TextEditingController curController = TextEditingController();
+                                                curController.text = cur_review.review;
+
+                                                return Row(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                                  children: [
+                                                    EditableField(data: cur_review.review, controller: curController, label: 'review,${cur_review.id}',),
+                                                    IconButton(
+                                                      onPressed: () {
+                                                        ref.read(reviewProvider.notifier).deleteReview(cur_review.id, widget.technician.id);
+                                                      }, 
+                                                      icon: Icon(Icons.delete, color: Colors.red, ))
+                                                  ],
+                                                );
+                                              } else {
+                                                return Text(cur_review.review);
+                                              }
+                                            } else {
+                                              return Text(cur_review.review);
+                                            }
+                                        },
+                                      )
                                     ),
                                   ],
                                 );
                               },
                             ),
-                          )
-                        : Text(
-                            "No reviews yet!",
                           ),
+            
+
+                    ],
+                    
+                     
+                    
+                    // _reviews.length > 0
+                        // ? Container(
+                        //     height: _reviews.length * 110,
+                        //     child: ListView.builder(
+                        //       itemCount: _reviews.length,
+                        //       itemBuilder: (context, index) {
+                        //         return Column(
+                        //           mainAxisSize: MainAxisSize.min,
+                        //           crossAxisAlignment: CrossAxisAlignment.start,
+                        //           children: [
+                        //             Row(
+                        //               crossAxisAlignment: CrossAxisAlignment.center,
+                        //               children: [
+                        //                 Image.asset(
+                        //                   "assets/profile.jpg",
+                        //                   width: 40,
+                        //                   height: 40,
+                        //                 ),
+                        //                 SizedBox(
+                        //                   width: 5,
+                        //                 ),
+                        //                 Text(
+                        //                   _reviews[index].customer.fullName,
+                        //                   style: TextStyle(
+                        //                       fontSize: 15,
+                        //                       fontWeight: FontWeight.w500),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //             ListTile(
+                        //               title: RatingStars(
+                        //                   rating: _reviews[index].rating),
+                        //               subtitle: Text(_reviews[index].review),
+                        //             ),
+                        //           ],
+                        //         );
+                        //       },
+                        //     ),
+                        //   )
+                        // : Text(
+                        //     "No reviews yet!",
+                        //   ),
         
                     SizedBox(height: 20),
                     Text(

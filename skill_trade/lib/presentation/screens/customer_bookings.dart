@@ -4,47 +4,59 @@ import 'package:skill_trade/models/booking.dart';
 import 'package:skill_trade/presentation/widgets/customer_booking.dart';
 import 'package:skill_trade/riverpod/booking_provider.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
-class CustomerBookings extends ConsumerWidget {
-  const CustomerBookings({super.key});
+
+class CustomerBookings extends ConsumerStatefulWidget {
+  const CustomerBookings({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, ref) {
-    final bookingAsyncValue = ref.watch(bookingsProvider);
+  _CustomerBookingsState createState() => _CustomerBookingsState();
+}
 
-    return bookingAsyncValue.when(
-        data: (bookings) =>     ListView.builder(
-          itemCount: bookings.length,
-          itemBuilder: (context, index) {
-            final booking = bookings[index];
+class _CustomerBookingsState extends ConsumerState<CustomerBookings> {
+  @override
+  void initState() {
+    super.initState();
 
-            return Consumer(
-            
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      ref.read(bookingProvider.notifier).fetchBookings();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bookingState = ref.watch(bookingProvider);
+
+    if (bookingState.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else if (bookingState.errorMessage != null) {
+      return Center(child: Text(bookingState.errorMessage!));
+    } else {
+      return ListView.builder(
+        itemCount: bookingState.bookings.length,
+        itemBuilder: (context, index) {
+          final booking = bookingState.bookings[index];
+
+          return Consumer(
             builder: (context, watch, _) {
-                    final technicianAsync = ref.watch(technicianByIdProvider(booking.technicianId));
-                    
-                    print("bookings $bookings ");
-                    return technicianAsync.when(
-                      data: (technician) {
-                        // print("technician $technician ");
-                        return Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: CustomerBooking(
-                            technician: technician ,
-                            booking: booking,
-                          ),
-                        );
-                      },
-                      loading: () => Center(child: CircularProgressIndicator()),
-                      error: (error, stack) => Center(child: Text('Error loading customer: $error')),
-                    );
-                  }
-            
-            );
-          
-          },
-        ),
-        loading: () => Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(child: Text('Error loading bookings: $error')),
+              final technicianAsync = ref.watch(technicianByIdProvider(booking.technicianId));
+
+              return technicianAsync.when(
+                data: (technician) {
+                  return Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: CustomerBooking(
+                      technician: technician,
+                      booking: booking,
+                    ),
+                  );
+                },
+                loading: () => Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(child: Text('Error loading technician: $error')),
+              );
+            },
+          );
+        },
       );
+    }
   }
 }

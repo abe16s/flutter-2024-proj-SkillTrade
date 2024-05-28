@@ -6,9 +6,9 @@ class Technician{
   final String name, speciality;
   final int id;
   final String role = "technician";
-  String email, phone, password, experience, educationLevel, availableLocation, additionalBio;
+  String email, phone, password, status, experience, educationLevel, availableLocation, additionalBio;
 
-  Technician({required this.name, required this.id, required this.speciality, this.email = "", this.phone = "", this.password = "", this.availableLocation = "", this.additionalBio = "", this.educationLevel = "", this.experience = ""});
+  Technician({required this.name, required this.id, required this.speciality, this.status ="pending", this.email = "", this.phone = "", this.password = "", this.availableLocation = "", this.additionalBio = "", this.educationLevel = "", this.experience = ""});
 
 
   factory Technician.fromJson(Map<String, dynamic> json) {
@@ -39,6 +39,7 @@ class Technician{
         educationLevel: json['educationLevel'],
         additionalBio: json['additionalBio'], 
         availableLocation: json['availableLocation'],
+        status: json['status']
       );
   // factory Technician.fromJsonFull(Map<String, dynamic> json){ 
 
@@ -85,7 +86,8 @@ class Technician{
       "experience": experience,
       "additionalBio": additionalBio,
       "educationLevel": educationLevel,
-      "availableLocation": availableLocation
+      "availableLocation": availableLocation,
+      "status": status
 
       }
     );

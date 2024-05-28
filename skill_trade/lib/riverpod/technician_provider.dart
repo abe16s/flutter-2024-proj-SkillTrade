@@ -18,7 +18,7 @@ final technicianProvider = FutureProvider<List<Technician>>( (ref) async {
   final token = await secureStorageService.read("token");
   print("token $token");
     final response =
-        await http.get(Uri.parse("http://$endpoint:9000/technician"), 
+        await http.get(Uri.parse("http://localhost:9000/technician"), 
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -49,7 +49,7 @@ final technicianByIdProvider = FutureProvider.family<Technician, int>((ref, int 
   print("tech fetch");
   
   final response = await http.get(
-    Uri.parse("http://$endpoint:9000/technician/$technicianId"),
+    Uri.parse("http://localhost:9000/technician/$technicianId"),
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -86,7 +86,7 @@ final technicianProfileProvider = FutureProvider<Technician>((ref) async {
 
 
     final response = await http.get(
-      Uri.parse('http://$endpoint:9000/technician/$id'),
+      Uri.parse('http://localhost:9000/technician/$id'),
       headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -151,7 +151,7 @@ class TechnicianNotifier extends StateNotifier<TechnicianState> {
 
 
     final response = await http.patch(
-      Uri.parse('http://$endpoint:9000/technician/$id'),
+      Uri.parse('http://localhost:9000/technician/$id'),
       headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
