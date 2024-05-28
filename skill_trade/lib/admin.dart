@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
+import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/themes.dart';
@@ -34,11 +35,39 @@ class MyApp extends StatelessWidget {
 class AdminSiteLogic {
   int currentIndex = 0;
 
-  final List<Widget> pages = [
-    const AdminPage(),
-    const ReportedTechnicians(),
-    const AdminCustomer(),
-    const TechniciansList()
+  final List<Widget> _pages = [
+     MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const AdminPage()
+    ),
+     MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const ReportedTechnicians()
+    ),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<CustomerBloc>(
+            create: (BuildContext context) => CustomerBloc(),
+          ),
+        ],
+        child: const CustomersList()
+    ),
+    MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const TechniciansList()
+    )
   ];
 
   void onItemTapped(int index) {
@@ -46,7 +75,7 @@ class AdminSiteLogic {
   }
 
   Widget getCurrentPage() {
-    return pages[currentIndex];
+    return _pages[currentIndex];
   }
 }
 
