@@ -13,6 +13,7 @@ export class ReviewRateService {
         technicianId: technicianId,
       },
       select: {
+        id: true,
         rate: true,
         review: true,
         user: true,

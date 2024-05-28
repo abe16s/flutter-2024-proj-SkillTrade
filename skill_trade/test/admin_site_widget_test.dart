@@ -5,6 +5,7 @@ import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/admin_technician.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
+// import 'package:skill_trade/presentation/screens/customers_list.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
@@ -19,8 +20,11 @@ void main() {
   testWidgets('BottomNavigationBar changes pages', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify initial page
+    // Verify the initial state - should display AdminPage
     expect(find.byType(AdminPage), findsOneWidget);
+    expect(find.byType(ReportedTechnicians), findsNothing);
+    expect(find.byType(CustomersList), findsNothing);
+    expect(find.byType(TechniciansList), findsNothing);
 
     // Tap on the 'Reports' tab
     await tester.tap(find.byIcon(Icons.warning));
@@ -28,6 +32,8 @@ void main() {
 
     // Verify that the page has changed to ReportedTechnicians
     expect(find.byType(ReportedTechnicians), findsOneWidget);
+    expect(find.byType(CustomersList), findsNothing);
+    expect(find.byType(TechniciansList), findsNothing);
 
     // Tap on the 'Customers' tab
     await tester.tap(find.byIcon(Icons.person));
