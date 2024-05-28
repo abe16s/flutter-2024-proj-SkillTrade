@@ -27,7 +27,7 @@ export class TechnicianService {
   async findSuspendedTechnicianProfiles() {
     const result = await this.prisma.technician.findMany({
       where: {
-        status: 'susepended',
+        status: 'suspended',
       },
       select: {
         id: true,
