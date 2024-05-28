@@ -24,7 +24,7 @@ export class ReviewRateController {
   constructor(private readonly reviewRate: ReviewRateService) {}
 
   @Get('technician/:id')
-  @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
+  @UseGuards(AuthGuard('jwt'))
   findAllTechnicianReviews(
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
