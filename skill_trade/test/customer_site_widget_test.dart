@@ -6,7 +6,6 @@ import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
 import 'package:skill_trade/presentation/themes.dart';
-
 import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
 import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
