@@ -76,23 +76,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class GetFirstPage extends StatelessWidget {
-  const GetFirstPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (BuildContext context, AuthState state) {
-        if (state is LoggedIn) {
-          return _buildLoggedIn(state.role!);
-        } else {
-          return const HomeScreen();
-        }
-      },
-    );
-  }
-
-  Widget _buildLoggedIn(String role) {
+class GetFirstPageLogic {
+  Widget getLoggedInPage(String role) {
     switch (role) {
       case "customer":
         return const CustomerPage();
@@ -103,5 +88,22 @@ class GetFirstPage extends StatelessWidget {
       default:
         return const HomeScreen();
     }
+  }
+}
+
+class GetFirstPage extends StatelessWidget {
+  const GetFirstPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (BuildContext context, AuthState state) {
+        if (state is LoggedIn) {
+          return GetFirstPageLogic().getLoggedInPage(state.role!);
+        } else {
+          return const HomeScreen();
+        }
+      },
+    );
   }
 }

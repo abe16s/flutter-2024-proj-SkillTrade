@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
-import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
 import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/themes.dart';
@@ -32,6 +31,25 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class AdminSiteLogic {
+  int currentIndex = 0;
+
+  final List<Widget> pages = [
+    const AdminPage(),
+    const ReportedTechnicians(),
+    const AdminCustomer(),
+    const TechniciansList()
+  ];
+
+  void onItemTapped(int index) {
+    currentIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    return pages[currentIndex];
+  }
+}
+
 class AdminSite extends StatefulWidget {
   const AdminSite({super.key});
   @override
@@ -39,49 +57,7 @@ class AdminSite extends StatefulWidget {
 }
 
 class _AdminSiteState extends State<AdminSite> {
-  int _currentIndex = 0;
-
-  final List<Widget> _pages = [
-     MultiBlocProvider(
-        providers: [
-          BlocProvider<TechniciansBloc>(
-            create: (BuildContext context) => TechniciansBloc(),
-          ),
-        ],
-        child: const AdminPage()
-    ),
-     MultiBlocProvider(
-        providers: [
-          BlocProvider<TechniciansBloc>(
-            create: (BuildContext context) => TechniciansBloc(),
-          ),
-        ],
-        child: const ReportedTechnicians()
-    ),
-    MultiBlocProvider(
-        providers: [
-          BlocProvider<CustomerBloc>(
-            create: (BuildContext context) => CustomerBloc(),
-          ),
-        ],
-        child: const CustomersList()
-    ),
-    MultiBlocProvider(
-        providers: [
-          BlocProvider<TechniciansBloc>(
-            create: (BuildContext context) => TechniciansBloc(),
-          ),
-        ],
-        child: const TechniciansList()
-    )
-  ];
-
-  // Function to change the current index when an item is tapped
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+  final AdminSiteLogic _logic = AdminSiteLogic();
 
   @override
   Widget build(BuildContext context) {
@@ -101,11 +77,15 @@ class _AdminSiteState extends State<AdminSite> {
             ),
           ),
       ),
-      drawer: MyDrawer(),
-      body: _pages[_currentIndex], // Display the current page based on the current index
+      drawer: const MyDrawer(),
+      body: _logic.getCurrentPage(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
+        currentIndex: _logic.currentIndex,
+        onTap: (index) {
+          setState(() {
+            _logic.onItemTapped(index);
+          });
+        },
         iconSize: 24,
         selectedFontSize: 12,
         unselectedFontSize: 11,
