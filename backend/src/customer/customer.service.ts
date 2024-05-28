@@ -14,6 +14,18 @@ export class CustomerService {
     return result;
   }
 
+  async findAllCustomersProfiles() {
+    const result = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        fullName: true,
+        phone: true,
+        email: true,
+      },
+    });
+    return result;
+  }
+
   async updateCustomerProfile(customerId: number, profileUpdate: CustomerDto) {
     try {
       return await this.prisma.user.update({

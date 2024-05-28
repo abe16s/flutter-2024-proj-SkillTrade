@@ -13,7 +13,7 @@ import {
 import { TechnicianService } from './technician.service';
 import { TechnicianDto } from './dto/technician.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { IsTechnicianGuard } from 'src/auth/guards';
+import { IsAdminGuard, IsTechnicianGuard } from 'src/auth/guards';
 import { Request } from 'express';
 import * as argon from 'argon2';
 
@@ -26,18 +26,25 @@ export class TechnicianController {
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    // const user = request.user;
-    // if (id === (user as { sub: number }).sub) {
     return this.technicianService.findTechnicianProfile(id);
-    // } else {
-    //   throw new ForbiddenException('Access denied to Unauthorized user');
-    // }
   }
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
   findAllTechnicianProfiles() {
     return this.technicianService.findAllTechnicianProfiles();
+  }
+
+  @Get('suspended/all')
+  @UseGuards(AuthGuard('jwt'), IsAdminGuard)
+  findSuspendedTechnicianProfiles() {
+    return this.technicianService.findSuspendedTechnicianProfiles();
+  }
+
+  @Get('pending/all')
+  @UseGuards(AuthGuard('jwt'), IsAdminGuard)
+  findPendingTechnicianProfiles() {
+    return this.technicianService.findPendingTechnicianProfiles();
   }
 
   @Patch(':id')
