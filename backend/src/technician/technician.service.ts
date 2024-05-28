@@ -24,6 +24,46 @@ export class TechnicianService {
     });
     return result;
   }
+  async findSuspendedTechnicianProfiles() {
+    const result = await this.prisma.technician.findMany({
+      where: {
+        status: 'susepended',
+      },
+      select: {
+        id: true,
+        fullName: true,
+        skills: true,
+        phone: true,
+        experience: true,
+        educationLevel: true,
+        availableLocation: true,
+        additionalBio: true,
+        email: true,
+        status: true,
+      },
+    });
+    return result;
+  }
+  async findPendingTechnicianProfiles() {
+    const result = await this.prisma.technician.findMany({
+      where: {
+        status: 'pending',
+      },
+      select: {
+        id: true,
+        fullName: true,
+        skills: true,
+        phone: true,
+        experience: true,
+        educationLevel: true,
+        availableLocation: true,
+        additionalBio: true,
+        email: true,
+        status: true,
+      },
+    });
+    return result;
+  }
   async findTechnicianProfile(technicianId: number) {
     const result = await this.prisma.technician.findUnique({
       where: {

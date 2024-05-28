@@ -25,6 +25,12 @@ export class CustomerController {
     return this.customerService.findCustomerProfile(id);
   }
 
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  findAllCustomersProfiles() {
+    return this.customerService.findAllCustomersProfiles();
+  }
+
   @Patch(':id')
   @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
   updateCustomerProfile(
