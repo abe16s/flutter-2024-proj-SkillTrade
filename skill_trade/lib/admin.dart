@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
+import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';
-import 'package:skill_trade/presentation/screens/technicians_list.dart';
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
@@ -16,18 +15,23 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter App',
-      theme: lightMode,
-      initialRoute: "/",
-      routes: { 
-        // "/admintech": (context) => AdminTechnician(),
-        "/admincustomer": (context) => AdminCustomer(),
-      },
-      debugShowCheckedModeBanner: false,
-      home: const AdminSite(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TechniciansBloc>(
+          create: (BuildContext context) => TechniciansBloc(),
+        ),
+        BlocProvider<CustomerBloc>(
+          create: (BuildContext context) => CustomerBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter App',
+        theme: lightMode,
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }
@@ -35,52 +39,64 @@ class MyApp extends StatelessWidget {
 class AdminSiteLogic {
   int currentIndex = 0;
 
-  final List<Widget> _pages = [
-     MultiBlocProvider(
+  void onItemTapped(BuildContext context, int index) {
+    currentIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    switch (currentIndex) {
+      case 0:
+        return MultiBlocProvider(
         providers: [
           BlocProvider<TechniciansBloc>(
             create: (BuildContext context) => TechniciansBloc(),
           ),
         ],
         child: const AdminPage()
-    ),
-     MultiBlocProvider(
+      );
+      case 1:
+        return MultiBlocProvider(
         providers: [
           BlocProvider<TechniciansBloc>(
             create: (BuildContext context) => TechniciansBloc(),
           ),
         ],
         child: const ReportedTechnicians()
-    ),
-    MultiBlocProvider(
+      );
+      case 2:
+        return MultiBlocProvider(
         providers: [
           BlocProvider<CustomerBloc>(
             create: (BuildContext context) => CustomerBloc(),
           ),
         ],
         child: const CustomersList()
-    ),
-    MultiBlocProvider(
+      );
+      case 3:
+        return MultiBlocProvider(
         providers: [
           BlocProvider<TechniciansBloc>(
             create: (BuildContext context) => TechniciansBloc(),
           ),
         ],
         child: const TechniciansList()
-    )
-  ];
-
-  void onItemTapped(int index) {
-    currentIndex = index;
-  }
-
-  Widget getCurrentPage() {
-    return _pages[currentIndex];
+      );
+      default:
+        return  MultiBlocProvider(
+        providers: [
+          BlocProvider<TechniciansBloc>(
+            create: (BuildContext context) => TechniciansBloc(),
+          ),
+        ],
+        child: const AdminPage()
+      );
+    }
   }
 }
 
 class AdminSite extends StatefulWidget {
   const AdminSite({super.key});
+
   @override
   _AdminSiteState createState() => _AdminSiteState();
 }
@@ -95,16 +111,16 @@ class _AdminSiteState extends State<AdminSite> {
         title: const Text('SkillTrade'),
         centerTitle: true,
         leading: Builder(
-            builder: (context) => IconButton(
-              icon: const Padding(
-                padding: EdgeInsets.only(left: 12.0),
-                child: Icon(Icons.menu),
-              ),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
+          builder: (context) => IconButton(
+            icon: const Padding(
+              padding: EdgeInsets.only(left: 12.0),
+              child: Icon(Icons.menu),
             ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
           ),
+        ),
       ),
       drawer: const MyDrawer(),
       body: _logic.getCurrentPage(),
@@ -112,7 +128,7 @@ class _AdminSiteState extends State<AdminSite> {
         currentIndex: _logic.currentIndex,
         onTap: (index) {
           setState(() {
-            _logic.onItemTapped(index);
+            _logic.onItemTapped(context, index);
           });
         },
         iconSize: 24,

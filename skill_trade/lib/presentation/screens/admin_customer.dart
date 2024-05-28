@@ -6,14 +6,12 @@ import 'package:skill_trade/state_managment/customer/customer_event.dart';
 import 'package:skill_trade/state_managment/customer/customer_state.dart';
 
 class AdminCustomer extends StatelessWidget {
-  const AdminCustomer({super.key});
+  final int customerId;
+  const AdminCustomer({super.key, required this.customerId});
 
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      final customerId = ModalRoute.of(context)!.settings.arguments as int;
-      BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: customerId.toString()));
-    }
+    BlocProvider.of<CustomerBloc>(context).add(LoadCustomer(customerId: customerId.toString()));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Customer"),

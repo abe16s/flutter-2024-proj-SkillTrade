@@ -15,7 +15,7 @@ void main() {
           // Add other providers if needed
         ],
         child: const MaterialApp(
-          home: AdminCustomer(),
+          home: AdminCustomer(customerId: 1,),
         ),
       ),
     );

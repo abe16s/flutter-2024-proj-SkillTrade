@@ -10,12 +10,6 @@ import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
 import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
 import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
 
-// void main() {
-//   runApp(const CustomerPage());
-// }
-
-
-
 class CustomerPageLogic {
   int selectedIndex = 0;
 
@@ -47,10 +41,6 @@ class _CustomerPageState extends State<CustomerPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Customer Page",
-      initialRoute: "/",
-      routes: {
-        // "/booktech": (context) => MyBookings(),
-      },
       debugShowCheckedModeBanner: false,
       theme: lightMode,
       home: MultiBlocProvider(

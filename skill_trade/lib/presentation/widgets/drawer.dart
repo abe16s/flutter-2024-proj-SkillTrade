@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
 import 'package:skill_trade/state_managment/auth/auth_event.dart';
 
@@ -64,11 +65,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 onPressed: () async {
                   await unlog(context);
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    "/",
-                    (Route<dynamic> route) => false,
-                  );
+                  GoRouter.of(context).go('/');
                 }
                 ),
               ),

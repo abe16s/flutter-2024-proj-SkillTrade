@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
@@ -118,22 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () async {
                               await login();
                               if (_formKey.currentState!.validate()) {
-                                Navigator.pushNamedAndRemoveUntil(
-                                  context,
-                                  "/",
-                                  (Route<dynamic> route) => false,
-                                );
-                              //   if (_selectedRole == "customer"){ 
-                              //     Navigator.pushNamed(
-                              //       context, "/customer");
-                              //   } else if (_selectedRole == "technician"){ 
-                              //     Navigator.pushNamed(
-                              //       context, "/technician");
-
-                              //   } else if(_selectedRole == "admin"){ 
-                              //     Navigator.pushNamed(
-                              //       context, "/admin");
-                              //   }
+                                GoRouter.of(context).go('/');
                               }
                             },
                             width: double.infinity),
@@ -150,8 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, "/signup");
+                                  context.go("/signup");
                                 },
                                 child: Text("Sign up",
                                     style: TextStyle(

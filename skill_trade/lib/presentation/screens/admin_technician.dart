@@ -10,22 +10,14 @@ import 'package:skill_trade/state_managment/review/review_event.dart';
 import 'package:skill_trade/state_managment/review/review_state.dart';
 
 class AdminTechnician extends StatelessWidget {
-  final Map<String, String> bookingData = {
-    'problemTitle': 'Leaking Pipe',
-    'problemDescription': 'The kitchen sink pipe is leaking.',
-    'location': 'Addis Ababa',
-    'name': 'John Doe',
-  };
+  final int technicianId;
 
-  AdminTechnician({super.key});
+  const AdminTechnician({super.key, required this.technicianId});
 
   @override
   Widget build(BuildContext context) {
-    if (ModalRoute.of(context)!.settings.arguments != null) {
-      final technicianId = ModalRoute.of(context)!.settings.arguments as int;
-      BlocProvider.of<IndividualTechnicianBloc>(context).add(LoadIndividualTechnician(technicianId: technicianId));
-      BlocProvider.of<ReviewsBloc>(context).add(LoadTechnicianReviews(technicianId: technicianId));
-    }
+    BlocProvider.of<IndividualTechnicianBloc>(context).add(LoadIndividualTechnician(technicianId: technicianId));
+    BlocProvider.of<ReviewsBloc>(context).add(LoadTechnicianReviews(technicianId: technicianId));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Technician"),

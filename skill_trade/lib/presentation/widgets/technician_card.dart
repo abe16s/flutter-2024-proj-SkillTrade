@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/models/technician.dart';
-import 'package:skill_trade/presentation/screens/bookings.dart';
-import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
-import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
-import 'package:skill_trade/state_managment/review/review_bloc.dart';
 
 class TechnicianCard extends StatelessWidget {
   final Technician technician;
@@ -21,18 +17,12 @@ class TechnicianCard extends StatelessWidget {
           children: [
             Image.asset("assets/technician.png", width: 60, height: 60,),
             ListTile(
-              title: Text(technician.name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
-              subtitle: Text("Speciality: ${technician.skills}", style: TextStyle(fontSize: 17), textAlign: TextAlign.center,),
+              title: Text(technician.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500), textAlign: TextAlign.center,),
+              subtitle: Text("Specialty: ${technician.skills}", style: const TextStyle(fontSize: 17), textAlign: TextAlign.center,),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => MultiBlocProvider(
-                      providers: [
-                        BlocProvider<ReviewsBloc>(create: (BuildContext context) => ReviewsBloc(),),
-                        BlocProvider<BookingsBloc>(create: (BuildContext context) => BookingsBloc(),),
-                        BlocProvider<CustomerBloc>(create: (BuildContext context) => CustomerBloc(),),
-                      ],
-                      child: MyBookings(technician: this.technician,))));
+                context.go('/myBookings', extra: technician);
               }, 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),

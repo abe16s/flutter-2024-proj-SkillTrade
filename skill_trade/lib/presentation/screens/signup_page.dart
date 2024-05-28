@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
@@ -352,8 +353,7 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context,"/login");
+                                  context.go("/login");
                                 },
                                 child: Text("Login",
                                     style: TextStyle(
@@ -376,19 +376,12 @@ class _SignupPageState extends State<SignupPage> {
   void signUpCustomer() {
     if (_formKey.currentState!.validate()) {      
       BlocProvider.of<AuthBloc>(context).add(SignUpCustomer(email: _emailController.text, password: _passwordController.text, fullName: _fullNameController.text, phone: _phoneController.text));
-
-       Navigator.pushNamedAndRemoveUntil(
-        context,
-        "/",
-        (Route<dynamic> route) => false,
-      );
+      GoRouter.of(context).go('/');
     }
   }
   
   void signUpTechnician() {
     BlocProvider.of<AuthBloc>(context).add(SignUpTechnician(email: _emailController.text, password: _passwordController.text, fullName: _fullNameController.text, phone: _phoneController.text, additionalBio: _bioController.text, skills: _selectedTags.join(", "), experience: _experienceController.text, educationLevel: _educationController.text, availableLocation: _locationController.text, ));
-
-    Navigator.pushNamed(
-      context,"/apply" );
+    context.go("/apply");
   }
 }
