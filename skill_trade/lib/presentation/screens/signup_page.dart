@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
-import 'package:skill_trade/state_managment/auth/auth_bloc.dart';
-import 'package:skill_trade/state_managment/auth/auth_event.dart';
+import 'package:skill_trade/application/blocs/auth_bloc.dart';
+import 'package:skill_trade/presentation/events/auth_event.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});

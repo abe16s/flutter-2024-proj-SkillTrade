@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:skill_trade/main.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/home_page.dart';
-import 'package:skill_trade/customer.dart';
-import 'package:skill_trade/technician.dart';
+import 'package:skill_trade/presentation/screens/customer.dart';
+import 'package:skill_trade/presentation/screens/technician.dart';
 
 void main() {
   group('GetFirstPageLogic Unit Tests', () {

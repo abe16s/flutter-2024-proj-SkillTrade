@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:skill_trade/presentation/screens/technician_profile.dart';
 import 'package:skill_trade/presentation/widgets/technician_booking_list.dart';
-import 'package:skill_trade/technician.dart';
+import 'package:skill_trade/presentation/screens/technician.dart';
 
 void main() {
   group('TechnicianPageLogic Unit Tests', () {

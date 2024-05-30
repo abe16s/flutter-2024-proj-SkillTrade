@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/widgets/customer_profile.dart';
-import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
-import 'package:skill_trade/state_managment/customer/customer_event.dart';
-import 'package:skill_trade/state_managment/customer/customer_state.dart';
-import 'package:skill_trade/storage.dart';
+import 'package:skill_trade/application/blocs/customer_bloc.dart';
+import 'package:skill_trade/presentation/events/customer_event.dart';
+import 'package:skill_trade/presentation/states/customer_state.dart';
+import 'package:skill_trade/infrastructure/storage/storage.dart';
 
 class CustomerProfileScreen extends StatelessWidget {
   const CustomerProfileScreen({super.key});

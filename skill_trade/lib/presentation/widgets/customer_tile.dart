@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skill_trade/models/customer.dart';
+import 'package:skill_trade/domain/models/customer.dart';
 
 class CustomerTile extends StatelessWidget {
   final Customer customer;
@@ -26,7 +26,7 @@ class CustomerTile extends StatelessWidget {
           ),
           trailing: TextButton(
             onPressed: () {
-              context.go('/admincustomer', extra: customer.id);
+              context.push('/admincustomer', extra: customer);
             }, 
             child: const Text("Review")
           ),

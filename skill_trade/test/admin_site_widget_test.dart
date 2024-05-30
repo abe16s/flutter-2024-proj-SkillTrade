@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:skill_trade/admin.dart';
+import 'package:skill_trade/presentation/screens/admin.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/admin_users_page.dart';
 import 'package:skill_trade/presentation/screens/reported_technicians.dart';

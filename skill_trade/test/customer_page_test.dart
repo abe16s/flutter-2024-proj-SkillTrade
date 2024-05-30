@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:skill_trade/customer.dart';
+import 'package:skill_trade/presentation/screens/customer.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
