@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto';
 import * as argon from 'argon2';
@@ -194,6 +198,32 @@ export class AuthService {
         data: { password: hashed },
         select: { password: true },
       });
+    }
+  }
+
+  async deleteUser(id: number, role: any) {
+    if (role === 'customer') {
+      try {
+        return await this.prisma.user.delete({
+          where: {
+            id: id,
+          },
+        });
+      } catch (error) {
+        throw new BadRequestException('Something Went wrong');
+      }
+    } else if (role === 'technician') {
+      try {
+        return await this.prisma.technician.delete({
+          where: {
+            id: id,
+          },
+        });
+      } catch (error) {
+        throw new BadRequestException('Something Went wrong');
+      }
+    } else if (role === 'admin') {
+      throw new BadRequestException('Deleting Admin Account is not Possible!');
     }
   }
 }

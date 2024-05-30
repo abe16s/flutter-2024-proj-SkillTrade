@@ -1,6 +1,17 @@
-import { Body, Controller, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('trader')
 export class AuthController {
@@ -20,5 +31,14 @@ export class AuthController {
   @Patch('update-ps')
   changePassword(@Body() dto: any) {
     return this.authService.changePassword(dto);
+  }
+
+  @Delete('delete-profile/:id')
+  @UseGuards(AuthGuard('jwt'))
+  deleteUser(
+    @Param('id', ParseIntPipe) id: number,
+    @Query('role') role: string,
+  ) {
+    return this.authService.deleteUser(id, role);
   }
 }
