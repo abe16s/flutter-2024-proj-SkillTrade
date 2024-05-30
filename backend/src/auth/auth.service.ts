@@ -137,6 +137,7 @@ export class AuthService {
 
   async changePassword(dto: any) {
     let user;
+    console.log(dto);
     if (dto.role === 'customer') {
       user = await this.prisma.user.findUnique({
         where: {
