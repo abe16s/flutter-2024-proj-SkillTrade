@@ -5,6 +5,7 @@ import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import * as jwtEx from 'jsonwebtoken';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -158,6 +159,10 @@ export class AuthService {
       });
     }
 
+    if (!user) {
+      throw new NotFoundError('User With the given Id does not exist');
+    }
+
     const pwMatches = await argon.verify(user.password, dto.password);
 
     if (!pwMatches) {
@@ -165,7 +170,8 @@ export class AuthService {
     }
 
     const hashed = await argon.hash(dto.newPassword);
-    return await this.prisma.technician.update({
+
+    return await user.update({
       where: {
         id: dto.id,
       },
