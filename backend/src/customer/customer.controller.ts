@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   Req,
   ForbiddenException,
+  Delete,
 } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { CustomerDto } from './dto/customer.dto';
@@ -41,6 +42,20 @@ export class CustomerController {
     const user = request.user;
     if (id === (user as { sub: number }).sub) {
       return this.customerService.updateCustomerProfile(id, profileUpdate);
+    } else {
+      throw new ForbiddenException('Access denied to Unauthorized user');
+    }
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), IsCustomerGuard)
+  deleteCustomerProfile(
+    @Req() request: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const user = request.user;
+    if (id === (user as { sub: number }).sub) {
+      return this.customerService.deleteCustomerProfile(id);
     } else {
       throw new ForbiddenException('Access denied to Unauthorized user');
     }

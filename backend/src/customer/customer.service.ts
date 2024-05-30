@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CustomerDto } from './dto/customer.dto';
 
@@ -36,6 +40,18 @@ export class CustomerService {
       });
     } catch {
       throw new NotFoundException('No user With the Specified Data');
+    }
+  }
+
+  async deleteCustomerProfile(customerId: number) {
+    try {
+      return await this.prisma.user.delete({
+        where: {
+          id: customerId,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException('Something Went wrong');
     }
   }
 }

@@ -9,6 +9,7 @@ import {
   ValidationPipe,
   Req,
   ForbiddenException,
+  Delete,
 } from '@nestjs/common';
 import { TechnicianService } from './technician.service';
 import { TechnicianDto } from './dto/technician.dto';
@@ -54,15 +55,24 @@ export class TechnicianController {
     @Req() request: Request,
     @Body(ValidationPipe) profileUpdate: TechnicianDto,
   ) {
-    const user = request.user;
     if ('password' in profileUpdate) {
       const hash = await argon.hash(profileUpdate.password);
       profileUpdate.password = hash;
     }
-    // if (id === (user as { sub: number }).sub) {
-      return this.technicianService.updateTechnicianProfile(id, profileUpdate);
-    // } else {
-      // throw new ForbiddenException('Access denied to Unauthorized user');
-    // }
+    return this.technicianService.updateTechnicianProfile(id, profileUpdate);
+  }
+
+  @Delete(':id')
+  @UseGuards(AuthGuard('jwt'), IsTechnicianGuard)
+  deleteCustomerProfile(
+    @Req() request: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const user = request.user;
+    if (id === (user as { sub: number }).sub) {
+      return this.technicianService.deleteTechnicianProfile(id);
+    } else {
+      throw new ForbiddenException('Access denied to Unauthorized user');
+    }
   }
 }

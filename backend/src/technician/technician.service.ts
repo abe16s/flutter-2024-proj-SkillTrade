@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { TechnicianDto } from './dto/technician.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -95,5 +95,17 @@ export class TechnicianService {
       },
       data: profileUpdate,
     });
+  }
+
+  async deleteTechnicianProfile(technicianId: number) {
+    try {
+      return await this.prisma.technician.delete({
+        where: {
+          id: technicianId,
+        },
+      });
+    } catch (error) {
+      throw new BadRequestException('Something Went wrong');
+    }
   }
 }
