@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 
@@ -15,5 +15,10 @@ export class AuthController {
   signin(@Body() dto: any) {
     console.log(dto, 'here');
     return this.authService.signin(dto);
+  }
+
+  @Patch('update-ps')
+  changePassword(@Body() dto: any) {
+    return this.authService.changePassword(dto);
   }
 }

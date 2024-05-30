@@ -134,4 +134,42 @@ export class AuthService {
       return false;
     }
   }
+
+  async changePassword(dto: any) {
+    let user;
+    if (dto.role === 'customer') {
+      user = await this.prisma.user.findUnique({
+        where: {
+          id: dto.id,
+        },
+      });
+    } else if (dto.role === 'technician') {
+      user = await this.prisma.technician.findUnique({
+        where: {
+          id: dto.id,
+        },
+      });
+    } else if (dto.role === 'admin') {
+      user = await this.prisma.admin.findUnique({
+        where: {
+          id: dto.id,
+        },
+      });
+    }
+
+    const pwMatches = await argon.verify(user.password, dto.password);
+
+    if (!pwMatches) {
+      throw new ForbiddenException('Old password is not correct!');
+    }
+
+    const hashed = await argon.hash(dto.newPassword);
+    return await this.prisma.technician.update({
+      where: {
+        id: dto.id,
+      },
+      data: { password: hashed },
+      select: { password: true },
+    });
+  }
 }
