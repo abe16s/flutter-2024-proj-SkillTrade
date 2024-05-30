@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:skill_trade/admin.dart';
 import 'package:skill_trade/main.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/home_page.dart';
@@ -22,7 +23,7 @@ void main() {
     test('Returns AdminPage for admin role', () {
       final logic = GetFirstPageLogic();
       var page = logic.getLoggedInPage("admin");
-      expect(page, isA<AdminPage>());
+      expect(page, isA<AdminSite>());
     });
 
     test('Returns HomeScreen for unknown role', () {

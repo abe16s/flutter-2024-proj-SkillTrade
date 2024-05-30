@@ -38,6 +38,7 @@ dependencies:
   http: ^1.2.1
   flutter_secure_storage: ^8.0.0
   go_router:
+  mockito: ^5.4.4
 
 dev_dependencies:
   flutter_test:

@@ -1,47 +1,71 @@
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:skill_trade/admin.dart';
-// import 'package:skill_trade/presentation/screens/admin_page.dart';
-// import 'package:skill_trade/presentation/screens/reported_technicians.dart';
-// import 'package:skill_trade/presentation/screens/admin_customer.dart';
-// import 'package:skill_trade/presentation/screens/technicians_list.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:skill_trade/admin.dart';
+import 'package:skill_trade/presentation/screens/admin_page.dart';
+import 'package:skill_trade/presentation/screens/reported_technicians.dart';
+import 'package:skill_trade/presentation/screens/admin_customer.dart';
+import 'package:skill_trade/presentation/screens/technicians_list.dart';
 
-// void main() {
-//   group('AdminSiteLogic Unit Tests', () {
-//     test('Initial current index is 0', () {
-//       final logic = AdminSiteLogic();
-//       expect(logic.currentIndex, 0);
-//     });
+void main() {
+  group('AdminSiteLogic Unit Tests', () {
+    testWidgets('Initial current index is 0', (WidgetTester tester) async {
+      final logic = AdminSiteLogic();
+      expect(logic.currentIndex, 0);
+    });
 
-//     test('onItemTapped sets current index correctly', () {
-//       final logic = AdminSiteLogic();
+    testWidgets('onItemTapped sets current index correctly', (WidgetTester tester) async {
+      final logic = AdminSiteLogic();
 
-//       // Simulate navigation to index 1
-//       logic.onItemTapped(1);
-//       expect(logic.currentIndex, 1);
+      // Build a widget to obtain a BuildContext
+      await tester.pumpWidget(MaterialApp(
+        home: Builder(
+          builder: (BuildContext context) {
+            return Container();
+          },
+        ),
+      ));
 
-//       // Simulate navigation to index 2
-//       logic.onItemTapped(2);
-//       expect(logic.currentIndex, 2);
-//     });
+      final BuildContext context = tester.element(find.byType(Container));
 
-//     test('Correct page is returned for each current index', () {
-//       final logic = AdminSiteLogic();
+      // Simulate navigation to index 1
+      logic.onItemTapped(context, 1);
+      expect(logic.currentIndex, 1);
 
-//       logic.onItemTapped(0);
-//       var currentPage = logic.getCurrentPage();
-//       expect(currentPage, isA<AdminPage>());
+      // Simulate navigation to index 2
+      logic.onItemTapped(context, 2);
+      expect(logic.currentIndex, 2);
+    });
 
-//       logic.onItemTapped(1);
-//       currentPage = logic.getCurrentPage();
-//       expect(currentPage, isA<ReportedTechnicians>());
+    testWidgets('Correct page is returned for each current index', (WidgetTester tester) async {
+      final logic = AdminSiteLogic();
 
-//       logic.onItemTapped(2);
-//       currentPage = logic.getCurrentPage();
-//       expect(currentPage, isA<AdminCustomer>());
+      // Build a widget to obtain a BuildContext
+      await tester.pumpWidget(MaterialApp(
+        home: Builder(
+          builder: (BuildContext context) {
+            return Container();
+          },
+        ),
+      ));
 
-//       logic.onItemTapped(3);
-//       currentPage = logic.getCurrentPage();
-//       expect(currentPage, isA<TechniciansList>());
-//     });
-//   });
-// }
+      final BuildContext context = tester.element(find.byType(Container));
+
+      logic.onItemTapped(context, 0);
+      var currentPage = logic.getCurrentPage();
+      expect(currentPage, isA<MultiBlocProvider>());
+
+      logic.onItemTapped(context, 1);
+      currentPage = logic.getCurrentPage();
+      expect(currentPage, isA<MultiBlocProvider>());
+
+      logic.onItemTapped(context, 2);
+      currentPage = logic.getCurrentPage();
+      expect(currentPage, isA<MultiBlocProvider>());
+
+      logic.onItemTapped(context, 3);
+      currentPage = logic.getCurrentPage();
+      expect(currentPage, isA<MultiBlocProvider>());
+    });
+  });
+}
