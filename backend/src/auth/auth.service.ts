@@ -170,13 +170,30 @@ export class AuthService {
     }
 
     const hashed = await argon.hash(dto.newPassword);
-
-    return await user.update({
-      where: {
-        id: dto.id,
-      },
-      data: { password: hashed },
-      select: { password: true },
-    });
+    if (user.role === 'customer') {
+      return await this.prisma.user.update({
+        where: {
+          id: dto.id,
+        },
+        data: { password: hashed },
+        select: { password: true },
+      });
+    } else if (user.role === 'technician') {
+      return await this.prisma.technician.update({
+        where: {
+          id: dto.id,
+        },
+        data: { password: hashed },
+        select: { password: true },
+      });
+    } else if (user.role === 'admin') {
+      return await this.prisma.admin.update({
+        where: {
+          id: dto.id,
+        },
+        data: { password: hashed },
+        select: { password: true },
+      });
+    }
   }
 }
