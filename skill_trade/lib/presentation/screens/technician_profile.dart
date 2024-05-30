@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_event.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_state.dart';
-import 'package:skill_trade/storage.dart';
+import 'package:skill_trade/application/blocs/individual_technician_bloc.dart';
+import 'package:skill_trade/presentation/events/individual_technician_event.dart';
+import 'package:skill_trade/presentation/states/individual_technician_state.dart';
+import 'package:skill_trade/infrastructure/storage/storage.dart';
 
 void main() {
   runApp(const MyApp());

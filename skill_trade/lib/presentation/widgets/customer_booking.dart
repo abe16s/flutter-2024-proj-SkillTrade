@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skill_trade/models/booking.dart';
-import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/domain/models/booking.dart';
+import 'package:skill_trade/domain/models/technician.dart';
 import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/info_label.dart';
-import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
-import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
+import 'package:skill_trade/application/blocs/bookings_bloc.dart';
+import 'package:skill_trade/presentation/events/bookings_event.dart';
 
 class CustomerBooking extends StatefulWidget {
   final Booking booking;
   final Technician technician;
-  CustomerBooking({super.key, required this.booking, required this.technician}): 
+  final String customerId;
+  CustomerBooking({super.key, required this.booking, required this.technician, required this.customerId}): 
     _controllers = {
       "serviceNeeded": TextEditingController(text: booking.serviceNeeded),
       "problemDescription": TextEditingController(text: booking.problemDescription),
@@ -134,10 +135,10 @@ class _CustomerBookingState extends State<CustomerBooking> {
       "serviceDate": widget._selectedDate.toString().substring(0, 10),
     };
 
-    BlocProvider.of<BookingsBloc>(context).add(UpdateBooking(updates: updatedData, bookingId: widget.booking.id, whoUpdated: 'customer'));
+    BlocProvider.of<BookingsBloc>(context).add(UpdateBooking(updates: updatedData, bookingId: widget.booking.id, whoUpdated: 'customer', updaterId: widget.customerId));
   }
 
   void deleteBooking() {
-    BlocProvider.of<BookingsBloc>(context).add(DeleteBooking(bookingId:  widget.booking.id));
+    BlocProvider.of<BookingsBloc>(context).add(DeleteBooking(bookingId:  widget.booking.id, customerId: int.tryParse(widget.customerId)!));
   }
 }

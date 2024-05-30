@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
 import 'package:skill_trade/presentation/widgets/technician_profile.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_bloc.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_event.dart';
-import 'package:skill_trade/state_managment/individual_technician/individual_technician_state.dart';
-import 'package:skill_trade/state_managment/review/review_bloc.dart';
-import 'package:skill_trade/state_managment/review/review_event.dart';
-import 'package:skill_trade/state_managment/review/review_state.dart';
+import 'package:skill_trade/application/blocs/individual_technician_bloc.dart';
+import 'package:skill_trade/presentation/events/individual_technician_event.dart';
+import 'package:skill_trade/presentation/states/individual_technician_state.dart';
+import 'package:skill_trade/application/blocs/review_bloc.dart';
+import 'package:skill_trade/presentation/events/review_event.dart';
+import 'package:skill_trade/presentation/states/review_state.dart';
 
 class AdminTechnician extends StatelessWidget {
   final int technicianId;
@@ -186,18 +186,6 @@ class AdminTechnician extends StatelessWidget {
           const SizedBox(
             height: 30,
           ),
-          // const Padding(
-          //   padding: EdgeInsets.only(left: 15.0),
-          //   child: Text(
-          //     "Booking History",
-          //     style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
-          //   ),
-          // ),
-          // for (int i = 0; i < 2; i++)
-          //   TechnicianBookingCard(
-          //     bookingData: this.bookingData,
-          //     editAccess: false,
-          //   )
         ],
       ),
     );

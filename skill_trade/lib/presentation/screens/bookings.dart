@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skill_trade/models/review.dart';
-import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/domain/models/review.dart';
+import 'package:skill_trade/domain/models/technician.dart';
 import 'package:skill_trade/presentation/widgets/editable_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_profile.dart';
 import 'package:skill_trade/presentation/widgets/rating_stars.dart';
-import 'package:skill_trade/state_managment/bookings/bookings_bloc.dart';
-import 'package:skill_trade/state_managment/bookings/bookings_event.dart';
-import 'package:skill_trade/state_managment/customer/customer_bloc.dart';
-import 'package:skill_trade/state_managment/customer/customer_event.dart';
-import 'package:skill_trade/state_managment/customer/customer_state.dart';
-import 'package:skill_trade/state_managment/review/review_bloc.dart';
-import 'package:skill_trade/state_managment/review/review_event.dart';
-import 'package:skill_trade/state_managment/review/review_state.dart';
-import 'package:skill_trade/storage.dart';
+import 'package:skill_trade/application/blocs/bookings_bloc.dart';
+import 'package:skill_trade/presentation/events/bookings_event.dart';
+import 'package:skill_trade/application/blocs/customer_bloc.dart';
+import 'package:skill_trade/presentation/events/customer_event.dart';
+import 'package:skill_trade/presentation/states/customer_state.dart';
+import 'package:skill_trade/application/blocs/review_bloc.dart';
+import 'package:skill_trade/presentation/events/review_event.dart';
+import 'package:skill_trade/presentation/states/review_state.dart';
+import 'package:skill_trade/infrastructure/storage/storage.dart';
 
 class MyBookings extends StatefulWidget {
   final Technician technician;
@@ -49,8 +49,8 @@ class _MyBookingsState extends State<MyBookings> {
   TextEditingController problemDescriptionController = TextEditingController();
 
 
-  void _submitReview() {
-    BlocProvider.of<ReviewsBloc>(context).add(PostReview(technicianId: widget.technician.id, review: _reviewController.text, rate: _rating));
+  void _submitReview() async {
+    BlocProvider.of<ReviewsBloc>(context).add(PostReview(technicianId: widget.technician.id, review: _reviewController.text, rate: _rating, customerId: int.tryParse((await SecureStorage.instance.read("id"))!)!));
     _reviewController.clear();
     setState(() {
       _rating = 0;
@@ -58,7 +58,7 @@ class _MyBookingsState extends State<MyBookings> {
   }
 
   void submitBooking() async {
-    BlocProvider.of<BookingsBloc>(context).add(PostBooking(problemDescription: problemDescriptionController.text, customerId:  int.tryParse((await SecureStorage.instance.read("id"))!), technicianId: widget.technician.id, serviceNeeded: serviceNeededController.text, serviceDate: _selectedDate.toString().substring(0, 10), serviceLocation: serviceLocationController.text));
+    BlocProvider.of<BookingsBloc>(context).add(PostBooking(problemDescription: problemDescriptionController.text, customerId: int.tryParse((await SecureStorage.instance.read("id"))!), technicianId: widget.technician.id, serviceNeeded: serviceNeededController.text, serviceDate: _selectedDate!, serviceLocation: serviceLocationController.text));
     serviceNeededController.clear();
     serviceLocationController.clear();
     problemDescriptionController.clear();
@@ -307,10 +307,10 @@ class _MyBookingsState extends State<MyBookings> {
                                                   mainAxisSize: MainAxisSize.min,
                                                   crossAxisAlignment: CrossAxisAlignment.center,
                                                   children: [
-                                                    EditableField(data: curReview.comment, controller: curController, label: 'review,${curReview.id}',),
+                                                    EditableField(data: curReview.comment, controller: curController, label: 'review,${curReview.id},${widget.technician.id}',),
                                                     IconButton(
                                                       onPressed: () {
-                                                        BlocProvider.of<ReviewsBloc>(context).add(DeleteReview(reviewId: curReview.id));
+                                                        BlocProvider.of<ReviewsBloc>(context).add(DeleteReview(reviewId: curReview.id, technicianId: widget.technician.id, ));
                                                       }, 
                                                       icon: Icon(Icons.delete, color: Colors.red, ))
                                                   ],

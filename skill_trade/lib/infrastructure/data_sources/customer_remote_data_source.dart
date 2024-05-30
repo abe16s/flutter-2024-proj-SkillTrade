@@ -1,0 +1,6 @@
+import 'package:skill_trade/domain/models/customer.dart';
+
+abstract class CustomerRemoteDataSource {
+  Future<Customer> fetchCustomer(String customerId, String endpoint, String token);
+  Future<List<Customer>> fetchAllCustomers(String endpoint, String token);
+}

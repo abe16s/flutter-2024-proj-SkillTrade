@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "login",
                             onPressed: () {
-                              context.go('/login');
+                              context.push('/login');
                             }),
                         const SizedBox(
                           width: 15,
@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "signup",
                             onPressed: () {
-                              context.go('/signup');
+                              context.push('/signup');
                             }),
                       ],
                     ),

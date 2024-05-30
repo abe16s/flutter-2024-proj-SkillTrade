@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/domain/models/technician.dart';
 import 'package:skill_trade/presentation/widgets/technician_card.dart';
-import 'package:skill_trade/state_managment/find_technician/find_tecnician_bloc.dart';
-import 'package:skill_trade/state_managment/find_technician/find_tecnician_event.dart';
-import 'package:skill_trade/state_managment/find_technician/find_tecnician_state.dart';
+import 'package:skill_trade/application/blocs/find_tecnician_bloc.dart';
+import 'package:skill_trade/presentation/events/find_tecnician_event.dart';
+import 'package:skill_trade/presentation/states/find_tecnician_state.dart';
 
 class FindTechnician extends StatelessWidget {
   const FindTechnician({super.key});

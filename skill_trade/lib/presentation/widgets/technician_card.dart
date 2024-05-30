@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/domain/models/technician.dart';
 
 class TechnicianCard extends StatelessWidget {
   final Technician technician;
@@ -22,7 +22,7 @@ class TechnicianCard extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                context.go('/myBookings', extra: technician);
+                context.push('/myBookings', extra: technician);
               }, 
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(Theme.of(context).colorScheme.primary),

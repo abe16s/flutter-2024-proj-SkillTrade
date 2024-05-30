@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skill_trade/state_managment/review/review_bloc.dart';
-import 'package:skill_trade/state_managment/review/review_event.dart';
+import 'package:skill_trade/application/blocs/review_bloc.dart';
+import 'package:skill_trade/presentation/events/review_event.dart';
 
 class EditableField extends StatefulWidget {
   final String label;
@@ -48,7 +48,7 @@ class _EditableFieldState extends State<EditableField> {
                 icon: Icon(isEditing ? Icons.check : Icons.edit),
                 onPressed: () {
                   if (widget.label.split(",")[0] == "review" && isEditing) {
-                    BlocProvider.of<ReviewsBloc>(context).add(UpdateReview(reviewId: int.parse(widget.label.split(",")[1]), updates: {"review": widget.controller!.text},));
+                    BlocProvider.of<ReviewsBloc>(context).add(UpdateReview(reviewId: int.parse(widget.label.split(",")[1]), updates: {"review": widget.controller!.text}, technicianId: int.parse(widget.label.split(",")[2],)));
                   } 
                   setState(() {
                     isEditing = !isEditing;

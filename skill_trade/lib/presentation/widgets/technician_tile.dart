@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skill_trade/models/technician.dart';
+import 'package:skill_trade/domain/models/technician.dart';
 
 class TechnicianTile extends StatelessWidget {
   final Technician technician;
@@ -27,7 +27,7 @@ class TechnicianTile extends StatelessWidget {
           ),
           trailing: TextButton(
             onPressed: () {
-              context.go('/admintech', extra: technician.id);
+              context.push('/admintech', extra: technician.id);
             }, 
           child: const Text("Review")),
         ),
