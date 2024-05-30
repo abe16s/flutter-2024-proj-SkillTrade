@@ -23,6 +23,7 @@ class _EditableFieldState extends State<EditableField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+        if(widget.label.split(',')[0] != "review")
           Text(
             widget.label,
             style: const TextStyle(
@@ -47,6 +48,7 @@ class _EditableFieldState extends State<EditableField> {
                  return IconButton(
                 icon: Icon(isEditing ? Icons.check : Icons.edit),
                 onPressed: () {
+                  
                   if(widget.label.split(',')[0] == "review" && isEditing){ 
                       ref.read(reviewProvider.notifier).updateReview({"review": widget.controller!.text},int.parse(widget.label.split(",")[1]));
                   }

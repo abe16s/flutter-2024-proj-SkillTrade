@@ -4,8 +4,23 @@ import 'package:skill_trade/presentation/screens/customer_bookings.dart';
 import 'package:skill_trade/presentation/screens/find_technicians.dart';
 import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
-void main() {
-  runApp(const CustomerPage());
+
+
+class CustomerPageLogic {
+  int selectedIndex = 0;
+
+  void navigateBottomBar(int index) {
+    selectedIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    final List<Widget> pages = [
+      const FindTechnician(),
+      const CustomerBookings(),
+      const CustomerProfileScreen(),
+    ];
+    return pages[selectedIndex];
+  }
 }
 
 class CustomerPage extends StatefulWidget {
@@ -16,19 +31,8 @@ class CustomerPage extends StatefulWidget {
 }
 
 class _CustomerPageState extends State<CustomerPage> {
-  int _selectedIndex = 0;
-
-  void navigateBottomBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _pages = [
-    const FindTechnician(),
-    const CustomerBookings(),
-    const CustomerProfileScreen(),
-  ];
+  final CustomerPageLogic _logic = CustomerPageLogic();
+  
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +63,14 @@ class _CustomerPageState extends State<CustomerPage> {
             centerTitle: true,
           ),
           drawer: const MyDrawer(),
-          body: _pages[_selectedIndex],
+          body:  _logic.getCurrentPage(),
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: navigateBottomBar,
+            currentIndex:  _logic.selectedIndex,
+            onTap: (index) {
+              setState(() {
+                _logic.navigateBottomBar(index);
+              });
+            },
             items: const [
               BottomNavigationBarItem(
                   icon: Icon(Icons.build_outlined), label: "Find Technician"),

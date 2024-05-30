@@ -9,7 +9,7 @@ import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
 
 
-final endpoint = "192.168.43.151";
+import '../ip_info.dart';
 // Assuming Review and SecureStorageService are defined elsewhere
 class ReviewsState {
   final bool isLoading;
@@ -54,7 +54,7 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
       final token = await _secureStorageService.read("token");
 
       final response = await http.get(
-        Uri.parse('http://localhost:9000/review-rate/technician/$technicianId'),
+        Uri.parse('http://$endpoint:9000/review-rate/technician/$technicianId'),
         headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -62,11 +62,12 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
         },
       );
 
-      print("fetched reviews $response");
+      print("fetched reviews $response ${response.statusCode}");
 
       if (response.statusCode == 200) {
 
         final  List<dynamic> data = jsonDecode(response.body);
+        print("fetched reviews data $data");
 
         final reviews = data.map((json) {
           Map<String, dynamic> cur = {
@@ -91,11 +92,12 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
 
   Future<void> updateReview(Map<String, dynamic> review, int id, ) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
+
     try {
       final token = await _secureStorageService.read("token");
       print("updating review $review, $id");
       final response = await http.patch(
-        Uri.parse('http://localhost:9000/review-rate/$id'),
+        Uri.parse('http://$endpoint:9000/review-rate/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -127,7 +129,7 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
 
       print("creating review $review");
       final response = await http.post(
-        Uri.parse('http://localhost:9000/review-rate/technician/${technicianId}'),
+        Uri.parse('http://$endpoint:9000/review-rate/technician/${technicianId}'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -142,7 +144,7 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
       print("create response ${response.statusCode}, $response, ${response.body}");
 
       if (response.statusCode == 201) {
-        await fetchReviews(review.technicianId);
+        await fetchReviews(_technicianId);
       } else {
         throw Exception('Failed to create review');
       }
@@ -157,7 +159,7 @@ class ReviewsNotifier extends StateNotifier<ReviewsState> {
       final token = await _secureStorageService.read("token");
       print("deleting review $id");
       final response = await http.delete(
-        Uri.parse('http://localhost:9000/review-rate/$id'),
+        Uri.parse('http://$endpoint:9000/review-rate/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -182,3 +184,45 @@ final reviewProvider = StateNotifierProvider<ReviewsNotifier, ReviewsState>((ref
   final secureStorageService = ref.read(secureStorageProvider);
   return ReviewsNotifier(secureStorageService);
 });
+
+
+final fetchReviewProvider = FutureProvider.family<List<Review>, int>((ref, int? technicianId) async {
+    
+      final secureStorageService = ref.read(secureStorageProvider);
+      final token = await secureStorageService.read("token");
+
+      final response = await http.get(
+        Uri.parse('http://$endpoint:9000/review-rate/technician/$technicianId'),
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+        },
+      );
+
+      // print("fetched reviews $response");
+      print("fetched reviews $response ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+
+        final  List<dynamic> data = jsonDecode(response.body);
+        print("fetched reviews data $data");
+
+        final reviews = data.map((json) {
+          Map<String, dynamic> cur = {
+            "rate": json["rate"],
+            "review": json["review"],
+            "user": json["user"]["fullName"],
+            "userId": json["user"]["id"],
+            "id": json["id"]
+          };
+          return Review.fromJson(cur);
+        }).toList();
+        print("yohoo");
+        print(reviews);
+        return reviews;
+      } else {
+        throw Exception('Failed to load reviews');
+      }
+    
+  });

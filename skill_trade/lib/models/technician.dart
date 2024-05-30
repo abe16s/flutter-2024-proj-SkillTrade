@@ -41,38 +41,7 @@ class Technician{
         availableLocation: json['availableLocation'],
         status: json['status']
       );
-  // factory Technician.fromJsonFull(Map<String, dynamic> json){ 
 
-  //   return switch (json) {
-  //     {
-  //       'id': int id,
-  //       'fullName': String name,
-  //       'skills': String speciality,
-  //       'phone': String phone,
-  //       'experience': String experience,
-  //       'educationLevel': String educationLevel,
-  //       'availableLocation': String availableLocation,
-  //       'additionalBio': String additionalBio,
-  //       'email': String email
-        
-
-  //     } =>
-
-  //       Technician(
-  //         name: name,
-  //         id: id,
-  //         speciality: speciality,
-  //         phone: phone,
-  //         experience: experience,
-  //         educationLevel: educationLevel,
-  //         availableLocation: availableLocation,
-  //         additionalBio: additionalBio,
-  //         email: email
-  //       ),
-  //     _ => throw const FormatException('Failed to load technician.'),
-  //   };
-
-  // }
 
   toJson(){ 
     return ( 

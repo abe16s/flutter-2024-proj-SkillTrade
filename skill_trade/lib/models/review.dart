@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:skill_trade/models/customer.dart';
 
 class Review {
-  final double rating;
+  final int rating;
   final String review;
   final String customer;
   final int customerId;

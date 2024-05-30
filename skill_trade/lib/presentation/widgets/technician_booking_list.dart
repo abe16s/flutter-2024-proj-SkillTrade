@@ -79,17 +79,27 @@ class TechnicianBookingList extends ConsumerStatefulWidget {
 }
 
 class _TechnicianBookingListState extends ConsumerState<TechnicianBookingList> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     ref.read(bookingProvider.notifier).fetchBookings();
+  //   });
+  // }
+
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(bookingProvider.notifier).fetchBookings();
+        ref.read(bookingProvider.notifier).fetchBookings();
+      
     });
   }
-
   @override
   Widget build(BuildContext context) {
     final bookingState = ref.watch(bookingProvider);
+
 
     return Column(
       children: [
@@ -111,28 +121,23 @@ class _TechnicianBookingListState extends ConsumerState<TechnicianBookingList> {
                       itemCount: bookingState.bookings.length,
                       itemBuilder: (context, index) {
                         final booking = bookingState.bookings[index];
-                        return Consumer(
-                          builder: (context, ref, _) {
-                            // final customerAsync = ref.watch(customerByIdProvider(booking.customerId));
-                            ref.read(customerNotifierProvider.notifier).fetchCustomerById(booking.customerId);
-                            final customerState = ref.watch(customerNotifierProvider);
-                            if(customerState.isLoading){
-                              return Center(child: CircularProgressIndicator());
+                        final customerAsync = ref.watch(customerByIdProvider(booking.customerId));
 
-                            } else if(customerState.error != null){
-                              return Text('Error loading customer: ${customerState.error}');
-                            } else{
+                        return customerAsync.when(
+                          data: (customer){
                                 return Padding(
                                   padding: const EdgeInsets.all(5.0),
                                   child: TechnicianBookingCard(
                                     booking: booking,
                                     editAccess: true,
-                                    customer: customerState.customer!,
+                                    customer: customer,
                                   ),
                                 );
-                            }
                           },
+                          loading: () => Center(child: CircularProgressIndicator()),
+                          error: ((error, stackTrace) => Text('Error loading customer: ${error}'))
                         );
+                        
                       },
                     ),
         ),

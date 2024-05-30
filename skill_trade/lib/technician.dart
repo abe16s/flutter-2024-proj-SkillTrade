@@ -4,8 +4,20 @@ import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/technician_booking_list.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 
-void main() {
-  runApp(TechnicianPage());
+class TechnicianPageLogic {
+  int selectedIndex = 0;
+
+  void navigateBottomBar(int index) {
+    selectedIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    final List<Widget> pages = [
+      const TechnicianBookingList(),
+      const TechnicianProfile(),
+    ];
+    return pages[selectedIndex];
+  }
 }
 
 class TechnicianPage extends StatefulWidget {
@@ -16,19 +28,8 @@ class TechnicianPage extends StatefulWidget {
 }
 
 class _TechnicianPageState extends State<TechnicianPage> {
-  int _selectedIndex = 0;
+  final TechnicianPageLogic _logic = TechnicianPageLogic();
 
-  void navigateBottomBar(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  final List<Widget> _pages = [
-    const TechnicianBookingList(),
-    const TechnicianProfile()
-  ];
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -52,20 +53,23 @@ class _TechnicianPageState extends State<TechnicianPage> {
           centerTitle: true,
       ),
       drawer: MyDrawer(),
-      body: _pages[_selectedIndex],
+      body: _logic.getCurrentPage(),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: navigateBottomBar,
-        items: [
+        currentIndex: _logic.selectedIndex,
+        onTap:  (index) {
+          setState(() {
+            _logic.navigateBottomBar(index);
+          });
+        },
+        items:  const [
           BottomNavigationBarItem(
             icon: Icon(Icons.book_outlined),
-            label: "Bookings"
+            label: "Bookings",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person_2_outlined),
-            label: "My Profile"
+            label: "My Profile",
           ),
-        
         ],
       ),
       ),

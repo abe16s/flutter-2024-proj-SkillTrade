@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 
 
-final endpoint = "192.168.43.151";
+import '../ip_info.dart';
 
 
 // @Immutable
@@ -38,17 +38,17 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> signup(user) async {
     state = AuthState(isLoading: true);
-    print("signing up ${user.toJson}");
+    print("signing up ${user}");
     final response = await http.post(
-      Uri.parse('http://localhost:9000/trader/signup'),
+      Uri.parse('http://$endpoint:9000/trader/signup'),
       headers: {'Content-Type': 'application/json'},
-      body: json.encode(user.toJson()),
+      body: json.encode(user),
     );
     print(response.body);
 
     if (response.statusCode == 201) {
       print("yay");
-      await signin(user.role, user.email, user.password);
+      await signin(user["role"], user["email"], user["password"]);
       if (state.isAuthenticated){
       state = AuthState(successMessage: "You have successfully signed up!", success: true, isAuthenticated: true);
 
@@ -67,7 +67,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     print("sign in inputs $role, $email, $password");
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:9000/trader/signin'),
+        Uri.parse('http://$endpoint:9000/trader/signin'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           "role": role,

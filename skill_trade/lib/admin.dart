@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/screens/admin_customer.dart';
 import 'package:skill_trade/presentation/screens/admin_page.dart';
 import 'package:skill_trade/presentation/screens/admin_technician.dart';
@@ -19,16 +20,36 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter App',
       theme: lightMode,
-      initialRoute: "/",
-      routes: { 
-        "/admintech": (context) => AdminTechnician(),
-        "/admincustomer": (context) => AdminCustomer(),
-      },
       debugShowCheckedModeBanner: false,
-      home: const AdminSite(),
     );
   }
 }
+
+
+class AdminSiteLogic {
+  int currentIndex = 0;
+
+  void onItemTapped(BuildContext context, int index) {
+    currentIndex = index;
+  }
+
+  Widget getCurrentPage() {
+    switch (currentIndex) {
+      case 0:
+        return  AdminPage();
+      case 1:
+        return const ReportedTechnicians();
+      case 2:
+        return const CustomersList();
+    
+      case 3:
+        return const TechniciansList();
+      default:
+        return  const AdminPage();
+    }
+  }
+}
+
 
 class AdminSite extends StatefulWidget {
   const AdminSite({super.key});
@@ -37,22 +58,8 @@ class AdminSite extends StatefulWidget {
 }
 
 class _AdminSiteState extends State<AdminSite> {
-  int _currentIndex = 0;
+  final AdminSiteLogic _logic = AdminSiteLogic();
 
-  // Define the different pages to navigate to
-  final List<Widget> _pages = [
-    const AdminPage(),
-    const ReportedTechnicians(),
-    const CustomersList(),
-    const TechniciansList()
-  ];
-
-  // Function to change the current index when an item is tapped
-  void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,11 +79,15 @@ class _AdminSiteState extends State<AdminSite> {
             ),
           ),
       ),
-      drawer: MyDrawer(),
-      body: _pages[_currentIndex], // Display the current page based on the current index
+      drawer: const MyDrawer(),
+      body: _logic.getCurrentPage(),// Display the current page based on the current index
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
+        currentIndex: _logic.currentIndex,
+        onTap: (index) {
+          setState(() {
+            _logic.onItemTapped(context, index);
+          });
+        },
         iconSize: 24,
         selectedFontSize: 12,
         unselectedFontSize: 11,

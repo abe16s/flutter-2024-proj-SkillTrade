@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/customer.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
 import 'package:skill_trade/presentation/screens/signup_page.dart';
@@ -83,8 +84,7 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "login",
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context,"/login");
+                              context.push("/login");
                             }),
                         const SizedBox(
                           width: 15,
@@ -92,8 +92,7 @@ class HomeScreen extends StatelessWidget {
                         MyButton(
                             text: "signup",
                             onPressed: () {
-                              Navigator.pushNamed(
-                                  context, "/signup");
+                                  context.push("/signup");
                             }),
                       ],
                     ),

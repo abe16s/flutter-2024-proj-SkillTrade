@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:skill_trade/presentation/screens/home_page.dart';
-import 'package:skill_trade/riverpod/technician_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/riverpod/auth_provider.dart';
 
 class MyDrawer extends ConsumerWidget {
@@ -9,7 +8,6 @@ class MyDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final authState = ref.watch(authProvider);
     return Drawer(
         backgroundColor: Colors.grey[900],
         child: Column(
@@ -63,17 +61,12 @@ class MyDrawer extends ConsumerWidget {
                 leading: Icon(Icons.logout, color: Colors.white,),
                 title: TextButton(
                   onPressed: (){
-                    // ref.read(authProvider.notifier).logout();
                     ref.read(authProvider.notifier).logout();
-                    Navigator.pushNamed(
-                            context, "/");
-                    // Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen(),));
+                    context.push("/");
                   }, 
                   child: Text("Logout", style: TextStyle(color: Colors.white),)),
               ),
             ),
-// authState.logout();
-                    // ref.read(authProvider.notifier).logout();
           ],
         ),
       );

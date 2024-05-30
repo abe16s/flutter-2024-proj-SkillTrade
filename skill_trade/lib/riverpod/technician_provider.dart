@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 
 
-final endpoint = "192.168.43.151";
+import '../ip_info.dart';
 
 
 
@@ -18,7 +18,7 @@ final technicianProvider = FutureProvider<List<Technician>>( (ref) async {
   final token = await secureStorageService.read("token");
   print("token $token");
     final response =
-        await http.get(Uri.parse("http://localhost:9000/technician"), 
+        await http.get(Uri.parse("http://$endpoint:9000/technician"), 
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -40,6 +40,33 @@ final technicianProvider = FutureProvider<List<Technician>>( (ref) async {
   });
 
 
+final pendingTechniciansProvider = FutureProvider<List<Technician>>((ref) async {
+  final secureStorageService = ref.read(secureStorageProvider);
+
+
+  final token = await secureStorageService.read("token");
+  print("tech fetch");
+  
+  final response = await http.get(
+    Uri.parse("http://$endpoint:9000/technician/pending/all"),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body);
+    final ans = data.map((json)=> Technician.fromFullJson(json)).toList();
+    print("pending techs $ans");
+    return ans;
+    
+    } else {
+    print(response.statusCode);
+    throw Exception("Failed to load technician.");
+  }
+});
 
 final technicianByIdProvider = FutureProvider.family<Technician, int>((ref, int technicianId) async {
   final secureStorageService = ref.read(secureStorageProvider);
@@ -49,7 +76,7 @@ final technicianByIdProvider = FutureProvider.family<Technician, int>((ref, int 
   print("tech fetch");
   
   final response = await http.get(
-    Uri.parse("http://localhost:9000/technician/$technicianId"),
+    Uri.parse("http://$endpoint:9000/technician/$technicianId"),
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -71,6 +98,63 @@ final technicianByIdProvider = FutureProvider.family<Technician, int>((ref, int 
   }
 });
 
+final allTechnicianProvider = FutureProvider<List<Technician>>( (ref) async {
+
+  final secureStorageService = await ref.read(secureStorageProvider);
+
+  final token = await secureStorageService.read("token");
+  print("token $token");
+    final response =
+        await http.get(Uri.parse("http://$endpoint:9000/technician"), 
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        });
+    if(response.statusCode == 200){
+      print("Yay");
+    }
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      print(data);
+      var ans =  data.map((json) => Technician.fromFullJson(json)).toList();
+      
+     return ans;
+    } else {
+      print(response.statusCode);
+      throw Exception("Failed to load technicians.");
+    }
+  });
+
+
+
+final suspendedTechniciansProvider = FutureProvider<List<Technician>>((ref) async {
+  final secureStorageService = ref.read(secureStorageProvider);
+
+
+  final token = await secureStorageService.read("token");
+  print("tech fetch");
+  
+  final response = await http.get(
+    Uri.parse("http://$endpoint:9000/technician/suspended/all"),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body);
+    final ans = data.map((json)=> Technician.fromFullJson(json)).toList();
+    print("suspended techs $ans");
+    return ans;
+    
+    } else {
+    print(response.statusCode);
+    throw Exception("Failed to load technician.");
+  }
+});
 
 
 final technicianProfileProvider = FutureProvider<Technician>((ref) async {
@@ -86,7 +170,7 @@ final technicianProfileProvider = FutureProvider<Technician>((ref) async {
 
 
     final response = await http.get(
-      Uri.parse('http://localhost:9000/technician/$id'),
+      Uri.parse('http://$endpoint:9000/technician/$id'),
       headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -146,18 +230,25 @@ class TechnicianNotifier extends StateNotifier<TechnicianState> {
     state = state.copyWith(isLoading: true);
 
     final token = await _secureStorageService.read("token");
-    final role = await _secureStorageService.read('role');
     final id = await _secureStorageService.read('userId');
+    await updateTechnicianById(technician, id);
+
+  }
+
+  Future<void> updateTechnicianById(update, id) async {
+    state = state.copyWith(isLoading: true);
+
+    final token = await _secureStorageService.read("token");
 
 
     final response = await http.patch(
-      Uri.parse('http://localhost:9000/technician/$id'),
+      Uri.parse('http://$endpoint:9000/technician/$id'),
       headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(technician)
+        body: jsonEncode(update)
     
     );
     
@@ -173,6 +264,7 @@ class TechnicianNotifier extends StateNotifier<TechnicianState> {
         errorMessage: 'Failed to update technician.',
       );
     }
+
   }
 }
 

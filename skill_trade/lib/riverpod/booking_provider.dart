@@ -8,7 +8,7 @@ import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
 
 
-final endpoint = "192.168.43.151";
+import '../ip_info.dart'; 
 
 class BookingsState {
   final bool isLoading;
@@ -53,7 +53,7 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
       final id = await _secureStorageService.read('userId');
 
       final response = await http.get(
-        Uri.parse('http://localhost:9000/bookings/$role/$id'),
+        Uri.parse('http://$endpoint:9000/bookings/$role/$id'),
         headers: { 
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -84,7 +84,7 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
       final token = await _secureStorageService.read("token");
       print("hey booking $booking, $id");
       final response = await http.patch(
-        Uri.parse('http://localhost:9000/bookings/$id'),
+        Uri.parse('http://$endpoint:9000/bookings/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -117,7 +117,7 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
 
       print("creating booking $booking");
       final response = await http.post(
-        Uri.parse('http://localhost:9000/bookings'),
+        Uri.parse('http://$endpoint:9000/bookings'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
@@ -142,7 +142,7 @@ class BookingsNotifier extends StateNotifier<BookingsState> {
       final token = await _secureStorageService.read("token");
       print("deleting booking $id");
       final response = await http.delete(
-        Uri.parse('http://localhost:9000/bookings/$id'),
+        Uri.parse('http://$endpoint:9000/bookings/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -167,3 +167,7 @@ final bookingProvider = StateNotifierProvider<BookingsNotifier, BookingsState>((
   return BookingsNotifier(secureStorageService);
 });
 
+final bookingFetchProvider = FutureProvider.autoDispose<void>((ref) async {
+  final bookingNotifier = ref.read(bookingProvider.notifier);
+  await bookingNotifier.fetchBookings();
+});

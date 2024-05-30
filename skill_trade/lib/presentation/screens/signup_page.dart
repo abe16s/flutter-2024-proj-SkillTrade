@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/models/customer.dart';
 import 'package:skill_trade/models/technician.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/login_page.dart';
+import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/presentation/widgets/technician_application.dart';
@@ -330,18 +332,20 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
                                           if (_selectedTags.length > 0) {
-                                            final Technician technician = Technician(
-                                              id: 0,
-                                              name: _fullNameController.value.text, 
-                                              speciality: _selectedTags.join(", "),
-                                              email: _emailController.value.text,
-                                              phone: _phoneController.value.text,
-                                              experience: _experienceController.value.text,
-                                              availableLocation:_locationController.value.text,
-                                              password: _passwordController.value.text,
-                                              additionalBio: _bioController.value.text,
-                                              
-                                              );
+                                            
+                                              final technician = {
+                                              "fullName": _fullNameController.value.text,
+                                              "role": "technician", 
+                                              "skills": _selectedTags.join(", "),
+                                              "email": _emailController.value.text,
+                                              "phone": _phoneController.value.text,
+                                              "experience": _experienceController.value.text,
+                                              "availableLocation":_locationController.value.text,
+                                              "password": _passwordController.value.text,
+                                              "additionalBio": _bioController.value.text,
+                                              "educationLevel": _educationController.value.text
+
+                                              };
                                             await authNotifier.signup(
                                                technician
                                               );
@@ -352,22 +356,20 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                             if (auth.success) {
                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
+                                                  backgroundColor: lightMode.primaryColorLight,
                                                   content: Text( 'Sign up successful'),
                                                 ),
                                               );
-                                              // You can navigate to any page after successful signup
-                                              // Navigator.of(context).pushNamed('/customer');
                                             } else {
-                                              // If signup failed, show error message
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
+                                                  backgroundColor: lightMode.primaryColorLight,
                                                   content: Text(auth.errorMessage ?? 'Sign up failed'),
                                                 ),
                                               );
                                             }
-                                            print("auth is auth ${auth.isAuthenticated}");
                                             if (auth.isAuthenticated) {
-                                              Navigator.of(context).pushNamed('/technician');
+                                              context.push('/technician');
                                             }
                                             
                                         
@@ -378,8 +380,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                             });
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
-                                              const SnackBar(
-                                                  content: Text(
+                                              SnackBar(
+                                                  backgroundColor: lightMode.primaryColorLight,
+                                                  content: const Text(
                                                       'You have to choose at least one skill.')),
                                             );
                                           }
@@ -387,15 +390,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                         }
                                       },
                                       width: double.infinity),
-                                      // if (authState.successMessage != null) ...[
-                                      //   SizedBox(height: 20),
-                                      //   Text(
-                                      //     authState.successMessage!,
-                                      //     style: TextStyle(
-                                      //       color: authState.successMessage != null ? Colors.green : Colors.red,
-                                      //     ),
-                                      //   ),
-                                      // ],
                                 ],
                                 if (_user_role == "customer") ...[
                                   const SizedBox(
@@ -405,14 +399,14 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                       text: "signup",
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
+                                          final customer = {
+                                            "fullName": _fullNameController.value.text, 
+                                              "email": _emailController.value.text,
+                                              "phone": _phoneController.value.text,
+                                              "password": _passwordController.value.text,
+                                              "role": "customer"
+                                          };
 
-                                          final Customer customer = Customer(
-                                              fullName: _fullNameController.value.text, 
-                                              email: _emailController.value.text,
-                                              phone: _phoneController.value.text,
-                                              password: _passwordController.value.text,
-                                              
-                                              );
 
                                               if (!authState.success)
                                                   await authNotifier.signup(customer);
@@ -421,22 +415,19 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                                             if (auth.success) {
                                              ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
-                                                  content: Text( 'Sign up successful'),
+                                                  backgroundColor: lightMode.primaryColorLight,
+                                                  content: const Text( 'Sign up successful'),
                                                 ),
                                               );
-                                              // You can navigate to any page after successful signup
-                                              // Navigator.of(context).pushNamed('/customer');
                                             } else {
-                                              // If signup failed, show error message
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Text(auth.errorMessage ?? 'Sign up failed'),
                                                 ),
                                               );
                                             }
-                                            print("auth is auth ${auth.isAuthenticated}");
                                             if (auth.isAuthenticated) {
-                                              Navigator.of(context).pushNamed('/customer');
+                                              context.push('/customer');
                                             }
                                          
                                               
@@ -459,8 +450,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context,"/login");
+                                  context.push("/login");
                                 },
                                 child: Text("Login",
                                     style: TextStyle(

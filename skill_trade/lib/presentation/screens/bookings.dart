@@ -55,6 +55,7 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
 
     // _reviews.add(newReview);
     ref.read(reviewProvider.notifier).createReview(widget.technician.id, _review, _rating );
+    ref.read(reviewProvider.notifier).fetchReviews(widget.technician.id);
         
     setState(() {
       _rating = 0;
@@ -130,7 +131,7 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
                 ),
               ),
               if(bookingState.isLoading)
-                CircularProgressIndicator()
+                Center(child: CircularProgressIndicator(),)
               else Container(
                 padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 child: Column(
@@ -256,6 +257,7 @@ class _MyBookingsState extends ConsumerState<MyBookings> {
                           onPressed:(){
 
                             submitBooking();
+                            ref.watch(bookingProvider);
                             if (bookingState.isSuccess) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text('Booking created successfully!')),

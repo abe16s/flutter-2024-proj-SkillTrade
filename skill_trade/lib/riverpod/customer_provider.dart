@@ -7,7 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:skill_trade/riverpod/secure_storage_provider.dart';
 import 'package:skill_trade/riverpod/technician_provider.dart';
 
-final endpoint = "192.168.43.151";
+import '../ip_info.dart';
 
 // class CustomerService {
 //   final SecureStorageService _secureStorageService;
@@ -21,7 +21,7 @@ final endpoint = "192.168.43.151";
 
 
 //     final response = await http.get(
-//       Uri.parse('http://localhost:9000/customer/$id'),
+//       Uri.parse('http://$endpoint:9000/customer/$id'),
 //       headers: { 
 //           'Content-Type': 'application/json',
 //           'Accept': 'application/json',
@@ -42,6 +42,35 @@ final endpoint = "192.168.43.151";
 //   }
 
 // }
+// 
+
+// final customerProfileProvider = FutureProvider<Customer>((ref) async {
+//   final secureStorageService = ref.read(secureStorageProvider);
+//   final id = await secureStorageService.read('userId');
+//   final token = await secureStorageService.read("token");
+//   if(id == null)
+//     Exception("No customer found");
+  
+//   final Future<Customer> customer = await ref.read(customerByIdProvider(int.parse(id!)));
+//   return customer;
+//   // print("token $token");
+//   // final response = await http.get(
+//   //   Uri.parse("http://$endpoint:9000/customer/$id"),
+//   //   headers: {
+//   //     'Content-Type': 'application/json',
+//   //     'Accept': 'application/json',
+//   //     'Authorization': 'Bearer $token',
+//   //   },
+//   // );
+
+//   // if (response.statusCode == 200) {
+//   //   final data = jsonDecode(response.body);
+//   //   return Customer.fromJson(data);
+//   // } else {
+//   //   print(response.statusCode);
+//   //   throw Exception("Failed to load customer.");
+//   // }
+// });
 
 
 // final customerByIdProvider = FutureProvider.family<Customer, int>((ref, customerId) async {
@@ -50,7 +79,7 @@ final endpoint = "192.168.43.151";
 //   final token = await secureStorageService.read("token");
 //   print("token $token");
 //   final response = await http.get(
-//     Uri.parse("http://localhost:9000/customer/$customerId"),
+//     Uri.parse("http://$endpoint:9000/customer/$customerId"),
 //     headers: {
 //       'Content-Type': 'application/json',
 //       'Accept': 'application/json',
@@ -63,10 +92,77 @@ final endpoint = "192.168.43.151";
 //     return Customer.fromJson(data);
 //   } else {
 //     print(response.statusCode);
-//     throw Exception("Failed to load technician.");
+//     throw Exception("Failed to load customer.");
 //   }
 // });
 
+
+
+// FutureProvider to fetch customer by ID
+final customerByIdProvider = FutureProvider.family<Customer, int>((ref, customerId) async {
+  final secureStorageService = ref.read(secureStorageProvider);
+  final token = await secureStorageService.read("token");
+
+  final response = await http.get(
+    Uri.parse("http://$endpoint:9000/customer/$customerId"),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final data = jsonDecode(response.body);
+    return Customer.fromJson(data);
+  } else {
+    throw Exception("Failed to load customer.");
+  }
+});
+
+// FutureProvider to fetch the current customer's profile
+final customerProfileProvider = FutureProvider<Customer>((ref) async {
+  final secureStorageService = ref.read(secureStorageProvider);
+  final id = await secureStorageService.read('userId');
+  if (id == null) {
+    throw Exception("No customer found");
+  }
+
+  // Use customerByIdProvider with the retrieved user ID
+  final customer = await ref.read(customerByIdProvider(int.parse(id)).future);
+
+  // Await the customer data from the async value
+  // final customer = await customerAsyncValue.future;
+  return customer;
+});
+
+
+
+final fetchAllCustomers = FutureProvider<List<Customer>>((ref) async {
+  final secureStorageService = ref.read(secureStorageProvider);
+
+  final token = await secureStorageService.read("token");
+  // print("token $token");
+  final response = await http.get(
+    Uri.parse("http://$endpoint:9000/customer"),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  print("fetch all customers ${response.statusCode} $response");
+
+  if (response.statusCode == 200) {
+    final List<dynamic> data = jsonDecode(response.body);
+    print("fetched customers $data");
+    return data.map((json) => Customer.fromJson(json)).toList();
+  } else {
+    print(response.statusCode);
+    throw Exception("Failed to load customers.");
+  }
+});
 // final customerServiceProvider = Provider<CustomerService>((ref) {
 //   final secureStorageService = ref.read(secureStorageProvider);
 //   return CustomerService(secureStorageService);
@@ -107,7 +203,7 @@ class CustomerNotifier extends StateNotifier<CustomerState> {
       final id = await _secureStorageService.read('userId');
 
       final response = await http.get(
-        Uri.parse('http://localhost:9000/customer/$id'),
+        Uri.parse('http://$endpoint:9000/customer/$id'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -133,7 +229,7 @@ class CustomerNotifier extends StateNotifier<CustomerState> {
       final token = await _secureStorageService.read("token");
 
       final response = await http.get(
-        Uri.parse('http://localhost:9000/customer/$customerId'),
+        Uri.parse('http://$endpoint:9000/customer/$customerId'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -159,6 +255,6 @@ final customerNotifierProvider = StateNotifierProvider<CustomerNotifier, Custome
   return CustomerNotifier(secureStorageService);
 });
 
-final customerProfileProvider = Provider<void>((ref) {
-  ref.read(customerNotifierProvider.notifier).fetchProfile();
-});
+// final customerProfileProvider = Provider<void>((ref) {
+//   ref.read(customerNotifierProvider.notifier).fetchProfile();
+// });

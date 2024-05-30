@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skill_trade/presentation/screens/customer_profile.dart';
 import 'package:skill_trade/presentation/screens/signup_page.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
@@ -128,21 +129,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             text: "login",
                             onPressed: ()async {
                               if (_formKey.currentState!.validate()) {
-                                  await ref.read(authProvider.notifier).signin(_selectedRole, _emailController.text, _passwordController.text);
-                                  final auth = ref.watch(authProvider);
-                                print("auth.isAuthenticated in login  ${auth.isAuthenticated}");
+                                await ref.read(authProvider.notifier).signin(_selectedRole, _emailController.text, _passwordController.text);
+                                final auth = ref.watch(authProvider);
                                 if (auth.isAuthenticated){
-                                if (auth.role == "customer"){ 
-                                  Navigator.pushNamed(
-                                    context, "/customer");
-                                } else if (_selectedRole == "technician"){ 
-                                  Navigator.pushNamed(
-                                    context, "/technician");
+                                  if (auth.role == "customer"){ 
+                                    context.push(
+                                      "/customer");
+                                  } else if (auth.role == "technician"){ 
+                                    context.push(
+                                      "/technician");
 
-                                } else if(_selectedRole == "admin"){ 
-                                  Navigator.pushNamed(
-                                    context, "/admin");
-                                }
+                                  } else if(auth.role == "admin"){ 
+                                    context.push(
+                                      "/admin");
+                                  }
                                 }
                               }
                             },
@@ -160,13 +160,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.pushNamed(
-                                      context, "/signup");
+                                  context.push("/signup");
                                 },
-                                child: Text("Sign up",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.purple.shade300)))
+                                child: Text(
+                                  "Sign up",
+                                  style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.purple.shade300
+                                  )
+                                )
+                              )
                           ],
                         )
                       ],
