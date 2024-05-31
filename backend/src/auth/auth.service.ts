@@ -100,6 +100,15 @@ export class AuthService {
     if (!pwMatches) {
       throw new ForbiddenException('Credetials are not correct!');
     }
+    if (user.role === 'technician') {
+      return this.tokenGenerate(
+        user.id,
+        user.fullName,
+        user.role,
+        user.email,
+        user.status,
+      );
+    }
 
     return this.tokenGenerate(user.id, user.fullName, user.role, user.email);
   }
@@ -109,6 +118,7 @@ export class AuthService {
     fullName: string,
     role: string,
     email: string,
+    status?: string,
   ) {
     const payload = {
       sub: userId,
@@ -120,6 +130,14 @@ export class AuthService {
       expiresIn: '1y',
       secret: 'brothers',
     });
+    if (role === 'technician') {
+      return {
+        access_token: token,
+        role,
+        userId,
+        status,
+      };
+    }
     return {
       access_token: token,
       role,
