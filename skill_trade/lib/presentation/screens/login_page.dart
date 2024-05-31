@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:skill_trade/presentation/states/auth_state.dart';
 import 'package:skill_trade/presentation/widgets/my_button.dart';
 import 'package:skill_trade/presentation/widgets/my_textfield.dart';
 import 'package:skill_trade/application/blocs/auth_bloc.dart';
@@ -117,9 +120,23 @@ class _LoginPageState extends State<LoginPage> {
                         MyButton(
                             text: "login",
                             onPressed: () async {
-                              await login();
                               if (_formKey.currentState!.validate()) {
-                                GoRouter.of(context).go('/');
+                                await login();
+                                final authState = BlocProvider.of<AuthBloc>(context).state;
+                                if (authState is AuthError) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(authState.error),
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text( 'Successfully logged in!'),
+                                    ),
+                                  );
+                                  GoRouter.of(context).go('/');
+                                }
                               }
                             },
                             width: double.infinity),
@@ -157,6 +174,22 @@ class _LoginPageState extends State<LoginPage> {
   }
   
   Future<void> login() async {
-    BlocProvider.of<AuthBloc>(context).add(LogInEvent(role: _selectedRole, email: _emailController.text, password: _passwordController.text));
+    // BlocProvider.of<AuthBloc>(context).add(LogInEvent(role: _selectedRole, email: _emailController.text, password: _passwordController.text));
+    final Completer<void> completer = Completer<void>();
+    final subscription = BlocProvider.of<AuthBloc>(context).stream.listen((state) {
+      if (state is LoggedIn || state is AuthError) {
+        completer.complete();
+      }
+    });
+
+    BlocProvider.of<AuthBloc>(context).add(LogInEvent(
+      role: _selectedRole,
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
+
+    await completer.future;
+
+    await subscription.cancel();
   }
 }

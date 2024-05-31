@@ -54,11 +54,11 @@ class FindTechnician extends StatelessWidget {
                 if (state is TechniciansLoading){
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is TechniciansLoaded) {
-                  final List<Technician> technicians = state.technicians;
+                  final List<Technician> technicians = state.technicians.where((tech) => tech.status=="accepted").toList();
                   return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // Number of columns
-                    childAspectRatio: 0.55, // Aspect ratio (width / height)
+                    crossAxisCount: 2, 
+                    childAspectRatio: 0.55, 
                     mainAxisSpacing: 6,
                     crossAxisSpacing: 6,
                   ),

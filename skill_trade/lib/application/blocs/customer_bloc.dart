@@ -9,6 +9,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
   CustomerBloc({required this.customerRepository}) : super(CustomerLoading()) {
     on<LoadCustomer>(_onLoadCustomer);
     on<LoadAllCustomers>(_onLoadAllCustomers);
+    on<UpdatePassword>(_onUpdatePassword);
   }
 
   Future<void> _onLoadCustomer(LoadCustomer event, Emitter<CustomerState> emit) async {
@@ -24,6 +25,21 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
     try {
       final customers = await customerRepository.fetchAllCustomers();
       emit(AllCustomersLoaded(customers));
+    } catch (error) {
+      emit(CustomerError(error.toString()));
+    }
+  }
+
+  Future<void> _onUpdatePassword(UpdatePassword event, Emitter<CustomerState> emit) async {
+    try {
+      await customerRepository.updatePassword(
+        {
+          "role": event.role,
+          "id": event.id,
+          "newPassword": event.newPassword,
+          "password": event.oldPassword
+        }
+      );
     } catch (error) {
       emit(CustomerError(error.toString()));
     }

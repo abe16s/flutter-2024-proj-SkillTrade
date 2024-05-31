@@ -33,6 +33,10 @@ class TechnicianProfile extends StatefulWidget {
 class _TechnicianProfileState extends State<TechnicianProfile> {
   final Map<String, TextEditingController> _controllers = {};
 
+  bool changePassword = false;
+  final TextEditingController oldPasswordController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -108,7 +112,51 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            const SizedBox(height: 30),
+                            changePassword? Center(
+                              child: SizedBox(
+                              width: 250,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                  controller: oldPasswordController,
+                                  decoration: const InputDecoration(
+                                      hintText: 'Enter old password',
+                                      border: OutlineInputBorder(),
+                                    ), 
+                                    obscureText: true,
+                                  ),
+                                  const SizedBox(height: 15,),
+                                  TextField(
+                                  controller: newPasswordController,
+                                  decoration: const InputDecoration(
+                                      hintText: 'Enter new password',
+                                      border: OutlineInputBorder(),
+                                    ), 
+                                    obscureText: true,
+                                  ),
+                                ],
+                              ),
+                                                        ),
+                            ): const SizedBox(),
+                          const SizedBox(height: 15,),
+                          Center(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (changePassword && oldPasswordController.text != "" && newPasswordController.text != "") {
+                                    updatePassword(state.technician.id);
+                                  }
+                                  changePassword = !changePassword;
+                                });
+                              },
+                              style: TextButton.styleFrom(
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                              ),
+                              child: Text(changePassword? "Save Changes": "Change Password", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
+                            ),
+                          ),                            
+
                           ],
                         ),
                       ),
@@ -142,5 +190,11 @@ class _TechnicianProfileState extends State<TechnicianProfile> {
     };
 
     BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdateTechnicianProfile(technicianId: technician.id, updates: updatedData));
+  }
+
+  void updatePassword(id) {
+    BlocProvider.of<IndividualTechnicianBloc>(context).add(UpdatePassword(id: id, role: 'technician', oldPassword: oldPasswordController.text, newPassword: newPasswordController.text));
+    oldPasswordController.clear();
+    newPasswordController.clear();
   }
 }
