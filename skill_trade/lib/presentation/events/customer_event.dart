@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class CustomerEvent extends Equatable{
+abstract class CustomerEvent extends Equatable {
+  const CustomerEvent();
+
   @override
   List<Object?> get props => [];
 }
@@ -8,10 +10,18 @@ abstract class CustomerEvent extends Equatable{
 class LoadCustomer extends CustomerEvent {
   final String customerId;
 
-  LoadCustomer({required this.customerId});
+  const LoadCustomer({required this.customerId});
+
+  @override
+  List<Object?> get props => [customerId];
 }
 
-class LoadAllCustomers extends CustomerEvent {}
+class LoadAllCustomers extends CustomerEvent {
+  const LoadAllCustomers();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class UpdatePassword extends CustomerEvent {
   final int id;
@@ -19,5 +29,18 @@ class UpdatePassword extends CustomerEvent {
   final String oldPassword;
   final String newPassword;
 
-  UpdatePassword({required this.id, required this.role, required this.oldPassword, required this.newPassword});
+  const UpdatePassword({
+    required this.id,
+    required this.role,
+    required this.oldPassword,
+    required this.newPassword,
+  });
+
+  @override
+  List<Object?> get props => [
+        id,
+        role,
+        oldPassword,
+        newPassword,
+      ];
 }

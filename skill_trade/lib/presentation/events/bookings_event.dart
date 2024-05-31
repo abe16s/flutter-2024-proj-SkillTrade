@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class BookingsEvent extends Equatable{
+abstract class BookingsEvent extends Equatable {
+  const BookingsEvent();
+
   @override
   List<Object?> get props => [];
 }
@@ -8,13 +10,19 @@ abstract class BookingsEvent extends Equatable{
 class LoadCustomerBookings extends BookingsEvent {
   final String customerId;
 
-  LoadCustomerBookings({required this.customerId});
+  const LoadCustomerBookings({required this.customerId});
+
+  @override
+  List<Object?> get props => [customerId];
 }
 
 class LoadTechnicianBookings extends BookingsEvent {
   final String technicianId;
 
-  LoadTechnicianBookings({required this.technicianId});
+  const LoadTechnicianBookings({required this.technicianId});
+
+  @override
+  List<Object?> get props => [technicianId];
 }
 
 class PostBooking extends BookingsEvent {
@@ -25,8 +33,24 @@ class PostBooking extends BookingsEvent {
   final String serviceLocation;
   final String problemDescription;
 
-  PostBooking({required this.problemDescription, required this.customerId, required this.technicianId, required this.serviceNeeded, required this.serviceDate, required this.serviceLocation});
-  List<dynamic> get props => [customerId, technicianId, serviceNeeded];
+  const PostBooking({
+    required this.problemDescription,
+    required this.customerId,
+    required this.technicianId,
+    required this.serviceNeeded,
+    required this.serviceDate,
+    required this.serviceLocation,
+  });
+
+  @override
+  List<Object?> get props => [
+        customerId,
+        technicianId,
+        serviceNeeded,
+        serviceDate,
+        serviceLocation,
+        problemDescription,
+      ];
 }
 
 class UpdateBooking extends BookingsEvent {
@@ -35,12 +59,31 @@ class UpdateBooking extends BookingsEvent {
   final String whoUpdated;
   final String updaterId;
 
-  UpdateBooking({required this.updates, required this.bookingId, required this.whoUpdated, required this.updaterId,});
+  const UpdateBooking({
+    required this.updates,
+    required this.bookingId,
+    required this.whoUpdated,
+    required this.updaterId,
+  });
+
+  @override
+  List<Object?> get props => [
+        updates,
+        bookingId,
+        whoUpdated,
+        updaterId,
+      ];
 }
 
 class DeleteBooking extends BookingsEvent {
   final int bookingId;
   final int customerId;
 
-  DeleteBooking({required this.bookingId, required this.customerId,});
+  const DeleteBooking({
+    required this.bookingId,
+    required this.customerId,
+  });
+
+  @override
+  List<Object?> get props => [bookingId, customerId];
 }
