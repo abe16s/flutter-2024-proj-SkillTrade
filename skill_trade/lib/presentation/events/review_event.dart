@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ReviewsEvent extends Equatable{
+abstract class ReviewsEvent extends Equatable {
+  const ReviewsEvent();
+
   @override
   List<Object?> get props => [];
 }
@@ -8,7 +10,10 @@ abstract class ReviewsEvent extends Equatable{
 class LoadTechnicianReviews extends ReviewsEvent {
   final int technicianId;
 
-  LoadTechnicianReviews({required this.technicianId});
+  const LoadTechnicianReviews({required this.technicianId});
+
+  @override
+  List<Object?> get props => [technicianId];
 }
 
 class PostReview extends ReviewsEvent {
@@ -17,7 +22,15 @@ class PostReview extends ReviewsEvent {
   final int rate;
   final int customerId;
 
-  PostReview({required this.technicianId, required this.review, required this.rate, required this.customerId});
+  const PostReview({
+    required this.technicianId,
+    required this.review,
+    required this.rate,
+    required this.customerId,
+  });
+
+  @override
+  List<Object?> get props => [technicianId, review, rate, customerId];
 }
 
 class UpdateReview extends ReviewsEvent {
@@ -25,12 +38,25 @@ class UpdateReview extends ReviewsEvent {
   final int reviewId;
   final int technicianId;
 
-  UpdateReview({required this.updates, required this.reviewId, required this.technicianId});
+  const UpdateReview({
+    required this.updates,
+    required this.reviewId,
+    required this.technicianId,
+  });
+
+  @override
+  List<Object?> get props => [updates, reviewId, technicianId];
 }
 
 class DeleteReview extends ReviewsEvent {
   final int reviewId;
   final int technicianId;
 
-  DeleteReview({required this.reviewId, required this.technicianId});
+  const DeleteReview({
+    required this.reviewId,
+    required this.technicianId,
+  });
+
+  @override
+  List<Object?> get props => [reviewId, technicianId];
 }
