@@ -5,6 +5,7 @@ import 'package:skill_trade/presentation/widgets/services_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  static const Key homeScreenKey = Key('homeScreenKey');
   final List servicesCards = const [
     ServicesCard(
         imageUrl: 'assets/plumbing.jpg',
