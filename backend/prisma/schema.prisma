@@ -58,8 +58,8 @@ model Booking {
   problemDescription String     @db.Text
   status             String
   serviceLocation    String?    @db.Text
-  user               User       @relation(fields: [customerId], references: [id])
-  technician         Technician @relation(fields: [technicianId], references: [id])
+  user               User       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  technician         Technician @relation(fields: [technicianId], references: [id], onDelete: Cascade)
 
   @@unique([customerId, technicianId, serviceDate])
 }
@@ -71,8 +71,8 @@ model Review {
   createdDate        DateTime   @default(now())
   rate Float?
   review String? @db.Text
-  user               User       @relation(fields: [customerId], references: [id])
-  technician         Technician @relation(fields: [technicianId], references: [id])
+  user               User       @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  technician         Technician @relation(fields: [technicianId], references: [id], onDelete: Cascade)
 }
 
 model Admin {
