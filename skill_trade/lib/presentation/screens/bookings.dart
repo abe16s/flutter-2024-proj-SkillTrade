@@ -265,12 +265,12 @@ class _MyBookingsState extends State<MyBookings> {
                     BlocBuilder<ReviewsBloc, ReviewsState>(
                       builder: (context, state) {
                         if (state is ReviewsLoaded) {
-                         return state.review.isNotEmpty ? Container(
-                            height: state.review.length * 150,
+                         return state.reviews.isNotEmpty ? Container(
+                            height: state.reviews.length * 150,
                             child: ListView.builder(
-                              itemCount: state.review.length,
+                              itemCount: state.reviews.length,
                               itemBuilder: (context, index) {
-                                Review curReview = state.review[index];
+                                Review curReview = state.reviews[index];
                                 return Column(
                                   mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,7 +287,7 @@ class _MyBookingsState extends State<MyBookings> {
                                           width: 5,
                                         ),
                                         Text(
-                                          state.review[index].customer,
+                                          state.reviews[index].customer,
                                           style: TextStyle(
                                               fontSize: 15,
                                               fontWeight: FontWeight.w500),
@@ -296,7 +296,7 @@ class _MyBookingsState extends State<MyBookings> {
                                     ),
                                     ListTile(
                                       title: RatingStars(
-                                          rating: state.review[index].rating),
+                                          rating: state.reviews[index].rating),
                                       subtitle: BlocBuilder<CustomerBloc, CustomerState>(
                                           builder: (context, state) {
                                             if (state is CustomerLoaded) {

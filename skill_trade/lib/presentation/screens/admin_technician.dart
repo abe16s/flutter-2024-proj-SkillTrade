@@ -131,10 +131,10 @@ class AdminTechnician extends StatelessWidget {
             child: BlocBuilder<ReviewsBloc, ReviewsState>(
               builder: (context, state) {
                 if (state is ReviewsLoaded) {
-                  return state.review.isNotEmpty ? Container(
-                    height: state.review.length * 110,
+                  return state.reviews.isNotEmpty ? Container(
+                    height: state.reviews.length * 110,
                     child: ListView.builder(
-                      itemCount: state.review.length,
+                      itemCount: state.reviews.length,
                       itemBuilder: (context, index) {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
@@ -152,7 +152,7 @@ class AdminTechnician extends StatelessWidget {
                                   width: 5,
                                 ),
                                 Text(
-                                  state.review[index].customer,
+                                  state.reviews[index].customer,
                                   style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500),
@@ -161,8 +161,8 @@ class AdminTechnician extends StatelessWidget {
                             ),
                             ListTile(
                               title: RatingStars(
-                                  rating: state.review[index].rating),
-                              subtitle: Text(state.review[index].comment)
+                                  rating: state.reviews[index].rating),
+                              subtitle: Text(state.reviews[index].comment)
                               )
                           ],
                         );

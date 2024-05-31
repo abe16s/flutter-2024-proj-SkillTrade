@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-abstract class AuthEvent extends Equatable{
+abstract class AuthEvent extends Equatable {
+  const AuthEvent();
+
   @override
   List<Object?> get props => [];
 }
@@ -11,7 +13,15 @@ class SignUpCustomer extends AuthEvent {
   final String phone;
   final String password;
 
-  SignUpCustomer({required this.fullName, required this.email, required this.phone, required this.password});
+  const SignUpCustomer({
+    required this.fullName,
+    required this.email,
+    required this.phone,
+    required this.password,
+  });
+
+  @override
+  List<Object?> get props => [fullName, email, phone, password];
 }
 
 class SignUpTechnician extends AuthEvent {
@@ -25,8 +35,30 @@ class SignUpTechnician extends AuthEvent {
   final String availableLocation;
   final String additionalBio;
 
-  SignUpTechnician({required this.fullName, required this.email, required this.phone, required this.password, required this.skills, required this.experience, required this.educationLevel, required this.availableLocation, required this.additionalBio});
+  const SignUpTechnician({
+    required this.fullName,
+    required this.email,
+    required this.phone,
+    required this.password,
+    required this.skills,
+    required this.experience,
+    required this.educationLevel,
+    required this.availableLocation,
+    required this.additionalBio,
+  });
 
+  @override
+  List<Object?> get props => [
+        fullName,
+        email,
+        phone,
+        password,
+        skills,
+        experience,
+        educationLevel,
+        availableLocation,
+        additionalBio,
+      ];
 }
 
 class LogInEvent extends AuthEvent {
@@ -34,11 +66,33 @@ class LogInEvent extends AuthEvent {
   final String email;
   final String password;
 
-  LogInEvent({required this.role, required this.email, required this.password});
+  const LogInEvent({
+    required this.role,
+    required this.email,
+    required this.password,
+  });
+
+  @override
+  List<Object?> get props => [role, email, password];
 }
 
-class UnlogEvent extends AuthEvent {}
+class UnlogEvent extends AuthEvent {
+  const UnlogEvent();
 
-class AutomaticLogIn extends AuthEvent {}
+  @override
+  List<Object?> get props => [];
+}
 
-class DeleteAccount extends AuthEvent {}
+class AutomaticLogIn extends AuthEvent {
+  const AutomaticLogIn();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class DeleteAccount extends AuthEvent {
+  const DeleteAccount();
+
+  @override
+  List<Object?> get props => [];
+}
