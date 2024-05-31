@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:skill_trade/domain/models/technician.dart';
 
-abstract class IndividualTechnicianState {}
+abstract class IndividualTechnicianState extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class IndividualTechnicianLoading extends IndividualTechnicianState {}
 

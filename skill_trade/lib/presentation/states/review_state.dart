@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:skill_trade/domain/models/review.dart';
 
-abstract class ReviewsState{}
+abstract class ReviewsState extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class ReviewsLoading extends ReviewsState {}
 

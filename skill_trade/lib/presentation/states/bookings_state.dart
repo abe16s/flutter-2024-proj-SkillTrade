@@ -1,6 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:skill_trade/domain/models/booking.dart';
 
-abstract class BookingsState {}
+abstract class BookingsState extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class BookingsLoading extends BookingsState {}
 

@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:skill_trade/infrastructure/repositories/technician_repository.dart';
-import 'package:skill_trade/presentation/events/find_tecnician_event.dart';
-import 'package:skill_trade/presentation/states/find_tecnician_state.dart';
+import 'package:skill_trade/presentation/events/find_technician_event.dart';
+import 'package:skill_trade/presentation/states/find_technician_state.dart';
 
 class TechniciansBloc extends Bloc<TechniciansEvent, TechniciansState> {
   final TechnicianRepository technicianRepository;

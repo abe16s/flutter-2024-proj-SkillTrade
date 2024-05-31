@@ -1,4 +1,9 @@
-abstract class IndividualTechnicianEvent {}
+import 'package:equatable/equatable.dart';
+
+abstract class IndividualTechnicianEvent extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class LoadIndividualTechnician extends IndividualTechnicianEvent {
   final int? technicianId;
