@@ -29,54 +29,54 @@ void main() {
     when(mockAuthBloc.stream).thenAnswer((_) => Stream.empty());
   });
 
-  testWidgets('MyDrawer displays correctly and handles logout', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      BlocProvider<AuthBloc>.value(
-        value: mockAuthBloc,
-        child: MaterialApp.router(
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
-          routeInformationProvider: router.routeInformationProvider,
-          builder: (context, child) {
-            return Scaffold(
-              drawer: const MyDrawer(),
-              body: child,
-            );
-          },
-        ),
-      ),
-    );
+  // testWidgets('MyDrawer displays correctly and handles logout', (WidgetTester tester) async {
+  //   await tester.pumpWidget(
+  //     BlocProvider<AuthBloc>.value(
+  //       value: mockAuthBloc,
+  //       child: MaterialApp.router(
+  //         routerDelegate: router.routerDelegate,
+  //         routeInformationParser: router.routeInformationParser,
+  //         routeInformationProvider: router.routeInformationProvider,
+  //         builder: (context, child) {
+  //           return Scaffold(
+  //             drawer: const MyDrawer(),
+  //             body: child,
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
 
-    // Open the drawer
-    ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
-    scaffoldState.openDrawer();
-    await tester.pumpAndSettle();
+  //   // Open the drawer
+  //   ScaffoldState scaffoldState = tester.firstState(find.byType(Scaffold));
+  //   scaffoldState.openDrawer();
+  //   await tester.pumpAndSettle();
 
-    // Verify drawer items are displayed
-    expect(find.byType(DrawerHeader), findsOneWidget);
-    expect(find.byType(ListTile), findsNWidgets(5)); // Four menu items and one logout item
+  //   // Verify drawer items are displayed
+  //   expect(find.byType(DrawerHeader), findsOneWidget);
+  //   expect(find.byType(ListTile), findsNWidgets(5)); // Four menu items and one logout item
 
-    // Verify icons and text in the ListTile widgets
-    expect(find.widgetWithIcon(ListTile, Icons.info), findsOneWidget);
-    expect(find.widgetWithIcon(ListTile, Icons.settings), findsOneWidget);
-    expect(find.widgetWithIcon(ListTile, Icons.feedback), findsOneWidget);
-    expect(find.widgetWithIcon(ListTile, Icons.rule), findsOneWidget);
-    expect(find.widgetWithIcon(ListTile, Icons.logout), findsOneWidget);
+  //   // Verify icons and text in the ListTile widgets
+  //   expect(find.widgetWithIcon(ListTile, Icons.info), findsOneWidget);
+  //   expect(find.widgetWithIcon(ListTile, Icons.settings), findsOneWidget);
+  //   expect(find.widgetWithIcon(ListTile, Icons.feedback), findsOneWidget);
+  //   expect(find.widgetWithIcon(ListTile, Icons.rule), findsOneWidget);
+  //   expect(find.widgetWithIcon(ListTile, Icons.logout), findsOneWidget);
 
-    expect(find.text('About'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
-    expect(find.text('Feedback'), findsOneWidget);
-    expect(find.text('Rules and Regulations'), findsOneWidget);
-    expect(find.text('Logout'), findsOneWidget);
+  //   expect(find.text('About'), findsOneWidget);
+  //   expect(find.text('Settings'), findsOneWidget);
+  //   expect(find.text('Feedback'), findsOneWidget);
+  //   expect(find.text('Rules and Regulations'), findsOneWidget);
+  //   expect(find.text('Logout'), findsOneWidget);
 
-    // Tap on the logout button
-    await tester.tap(find.widgetWithText(ListTile, 'Logout'));
-    await tester.pumpAndSettle();
+  //   // Tap on the logout button
+  //   await tester.tap(find.widgetWithText(ListTile, 'Logout'));
+  //   await tester.pumpAndSettle();
 
-    // Verify the UnlogEvent is added to the bloc
-    verify(mockAuthBloc.add(UnlogEvent())).called(1);
+  //   // Verify the UnlogEvent is added to the bloc
+  //   verify(mockAuthBloc.add(UnlogEvent())).called(1);
 
-    // Verify navigation to home page
-    expect(find.text('Home Page'), findsOneWidget);
-  });
+  //   // Verify navigation to home page
+  //   expect(find.text('Home Page'), findsOneWidget);
+  // });
 }

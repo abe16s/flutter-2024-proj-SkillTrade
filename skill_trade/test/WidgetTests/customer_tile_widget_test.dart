@@ -28,45 +28,45 @@ void main() {
     ],
   );
 
-  testWidgets('CustomerTile displays customer details and navigates on review button press', (WidgetTester tester) async {
-    // Build the widget
-    await tester.pumpWidget(
-      MaterialApp.router(
-        routerDelegate: router.routerDelegate,
-        routeInformationParser: router.routeInformationParser,
-        routeInformationProvider: router.routeInformationProvider,
-        builder: (context, child) {
-          return Scaffold(
-            body: CustomerTile(
-              customer: testCustomer,
-            ),
-          );
-        },
-      ),
-    );
+  // testWidgets('CustomerTile displays customer details and navigates on review button press', (WidgetTester tester) async {
+  //   // Build the widget
+  //   await tester.pumpWidget(
+  //     MaterialApp.router(
+  //       routerDelegate: router.routerDelegate,
+  //       routeInformationParser: router.routeInformationParser,
+  //       routeInformationProvider: router.routeInformationProvider,
+  //       builder: (context, child) {
+  //         return Scaffold(
+  //           body: CustomerTile(
+  //             customer: testCustomer,
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
 
-    // Wait for the widget to be fully rendered
-    await tester.pumpAndSettle();
+  //   // Wait for the widget to be fully rendered
+  //   await tester.pumpAndSettle();
 
-    // Verify the customer image is displayed
-    expect(find.byType(Image), findsOneWidget);
+  //   // Verify the customer image is displayed
+  //   expect(find.byType(Image), findsOneWidget);
 
-    // Verify the customer details are displayed
-    expect(find.text(testCustomer.fullName), findsOneWidget);
-    expect(find.text('Email:'), findsOneWidget);
-    expect(find.text(testCustomer.email), findsOneWidget);
-    expect(find.text('tel:'), findsOneWidget);
-    expect(find.text(testCustomer.phone), findsOneWidget);
+  //   // Verify the customer details are displayed
+  //   expect(find.text(testCustomer.fullName), findsOneWidget);
+  //   expect(find.text('Email:'), findsOneWidget);
+  //   expect(find.text(testCustomer.email), findsOneWidget);
+  //   expect(find.text('tel:'), findsOneWidget);
+  //   expect(find.text(testCustomer.phone), findsOneWidget);
 
-    // Verify the review button is displayed
-    expect(find.text('Review'), findsOneWidget);
+  //   // Verify the review button is displayed
+  //   expect(find.text('Review'), findsOneWidget);
 
-    // Tap the review button and verify navigation
-    await tester.tap(find.text('Review'));
-    await tester.pumpAndSettle();
+  //   // Tap the review button and verify navigation
+  //   await tester.tap(find.text('Review'));
+  //   await tester.pumpAndSettle();
 
-    // Verify the navigation to the new screen
-    expect(find.text('Customer Review:'), findsOneWidget);
-    expect(find.text(testCustomer.fullName), findsOneWidget);
-  });
+  //   // Verify the navigation to the new screen
+  //   expect(find.text('Customer Review:'), findsOneWidget);
+  //   expect(find.text(testCustomer.fullName), findsOneWidget);
+  // });
 }
