@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:skill_trade/domain/models/customer.dart';
 import 'package:skill_trade/domain/repositories/auth_repository.dart';
 import 'package:skill_trade/infrastructure/data_sources/bookings_remote_data_source_impl.dart';
-import 'package:skill_trade/infrastructure/data_sources/customer_remote_data_source.dart';
 import 'package:skill_trade/infrastructure/data_sources/customer_remote_data_source_impl.dart';
 import 'package:skill_trade/infrastructure/data_sources/individual_technician_remote_data_source.dart';
 import 'package:skill_trade/infrastructure/data_sources/remote_data_source.dart';

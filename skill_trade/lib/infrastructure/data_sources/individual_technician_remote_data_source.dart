@@ -39,4 +39,18 @@ class IndividualTechnicianRemoteDataSource {
       throw Exception('Error updating technician');
     }
   }
+
+  Future<void> updatePassword(Map<String, dynamic> updates) async {
+    final endpoint = await _getEndpoint();
+    final headers =  await _getHeaders();
+    headers["Content-Type"] = "application/json";
+    final response = await http.patch(Uri.parse('http://$endpoint:9000/trader/update-ps'), 
+        headers: headers,
+        body: json.encode(updates),
+      );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error changing password');
+    }
+  }
 }

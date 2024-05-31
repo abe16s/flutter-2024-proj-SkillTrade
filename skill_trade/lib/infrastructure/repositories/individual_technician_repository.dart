@@ -13,4 +13,8 @@ class IndividualTechnicianRepository {
   Future<void> updateTechnicianProfile(String technicianId, Map<String, dynamic> updates) async {
     await remoteDataSource.updateTechnicianProfile(technicianId, updates);
   }
+
+  Future<void> updatePassword(Map<String, dynamic> updates) async {
+    await remoteDataSource.updatePassword(updates);
+  }
 }
