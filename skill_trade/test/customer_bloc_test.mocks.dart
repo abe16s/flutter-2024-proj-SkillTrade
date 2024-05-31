@@ -66,4 +66,15 @@ class MockCustomerRepository extends _i1.Mock
         ),
         returnValue: _i4.Future<List<_i2.Customer>>.value(<_i2.Customer>[]),
       ) as _i4.Future<List<_i2.Customer>>);
+
+  @override
+  _i4.Future<void> updatePassword(Map<String, dynamic>? updates) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updatePassword,
+          [updates],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

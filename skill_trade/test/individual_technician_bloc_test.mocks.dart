@@ -97,4 +97,15 @@ class MockIndividualTechnicianRepository extends _i1.Mock
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> updatePassword(Map<String, dynamic>? updates) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #updatePassword,
+          [updates],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
