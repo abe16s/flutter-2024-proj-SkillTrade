@@ -5,4 +5,5 @@ abstract class AuthRepository {
   Future<String?> getToken();
   Future<String?> getRole();
   Future<void> clearData();
+  Future<void> deleteAccount();
 }

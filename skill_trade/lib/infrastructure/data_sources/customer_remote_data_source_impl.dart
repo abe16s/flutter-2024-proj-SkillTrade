@@ -33,4 +33,20 @@ class CustomerRemoteDataSourceImpl implements CustomerRemoteDataSource {
       throw Exception('Error fetching customers');
     }
   }
+  
+  @override
+  Future<void> updatePassword(String endpoint, String token, Map<String, dynamic> updates) async {
+    final headers = {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json",
+    };
+    final response = await client.patch(Uri.parse('http://$endpoint:9000/trader/update-ps'), 
+        headers: headers,
+        body: json.encode(updates),
+      );
+
+    if (response.statusCode != 200) {
+      throw Exception('Old password is incorrect');
+    }
+  }
 }
