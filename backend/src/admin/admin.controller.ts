@@ -27,12 +27,8 @@ export class AdminController {
     @Req() request: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    // const user = request.user;
-    // if (id === (user as { sub: number }).sub) {
     return this.adminService.findAdminProfile(id);
-    // } else {
-    //   throw new ForbiddenException('Access denied to Unauthorized user');
-    // }
+
   }
 
   @Patch(':id')
