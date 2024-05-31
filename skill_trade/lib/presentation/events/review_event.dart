@@ -1,4 +1,9 @@
-abstract class ReviewsEvent {}
+import 'package:equatable/equatable.dart';
+
+abstract class ReviewsEvent extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class LoadTechnicianReviews extends ReviewsEvent {
   final int technicianId;

@@ -15,7 +15,7 @@ import 'package:skill_trade/presentation/themes.dart';
 import 'package:skill_trade/presentation/widgets/drawer.dart';
 import 'package:skill_trade/application/blocs/bookings_bloc.dart';
 import 'package:skill_trade/application/blocs/customer_bloc.dart';
-import 'package:skill_trade/application/blocs/find_tecnician_bloc.dart';
+import 'package:skill_trade/application/blocs/find_technician_bloc.dart';
 import 'package:skill_trade/application/blocs/individual_technician_bloc.dart';
 import 'package:skill_trade/infrastructure/storage/storage.dart';
 import 'package:http/http.dart' as http;

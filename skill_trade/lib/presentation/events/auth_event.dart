@@ -1,4 +1,9 @@
-abstract class AuthEvent {}
+import 'package:equatable/equatable.dart';
+
+abstract class AuthEvent extends Equatable{
+  @override
+  List<Object?> get props => [];
+}
 
 class SignUpCustomer extends AuthEvent {
   final String fullName;
