@@ -1,10 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:skill_trade/infrastructure/storage/storage.dart';
 
 class RemoteDataSource {
   final http.Client httpClient;
 
   RemoteDataSource(this.httpClient);
+
+  Future<Map<String, String>> _getHeaders() async {
+    final token = await SecureStorage.instance.read("token");
+    return {"Authorization": "Bearer $token"};
+  }
 
   Future<Map<String, dynamic>> logIn(String endpoint, String role, String email, String password) async {
     final response = await httpClient.post(
@@ -15,7 +21,7 @@ class RemoteDataSource {
     if (response.statusCode == 201) {
       return jsonDecode(response.body);
     } else {
-      throw Exception('Error logging in');
+      throw Exception('Invalid credentials!');
     }
   }
 
@@ -41,6 +47,18 @@ class RemoteDataSource {
     );
     if (response.statusCode != 201) {
       throw Exception('Error signing up');
+    }
+  }
+
+  Future<void> deleteAccount(String endpoint, String id, String role) async {
+    final headers =  await _getHeaders();
+    
+    final response = await httpClient.delete(
+      Uri.parse('http://$endpoint:9000/trader/delete-profile/${id}?role=${role}',),
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Error deleting account');
     }
   }
 }

@@ -13,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignUpCustomer>(_onSignUpCustomer);
     on<SignUpTechnician>(_onSignUpTechnician);
     on<UnlogEvent>(_onUnlogEvent);
+    on<DeleteAccount>(_onDeleteAccount);
     add(AutomaticLogIn());
   }
 
@@ -29,7 +30,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final role = await authRepository.logIn(event.role, event.email, event.password);
       emit(LoggedIn(role: role));
     } catch (error) {
-      emit(AuthError(error.toString()));
+      emit(AuthError(error.toString().split(":")[1]));
     }
   }
 
@@ -53,6 +54,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Future<void> _onUnlogEvent(UnlogEvent event, Emitter<AuthState> emit) async {
     await authRepository.clearData();
+    emit(UnLogged());
+  }
+
+  Future<void> _onDeleteAccount(DeleteAccount event, Emitter<AuthState> emit) async {
+    await authRepository.deleteAccount();
     emit(UnLogged());
   }
 }

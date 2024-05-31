@@ -35,3 +35,5 @@ class LogInEvent extends AuthEvent {
 class UnlogEvent extends AuthEvent {}
 
 class AutomaticLogIn extends AuthEvent {}
+
+class DeleteAccount extends AuthEvent {}

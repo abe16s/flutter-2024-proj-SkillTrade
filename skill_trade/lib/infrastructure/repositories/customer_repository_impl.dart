@@ -33,4 +33,11 @@ class CustomerRepositoryImpl implements CustomerRepository {
     final token = await _getToken();
     return await remoteDataSource.fetchAllCustomers(endpoint, token);
   }
+  
+  @override
+  Future<void> updatePassword(Map<String, dynamic> updates) async {
+    final endpoint = await _getEndpoint();
+    final token = await _getToken();
+    await remoteDataSource.updatePassword(endpoint, token, updates);
+  }
 }
