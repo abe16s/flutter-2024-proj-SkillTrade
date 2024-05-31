@@ -191,8 +191,10 @@ class GetFirstPage extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (BuildContext context, AuthState state) {
         if (state is LoggedIn) {
+          print('User is logged in as ${state.role}');
           return GetFirstPageLogic().getLoggedInPage(state.role!);
         } else {
+          print('User is not logged in');
           return const HomeScreen();
         }
       },
